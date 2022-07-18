@@ -17,6 +17,10 @@ parameters
     p32_PriceDurSlope(all_regi,all_te)              "slope of price duration curve used for calculation of electricity price for flexible technologies, determines how fast electricity price declines at lower capacity factors"
     o32_dispatchDownPe2se(ttot,all_regi,all_te)           "output parameter to check by how much a pe2se te reduced its output below the normal, in % of the normal output."
 
+    p32_windRegiGrid(all_regi)                      "wind regional grid factor"
+    p32_windoffRegiGrid(all_regi)                   "wind offshore regional grid factor"
+    p32_cspRegiGrid(all_regi)                       "CSP regional grid factor"
+    p32_spvRegiGrid(all_regi)                       "spv regional grid factor"
 ;
 
 scalars

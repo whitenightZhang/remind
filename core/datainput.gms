@@ -512,6 +512,13 @@ pm_cf(ttot,regi,"ngt")$(ttot.val eq 2035) = 0.7 * pm_cf(ttot,regi,"ngt");
 pm_cf(ttot,regi,"ngt")$(ttot.val eq 2040) = 0.5 * pm_cf(ttot,regi,"ngt");
 pm_cf(ttot,regi,"ngt")$(ttot.val ge 2045) = 0.4 * pm_cf(ttot,regi,"ngt");
 
+*CG* phasing down pc cf to "peak load" cf for CHA
+$ifthen.Policy %carbonprice% == "diffCurvPhaseIn2Lin"
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.8 * pm_cf(ttot,"CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.7 * pm_cf(ttot,"CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.5 * pm_cf(ttot,"CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.4 * pm_cf(ttot,"CHA","pc");
+$endif.Policy
 
 
 *** FS: set CF of additional t&d H2 for buildings and industry to t&d H2 stationary value
@@ -522,7 +529,7 @@ pm_cf(ttot,regi,"tdh2i") = pm_cf(ttot,regi,"tdh2s");
 *SB* Region- and tech-specific early retirement rates
 *Regional*
 loop(ext_regi$pm_extRegiEarlyRetiRate(ext_regi), 
-  pm_regiEarlyRetiRate(t,regi,te)$(regi_group(ext_regi,regi)) = pm_extRegiEarlyRetiRate(ext_regi);
+  pm_regiEarlyRetiRate(t,regi,te)$(regi_group(ext_regi,regi) and t.val ge 2020) = pm_extRegiEarlyRetiRate(ext_regi);
 );
 *Tech-specific*
 $IFTHEN.tech_earlyreti not "%c_tech_earlyreti_rate%" == "off"
@@ -542,6 +549,17 @@ $endif.Base_techpol
 $endif.Base_Cprice
 
 display pm_regiEarlyRetiRate;
+
+*CG* CHA-specific pc rate
+$ifthen.Policy %carbonprice% == "diffCurvPhaseIn2Lin"
+*** Allow first slow then fast phase-out cap
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0.01;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0.03;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2035) = 0.06;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.09;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2045) = 0.15;
+$endif.Policy
+
 
 
 ***---------------------------------------------------------------------------
@@ -1495,6 +1513,32 @@ $ondelim
 $include "./core/input/f_fedemand_build.cs4r"
 $offdelim
 /;
+
+pm_fedemand_steelcha("2020") = 0.981;
+pm_fedemand_steelcha("2025") = 0.80;
+pm_fedemand_steelcha("2030") = 0.75;
+pm_fedemand_steelcha("2035") = 0.7;
+pm_fedemand_steelcha("2040") = 0.6;
+pm_fedemand_steelcha("2045") = 0.5;
+pm_fedemand_steelcha("2050") = 0.47;
+pm_fedemand_steelcha("2055") = 0.45;
+pm_fedemand_steelcha(tall)$(tall.val gt 2055) = 0.45;
+
+pm_fedemand_scraprate_cha("2020") = 0.15;
+pm_fedemand_scraprate_cha("2025") = 0.37;
+pm_fedemand_scraprate_cha("2030") = 0.5;
+pm_fedemand_scraprate_cha("2035") = 0.6;
+pm_fedemand_scraprate_cha("2040") = 0.7;
+pm_fedemand_scraprate_cha("2045") = 0.75;
+pm_fedemand_scraprate_cha("2050") = 0.8;
+pm_fedemand_scraprate_cha("2055") = 0.85;
+pm_fedemand_scraprate_cha(tall)$(tall.val gt 2055) = 0.89;
+
+pm_fedemand(tall,"CHA","ue_steel_primary")$(tall.val gt 2015) = pm_fedemand_steelcha(tall) * (1- pm_fedemand_scraprate_cha(tall));
+pm_fedemand(tall,"CHA","ue_steel_secondary")$(tall.val gt 2015) = pm_fedemand_steelcha(tall) * pm_fedemand_scraprate_cha(tall);
+
+pm_fedemand("2025","CHA","ue_steel_secondary") = 0.338; !! source: CMIPR
+pm_fedemand("2025","CHA","ue_steel_primary") = pm_fedemand_steelcha("2025") - pm_fedemand("2025","CHA","ue_steel_secondary");
 
 pm_fedemand(t,regi,cal_ppf_buildings_dyn36) =
   f_fedemand_build(t,regi,"%cm_demScen%","%cm_rcp_scen_build%",cal_ppf_buildings_dyn36);
