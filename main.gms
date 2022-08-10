@@ -246,6 +246,7 @@ parameters
   cm_CCS_chemicals          "CCS for chemicals sub-sector"
   cm_CCS_steel              "CCS for steel sub-sector"
   c_solscen                 "solar option choice"
+  cm_chaSteelScen           "China steel output scenario"
   cm_bioenergy_tax          "level of bioenergy sustainability tax in fraction of bioenergy price"
   cm_bioenergymaxscen       "choose bound on global pebiolc production excluding residues"
   cm_tradecost_bio          "choose financal tradecosts for biomass (purpose grown pebiolc)"
@@ -385,6 +386,7 @@ c_shBioTrans     = 1;        !! def = 1
 cm_shSynTrans    = 0;        !! def = 0
 cm_shSynGas      = 0;        !! def = 0
 c_solscen        = 1;        !! def = 1
+cm_chaSteelScen  = 0;        !! def = 0
 
 cm_IndCCSscen          = 1;        !! def = 1
 cm_optimisticMAC       = 0;        !! def = 0
