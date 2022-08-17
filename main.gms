@@ -386,7 +386,7 @@ c_shBioTrans     = 1;        !! def = 1
 cm_shSynTrans    = 0;        !! def = 0
 cm_shSynGas      = 0;        !! def = 0
 c_solscen        = 1;        !! def = 1
-cm_chaSteelScen  = 0;        !! def = 0
+$setglobal cm_chaSteelScen high      !! def = low
 
 cm_IndCCSscen          = 1;        !! def = 1
 cm_optimisticMAC       = 0;        !! def = 0

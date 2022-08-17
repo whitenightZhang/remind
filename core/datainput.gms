@@ -1514,57 +1514,6 @@ $include "./core/input/f_fedemand_build.cs4r"
 $offdelim
 /;
 
-$ifthen.lowCHAsteelDem %cm_chaSteelScen% == "0"
-pm_fedemand_steelcha("2020") = 0.981;
-pm_fedemand_steelcha("2025") = 0.80;
-pm_fedemand_steelcha("2030") = 0.75;
-pm_fedemand_steelcha("2035") = 0.7;
-pm_fedemand_steelcha("2040") = 0.6;
-pm_fedemand_steelcha("2045") = 0.5;
-pm_fedemand_steelcha("2050") = 0.47;
-pm_fedemand_steelcha("2055") = 0.45;
-pm_fedemand_steelcha(tall)$(tall.val gt 2055) = 0.45;
-
-pm_fedemand_scraprate_cha("2020") = 0.15;
-pm_fedemand_scraprate_cha("2025") = 0.37;
-pm_fedemand_scraprate_cha("2030") = 0.5;
-pm_fedemand_scraprate_cha("2035") = 0.6;
-pm_fedemand_scraprate_cha("2040") = 0.7;
-pm_fedemand_scraprate_cha("2045") = 0.75;
-pm_fedemand_scraprate_cha("2050") = 0.8;
-pm_fedemand_scraprate_cha("2055") = 0.85;
-pm_fedemand_scraprate_cha(tall)$(tall.val gt 2055) = 0.89;
-$endif.lowCHAsteelDem
-
-$ifthen.highCHAsteelDem %cm_chaSteelScen% == "1"
-pm_fedemand_steelcha("2020") = 0.981;
-pm_fedemand_steelcha("2025") = 0.89;
-pm_fedemand_steelcha("2030") = 0.80;
-pm_fedemand_steelcha("2035") = 0.78;
-pm_fedemand_steelcha("2040") = 0.77;
-pm_fedemand_steelcha("2045") = 0.76;
-pm_fedemand_steelcha("2050") = 0.75;
-pm_fedemand_steelcha("2055") = 0.74;
-pm_fedemand_steelcha(tall)$(tall.val gt 2055) = 0.74;
-
-pm_fedemand_scraprate_cha("2020") = 0.15;
-pm_fedemand_scraprate_cha("2025") = 0.37;
-pm_fedemand_scraprate_cha("2030") = 0.4;
-pm_fedemand_scraprate_cha("2035") = 0.5;
-pm_fedemand_scraprate_cha("2040") = 0.5;
-pm_fedemand_scraprate_cha("2045") = 0.5;
-pm_fedemand_scraprate_cha("2050") = 0.5;
-pm_fedemand_scraprate_cha("2055") = 0.5;
-pm_fedemand_scraprate_cha(tall)$(tall.val gt 2055) = 0.5;
-$endif.highCHAsteelDem
-
-
-pm_fedemand(tall,"CHA","ue_steel_primary")$(tall.val gt 2015) = pm_fedemand_steelcha(tall) * (1- pm_fedemand_scraprate_cha(tall));
-pm_fedemand(tall,"CHA","ue_steel_secondary")$(tall.val gt 2015) = pm_fedemand_steelcha(tall) * pm_fedemand_scraprate_cha(tall);
-
-pm_fedemand("2025","CHA","ue_steel_secondary") = 0.338; !! source: CMIPR
-pm_fedemand("2025","CHA","ue_steel_primary") = pm_fedemand_steelcha("2025") - pm_fedemand("2025","CHA","ue_steel_secondary");
-
 pm_fedemand(t,regi,cal_ppf_buildings_dyn36) =
   f_fedemand_build(t,regi,"%cm_demScen%","%cm_rcp_scen_build%",cal_ppf_buildings_dyn36);
 $endif.cm_rcp_scen_build
