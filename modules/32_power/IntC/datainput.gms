@@ -90,12 +90,16 @@ $offtext
 p32_PriceDurSlope(regi,"elh2") = cm_PriceDurSlope_elh2;
 
 p32_windRegiGrid(regi) = 1;
-p32_windRegiGrid("CHA") = 4/3;
 p32_windoffRegiGrid(regi) = 1;
-p32_windoffRegiGrid("CHA") = 2/3;
 p32_spvRegiGrid(regi) = 1;
-p32_spvRegiGrid("CHA") = 2;
 p32_cspRegiGrid(regi) = 1;
+
+$ifthen.calibrate %CES_parameters% == "load"
+p32_windRegiGrid("CHA") = 4/3;
+p32_windoffRegiGrid("CHA") = 2/3;
+p32_spvRegiGrid("CHA") = 2;
 p32_cspRegiGrid("CHA") = 3;
+$endif.calibrate
+
 
 *** EOF ./modules/32_power/IntC/datainput.gms
