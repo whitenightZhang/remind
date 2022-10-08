@@ -517,10 +517,18 @@ pm_cf(ttot,regi,"ngt")$(ttot.val ge 2045) = 0.4 * pm_cf(ttot,regi,"ngt");
 
 *CG* phasing down pc cf to "peak load" cf for CHA
 $ifthen.Policy %carbonprice% == "diffCurvPhaseIn2Lin"
+if (c_budgetCO2from2020 le 500,
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.8 * pm_cf(ttot,"CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.6 * pm_cf(ttot,"CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.4 * pm_cf(ttot,"CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.2 * pm_cf(ttot,"CHA","pc");
+);
+if (c_budgetCO2from2020 ge 1150,
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.8 * pm_cf(ttot,"CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.7 * pm_cf(ttot,"CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.5 * pm_cf(ttot,"CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.4 * pm_cf(ttot,"CHA","pc");
+);
 $endif.Policy
 
 

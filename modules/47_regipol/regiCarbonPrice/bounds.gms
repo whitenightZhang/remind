@@ -100,6 +100,10 @@ vm_deltaCap.up("2025",regi,"ngcc","1") = 0.0015;
 vm_capEarlyReti.up('2025',regi,'pc') = 0.65; 
 );
 
+loop(regi$(sameAs(regi,"CHA")),
+*** limit early retirement of coal power in China in 2020s to avoid extremly fast phase-out
+vm_capEarlyReti.up('2025',regi,'pc') = 0.13;
+);
 
 
 *** energy security policy for Germany: 5GW(el) electrolysis installed by 2030 in Germany at minimum
