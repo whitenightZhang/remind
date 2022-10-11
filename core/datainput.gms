@@ -516,20 +516,46 @@ pm_cf(ttot,regi,"ngt")$(ttot.val eq 2040) = 0.5 * pm_cf(ttot,regi,"ngt");
 pm_cf(ttot,regi,"ngt")$(ttot.val ge 2045) = 0.4 * pm_cf(ttot,regi,"ngt");
 
 *CG* phasing down pc cf to "peak load" cf for CHA
-$ifthen.Policy %carbonprice% == "diffCurvPhaseIn2Lin"
-if (c_budgetCO2from2020 le 500,
+$ifthen.chaPOpolicy %cm_chaCoalPOSpeed% == "plateau30"
+pm_cf(ttot,"CHA","pc")$(ttot.val le 2025) = 1 * pm_cf(ttot,"CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.95 * pm_cf(ttot,"CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.75 * pm_cf(ttot,"CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.55 * pm_cf(ttot,"CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.35 * pm_cf(ttot,"CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val ge 2050) = 0.15 * pm_cf(ttot,"CHA","pc");
+$endif.chaPOpolicy
+
+$ifthen.chaPOpolicy %cm_chaCoalPOSpeed% == "plateau25"
+pm_cf(ttot,"CHA","pc")$(ttot.val le 2025) = 1 * pm_cf(ttot,"CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.75 * pm_cf(ttot,"CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.55 * pm_cf(ttot,"CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.35 * pm_cf(ttot,"CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.15 * pm_cf(ttot,"CHA","pc");
+$endif.chaPOpolicy
+
+$ifthen.chaPOpolicy %cm_chaCoalPOSpeed% == "fast"
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.7 * pm_cf(ttot,"CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.3 * pm_cf(ttot,"CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.1 * pm_cf(ttot,"CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.1 * pm_cf(ttot,"CHA","pc");
+$endif.chaPOpolicy
+
+$ifthen.chaPOpolicy %cm_chaCoalPOSpeed% == "medium"
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.8 * pm_cf(ttot,"CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.6 * pm_cf(ttot,"CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.4 * pm_cf(ttot,"CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.2 * pm_cf(ttot,"CHA","pc");
-);
-if (c_budgetCO2from2020 ge 1150,
-pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.8 * pm_cf(ttot,"CHA","pc");
+$endif.chaPOpolicy
+
+$ifthen.chaPOpolicy %cm_chaCoalPOSpeed% == "slow"
+pm_cf(ttot,"CHA","pc")$(ttot.val le 2025) = 1 * pm_cf(ttot,"CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.85 * pm_cf(ttot,"CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.7 * pm_cf(ttot,"CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.5 * pm_cf(ttot,"CHA","pc");
-pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.4 * pm_cf(ttot,"CHA","pc");
-);
-$endif.Policy
+pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.3 * pm_cf(ttot,"CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val ge 2050) = 0.2 * pm_cf(ttot,"CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val gt 2050) = 0.1 * pm_cf(ttot,"CHA","pc");
+$endif.chaPOpolicy
 
 
 *** FS: set CF of additional t&d H2 for buildings and industry to t&d H2 stationary value
@@ -562,15 +588,52 @@ $endif.Base_Cprice
 display pm_regiEarlyRetiRate;
 
 *CG* CHA-specific pc rate
-$ifthen.Policy %carbonprice% == "diffCurvPhaseIn2Lin"
+
+$ifthen.chaPOpolicy %cm_chaCoalPOSpeed% == "plateau30"
+*** Allow first slow then fast phase-out cap
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0.00;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0.00;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2035) = 0.03;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.05;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2045) = 0.07;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2050) = 0.09;
+$endif.chaPOpolicy
+
+$ifthen.chaPOpolicy %cm_chaCoalPOSpeed% == "plateau25"
+*** Allow first slow then fast phase-out cap
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0.00;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0.03;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2035) = 0.05;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.07;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2045) = 0.09;
+$endif.chaPOpolicy
+
+$ifthen.chaPOpolicy %cm_chaCoalPOSpeed% == "fast"
 *** Allow first slow then fast phase-out cap
 pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0.01;
 pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0.03;
 pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2035) = 0.06;
 pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.09;
 pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2045) = 0.15;
-$endif.Policy
+$endif.chaPOpolicy
 
+$ifthen.chaPOpolicy %cm_chaCoalPOSpeed% == "medium"
+*** Allow first slow then fast phase-out cap
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0.01;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0.03;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2035) = 0.06;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.09;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2045) = 0.15;
+$endif.chaPOpolicy
+
+$ifthen.chaPOpolicy %cm_chaCoalPOSpeed% == "slow"
+*** Allow first slow then fast phase-out cap
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0.01;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0.02;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2035) = 0.03;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.05;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2045) = 0.10;
+$endif.chaPOpolicy
 
 
 ***---------------------------------------------------------------------------
