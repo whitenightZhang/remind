@@ -327,7 +327,6 @@ parameters
   cm_CCS_steel              "CCS for steel sub-sector"
   c_solscen                 "solar option choice"
   cm_chaSteelScen           "China steel output scenario"
-  cm_chaCoalPOSpeed         "China coal phase out speed scenario"
   cm_bioenergy_tax          "level of bioenergy sustainability tax in fraction of bioenergy price"
   cm_bioenergymaxscen       "choose bound on global pebiolc production excluding residues"
   cm_tradecost_bio          "choose financal tradecosts for biomass (purpose grown pebiolc)"
@@ -490,6 +489,8 @@ $setglobal cm_GDPscen  gdp_SSP2EU  !! def = gdp_SSP2EU
 $setglobal c_GDPpcScen  SSP2EU     !! def = gdp_SSP2   (automatically adjusted by start_run() based on GDPscen) 
 $setglobal cm_demScen  gdp_SSP2EU     !! def = gdp_SSP2EU
 cm_GDPcovid      = 0;            !! def = 0
+
+$setglobal cm_chaCoalPOSpeed medium     !! def = medium
 
 *AG* and *CB* for cm_startyear greater than 2005, you have to copy the fulldata.gdx (rename it to: input_ref.gdx) from the run you want to build your new run onto.
 cm_startyear      = 2005;      !! def = 2005 for a BAU, 2015 for policy runs
