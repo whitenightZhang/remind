@@ -100,10 +100,31 @@ vm_deltaCap.up("2025",regi,"ngcc","1") = 0.0015;
 vm_capEarlyReti.up('2025',regi,'pc') = 0.65; 
 );
 
-loop(regi$(sameAs(regi,"CHA")),
 *** limit early retirement of coal power in China in 2020s to avoid extremly fast phase-out
-vm_capEarlyReti.up('2025',regi,'pc') = 0.13;
-);
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "plateau30"
+vm_capEarlyReti.up('2025','CHA','pc') = 0.01;
+vm_capEarlyReti.up('2030','CHA','pc') = 0.01;
+$endif.chaPOpolicy
+
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "plateau25"
+vm_capEarlyReti.up('2025','CHA','pc') = 0.01;
+vm_capEarlyReti.up('2030','CHA','pc') = 0.15;
+$endif.chaPOpolicy
+
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "fast"
+vm_capEarlyReti.up('2025','CHA','pc') = 0.18;
+vm_capEarlyReti.up('2030','CHA','pc') = 0.35;
+$endif.chaPOpolicy
+
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "medium"
+vm_capEarlyReti.up('2025','CHA','pc') = 0.08;
+vm_capEarlyReti.up('2030','CHA','pc') = 0.18;
+$endif.chaPOpolicy
+
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "slow"
+vm_capEarlyReti.up('2025','CHA','pc') = 0.05;
+vm_capEarlyReti.up('2030','CHA','pc') = 0.10;
+$endif.chaPOpolicy
 
 
 *** energy security policy for Germany: 5GW(el) electrolysis installed by 2030 in Germany at minimum
