@@ -435,6 +435,7 @@ parameters
   cm_EnSecScen             "switch for running an ARIADNE energy security scenario, introducing a tax on PE fossil energy in Germany"
   cm_Ger_Pol               "switch for selecting different policies for Germany used in the ARIADNE scenarios"
   cm_process_based_steel      "switch to turn on process-based steel implementation"
+  cm_chaPcCost                 "switch to turn on the coal power plant cost change for CHA"
 ;
 
 *** --------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -491,7 +492,7 @@ $setglobal cm_demScen  gdp_SSP2EU     !! def = gdp_SSP2EU
 cm_GDPcovid      = 0;            !! def = 0
 
 $setglobal cm_chaCoalPOSpeed medium     !! def = medium
-
+cm_chaPcCost    = 0;             !! def = 0
 *AG* and *CB* for cm_startyear greater than 2005, you have to copy the fulldata.gdx (rename it to: input_ref.gdx) from the run you want to build your new run onto.
 cm_startyear      = 2005;      !! def = 2005 for a BAU, 2015 for policy runs
 c_start_budget    = 2100;      !! def = 2100
