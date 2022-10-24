@@ -247,11 +247,11 @@ prepare <- function() {
   setwd(cfg$remind_folder)
 
   # Check configuration for consistency
-  cfg <- check_config(cfg, reference_file="config/default.cfg",
-                      settings_config = "config/settings_config.csv",
-                      extras = c("backup", "remind_folder", "pathToMagpieReport", "cm_nash_autoconverge_lastrun",
-                                 "gms$c_expname", "restart_subsequent_runs", "gms$c_GDPpcScen",
-                                 "gms$cm_CES_configuration", "gms$c_description"))
+#  cfg <- check_config(cfg, reference_file="config/default.cfg",
+#                      settings_config = "config/settings_config.csv",
+#                      extras = c("backup", "remind_folder", "pathToMagpieReport", "cm_nash_autoconverge_lastrun",
+#                                 "gms$c_expname", "restart_subsequent_runs", "gms$c_GDPpcScen",
+#                                 "gms$cm_CES_configuration", "gms$c_description"))
 
   # Check for compatibility with subsidizeLearning
   if ( (cfg$gms$optimization != 'nash') & (cfg$gms$subsidizeLearning == 'globallyOptimal') ) {
@@ -341,12 +341,16 @@ prepare <- function() {
   # Check all setglobal settings for consistency
   settingsCheck()
 
-  # configure main model gms file (cfg$model) based on settings of cfg file
+  # use main model gms file (cfg$model) and create modified version based on settings in cfg$gms
+  # use main.gms if not further specified
+  if (is.null(cfg$model)) cfg$model <- "main.gms"
+  # add info from cfg into cfg$gams so it ends up in gams.
   cfg$gms$c_expname <- cfg$title
   cfg$gms$c_description <- substr(cfg$description, 1, 255)
-  # run main.gms if not further specified
-  if(is.null(cfg$model)) cfg$model <- "main.gms"
-  manipulateConfig(cfg$model, cfg$gms)
+  # create modified version
+  tmpModelFile <- sub(".gms", paste0("_", cfg$title, ".gms"), cfg$model)
+  file.copy(cfg$model, tmpModelFile)
+  manipulateConfig(tmpModelFile, cfg$gms)
 
   ######## declare functions for updating information ####
   update_info <- function(regionscode, revision) {
@@ -360,7 +364,7 @@ prepare <- function() {
       paste("Last modification (input data):",
             format(file.mtime("input/source_files.log"), "%a %b %d %H:%M:%S %Y")),
       "")
-    replace_in_file(cfg$model, paste("*", content), subject)
+    replace_in_file(tmpModelFile, paste("*", content), subject)
   }
 
   update_sets <- function(map) {
@@ -442,7 +446,8 @@ prepare <- function() {
       download_distribute(files        = input_new,
                           repositories = cfg$repositories, # defined in your local .Rprofile or on the cluster /p/projects/rd3mod/R/.Rprofile
                           modelfolder  = ".",
-                          debug        = FALSE)
+                          debug        = FALSE,
+			  stopOnMissing = TRUE)
   } else {
       message("No input data downloaded and distributed. To enable that, delete input/source_files.log or set cfg$force_download to TRUE.")
   }
@@ -455,11 +460,11 @@ prepare <- function() {
   }
 
   ############ update information ########################
-  # update_info, which regional resolution and input data revision in cfg$model
-  update_info(regionscode(cfg$regionmapping),cfg$inputRevision)
+  # update_info, which regional resolution and input data revision in tmpModelFile
+  update_info(regionscode(cfg$regionmapping), cfg$inputRevision)
   # update_sets, which is updating the region-depending sets in core/sets.gms
   #-- load new mapping information
-  map <- read.csv(cfg$regionmapping,sep=";")
+  map <- read.csv(cfg$regionmapping, sep=";")
   update_sets(map)
 
   ########################################################
@@ -503,7 +508,9 @@ prepare <- function() {
 
   # Merge GAMS files
   message("\nCreating full.gms")
-  singleGAMSfile(mainfile=cfg$model,output = file.path(cfg$results_folder, "full.gms"))
+  singleGAMSfile(mainfile=tmpModelFile, output = file.path(cfg$results_folder, "full.gms"))
+  # now that full.gms exists, we don't need tmpModelFile any more
+  file.remove(tmpModelFile)
 
   # Collect run statistics (will be saved to central database in submit.R)
   lucode2::runstatistics(file = paste0(cfg$results_folder,"/runstatistics.rda"),
@@ -779,6 +786,7 @@ prepare <- function() {
     margs_manipulateThis <- c(margs_manipulateThis, 
                                 list(c("vm_shBioFe.M", "!!vm_shBioFe.M")))
 
+    
     # OR: renamed for sectoral taxation
     levs_manipulateThis <- c(levs_manipulateThis,
                              list(c("vm_emiCO2_sector.L", "vm_emiCO2Sector.L")),
@@ -811,12 +819,55 @@ prepare <- function() {
       fixings_manipulateThis <- c(fixings_manipulateThis, list(c("q35_transGDPshare.M", "!! q35_transGDPshare.M")))
     }
 
-    #RP filter out regipol items
-    if(grepl("off", cfg$gms$cm_implicitFE, ignore.case = T)){
-      margs_manipulateThis <- c(margs_manipulateThis,
-                                list(c("q47_implFETax.M", "!!q47_implFETax.M")))
-    }
+    # renamed because of https://github.com/remindmodel/remind/pull/848
+    levs_manipulateThis <- c(levs_manipulateThis,
+                             list(c("vm_emiTeMkt.L", "!!vm_emiTeMkt.L")),
+                             list(c("v32_shSeEl.L", "!!v32_shSeEl.L")))
+    margs_manipulateThis <- c(margs_manipulateThis,
+                             list(c("vm_emiTeMkt.M", "!!vm_emiTeMkt.M")),
+                             list(c("v32_shSeEl.M", "!!v32_shSeEl.M")))                             
+    fixings_manipulateThis <- c(fixings_manipulateThis,
+                            list(c("vm_emiTeMkt.FX", "!!vm_emiTeMkt.FX")),
+                            list(c("v32_shSeEl.FX", "!!v32_shSeEl.FX")))
 
+    #filter out deprecated regipol items
+    levs_manipulateThis <- c(levs_manipulateThis,
+                             list(c("v47_emiTarget.L", "!!v47_emiTarget.L")),
+                             list(c("v47_emiTargetMkt.L", "!!v47_emiTargetMkt.L")),
+                             list(c("vm_taxrevimplEnergyBoundTax.L", "!!vm_taxrevimplEnergyBoundTax.L")))
+    margs_manipulateThis <- c(margs_manipulateThis,
+                             list(c("v47_emiTarget.M", "!!v47_emiTarget.M")),
+                             list(c("v47_emiTargetMkt.M", "!!v47_emiTargetMkt.M")),
+                             list(c("q47_implFETax.M", "!!q47_implFETax.M")),
+                             list(c("q47_emiTarget_mkt_netCO2.M", "!!q47_emiTarget_mkt_netCO2.M")),
+                             list(c("q47_emiTarget_mkt_netGHG.M", "!!q47_emiTarget_mkt_netGHG.M")),
+                             list(c("q47_emiTarget_netCO2.M", "!!q47_emiTarget_netCO2.M")),
+                             list(c("q47_emiTarget_netCO2_noBunkers.M", "!!q47_emiTarget_netCO2_noBunkers.M")),
+                             list(c("q47_emiTarget_netCO2_noLULUCF_noBunkers.M", "!!q47_emiTarget_netCO2_noLULUCF_noBunkers.M")),
+                             list(c("q47_emiTarget_netGHG.M", "!!q47_emiTarget_netGHG.M")),
+                             list(c("q47_emiTarget_netGHG_noBunkers.M", "!!q47_emiTarget_netGHG_noBunkers.M")),
+                             list(c("q47_emiTarget_netGHG_noLULUCF_noBunkers.M", "!!q47_emiTarget_netGHG_noLULUCF_noBunkers.M")),
+                             list(c("q47_emiTarget_netGHG_LULUCFGrassi_noBunkers.M", "!!q47_emiTarget_netGHG_LULUCFGrassi_noBunkers.M")),
+
+                             list(c("q47_emiTarget_grossEnCO2.M", "!!q47_emiTarget_grossEnCO2.M")),
+                             list(c("q47_emiTarget_mkt_netCO2.M", "!!q47_emiTarget_mkt_netCO2.M")),
+                             list(c("q47_emiTarget_mkt_netCO2_noBunkers.M", "!!q47_emiTarget_mkt_netCO2_noBunkers.M")),
+                             list(c("q47_emiTarget_mkt_netCO2_noLULUCF_noBunkers.M", "!!q47_emiTarget_mkt_netCO2_noLULUCF_noBunkers.M")),
+                             list(c("q47_emiTarget_mkt_netGHG.M", "!!q47_emiTarget_mkt_netGHG.M")),
+                             list(c("q47_emiTarget_mkt_netGHG_noBunkers.M", "!!q47_emiTarget_mkt_netGHG_noBunkers.M")),
+                             list(c("q47_emiTarget_mkt_netGHG_noLULUCF_noBunkers.M", "!!q47_emiTarget_mkt_netGHG_noLULUCF_noBunkers.M")),
+                             list(c("q47_emiTarget_mkt_netGHG_LULUCFGrassi_noBunkers.M", "!!q47_emiTarget_mkt_netGHG_LULUCFGrassi_noBunkers.M")),
+                             list(c("qm_balFeAfterTax.M", "!!qm_balFeAfterTax.M")),
+                             list(c("q47_implicitQttyTargetTax.M", "!!q47_implicitQttyTargetTax.M")),
+                             list(c("q47_implEnergyBoundTax.M", "!!q47_implEnergyBoundTax.M")),
+                             list(c("vm_taxrevimplEnergyBoundTax.M", "!!vm_taxrevimplEnergyBoundTax.M"))
+                             )
+
+    fixings_manipulateThis <- c(fixings_manipulateThis,
+                            list(c("v47_emiTarget.FX", "!!v47_emiTarget.FX")),
+                            list(c("v47_emiTargetMkt.FX", "!!v47_emiTargetMkt.FX")),
+                            list(c("vm_taxrevimplEnergyBoundTax.FX", "!!vm_taxrevimplEnergyBoundTax.FX")))
+    
     # Include fixings (levels) and marginals in full.gms at predefined position 
     # in core/loop.gms.
     full_manipulateThis <- c(full_manipulateThis,
