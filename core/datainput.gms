@@ -192,6 +192,7 @@ $offdelim
 
 $IFTHEN.chaPcCost %cm_chaPcCost% == "0"
 p_inco0(t,"CHA","pc")$((t.val ge 2015) and (t.val le 2040)) = 500;
+p_inco0(t,"CHA","pcc")$((t.val ge 2015) and (t.val le 2040)) = 500*1.24;
 $ENDIF.chaPcCost
 
 *JH* SSP energy technology scenario
