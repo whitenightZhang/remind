@@ -1633,6 +1633,7 @@ $setglobal cm_CES_configuration  indu_subsectors-buil_simple-tran_edge_esm-POP_p
 $setglobal c_CES_calibration_iterations  10     !!  def  =  10
 $setglobal c_CES_calibration_iteration  1     !!  def  =  1
 $setglobal c_CES_calibration_industry_FE_target  1
+$setglobal c_testOneRegi_region  EUR       !! def = EUR
 $setglobal cm_fixCO2price  off !! def = off
 $setglobal cm_altTransBunkersShare  off      !! def = off
 
