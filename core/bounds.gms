@@ -319,7 +319,7 @@ pm_histCap("2020","CHA",te) = 0.01;
 
 vm_cap.lo("2010","CHA","gaschp","1") = pm_histCap("2010","CHA","gaschp");
 vm_cap.lo("2015","CHA","gaschp","1") = pm_histCap("2015","CHA","gaschp");
-vm_cap.lo("2020","CHA","gaschp","1") = 0.7 * pm_histCap("2020","CHA","gaschp");
+vm_cap.lo("2020","CHA","gaschp","1") = pm_histCap("2020","CHA","gaschp");
 
 *** lower bound on capacities for ngcc and ngt for regions defined at the pm_histCap file
 loop(te$(sameas(te,"ngcc") OR sameas(te,"ngt")),

@@ -190,7 +190,7 @@ $offdelim
 /
 ;
 
-$IFTHEN.chaPcCost %cm_chaPcCost% == "0"
+$IFTHEN.chaPcCost %cm_chaPcCost% == "1"
 p_inco0(t,"CHA","pc")$((t.val ge 2015) and (t.val le 2040)) = 500;
 p_inco0(t,"CHA","pcc")$((t.val ge 2015) and (t.val le 2040)) = 500*1.24;
 $ENDIF.chaPcCost
@@ -523,6 +523,12 @@ pm_cf(ttot,regi,"ngt")$(ttot.val eq 2040) = 0.5 * pm_cf(ttot,regi,"ngt");
 pm_cf(ttot,regi,"ngt")$(ttot.val ge 2045) = 0.4 * pm_cf(ttot,regi,"ngt");
 
 *CG* phasing down pc cf to "peak load" cf for CHA
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "base"
+pm_cf(ttot,"CHA","pc")$(ttot.val le 2035) = 1 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val ge 2040) = 0.8 * pm_cf("2020","CHA","pc");
+$endif.chaPOpolicy
+
+*CG* phasing down pc cf to "peak load" cf for CHA
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "plateau30"
 pm_cf(ttot,"CHA","pc")$(ttot.val le 2025) = 1 * pm_cf("2020","CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.99 * pm_cf("2020","CHA","pc");
@@ -548,7 +554,7 @@ pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.1 * pm_cf("2020","CHA","pc");
 $endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "medium"
-pm_cf(ttot,"CHA","pc")$(ttot.val le 2030) = 0.8 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.8 * pm_cf("2020","CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.6 * pm_cf("2020","CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.4 * pm_cf("2020","CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.2 * pm_cf("2020","CHA","pc");
@@ -581,17 +587,6 @@ loop((ext_regi,te)$p_techEarlyRetiRate(ext_regi,te),
   pm_regiEarlyRetiRate(t,regi,te)$(regi_group(ext_regi,regi) and (t.val lt 2035 or sameas(ext_regi,"GLO"))) = p_techEarlyRetiRate(ext_regi,te);
 );
 $ENDIF.tech_earlyreti
-
-
-
-*SB* Time-dependent early retirement rates in Baseline scenarios
-$ifthen.Base_Cprice %carbonprice% == "none"
-$ifthen.Base_techpol %techpol% == "none"
-*** Allow very little early retirement future periods
-pm_regiEarlyRetiRate(t,regi,"pc")$(t.val gt 2025) = 0.01;
-$endif.Base_techpol
-$endif.Base_Cprice
-
 
 *CG* CHA-specific pc rate
 
@@ -641,6 +636,14 @@ pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.02;
 pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2045) = 0.03;
 pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2050) = 0.05;
 $endif.chaPOpolicy
+
+*SB* Time-dependent early retirement rates in Baseline scenarios
+$ifthen.Base_Cprice %carbonprice% == "none"
+$ifthen.Base_techpol %techpol% == "none"
+*** Allow very little early retirement future periods
+pm_regiEarlyRetiRate(t,regi,"pc")$(t.val ge 2025) = 0.01;
+$endif.Base_techpol
+$endif.Base_Cprice
 
 display pm_regiEarlyRetiRate;
 
