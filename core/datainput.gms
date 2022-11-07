@@ -190,10 +190,10 @@ $offdelim
 /
 ;
 
-$IFTHEN.chaPcCost %cm_chaPcCost% == "1"
+if (cm_chaPcCost eq 1,
 p_inco0(t,"CHA","pc")$((t.val ge 2015) and (t.val le 2040)) = 500;
-p_inco0(t,"CHA","pcc")$((t.val ge 2015) and (t.val le 2040)) = 500*1.24;
-$ENDIF.chaPcCost
+p_inco0(t,"CHA","pcc")$((t.val ge 2015) and (t.val le 2040)) = 500 * 1.24;
+);
 
 *JH* SSP energy technology scenario
 table f_dataglob_SSP1(char,all_te)        "Techno-economic assumptions consistent with SSP1"

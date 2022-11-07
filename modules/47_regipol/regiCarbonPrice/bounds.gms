@@ -96,6 +96,11 @@ vm_capEarlyReti.up('2025',regi,'pc') = 0.65;
 );
 
 *** limit early retirement of coal power in China in 2020s to avoid extremly fast phase-out
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "base"
+vm_capEarlyReti.up('2025','CHA','pc') = 0.01;
+vm_capEarlyReti.up('2030','CHA','pc') = 0.01;
+$endif.chaPOpolicy
+
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "plateau30"
 vm_capEarlyReti.up('2025','CHA','pc') = 0.01;
 vm_capEarlyReti.up('2030','CHA','pc') = 0.01;
