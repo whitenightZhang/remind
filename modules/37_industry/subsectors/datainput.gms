@@ -304,7 +304,7 @@ $ifthen.bal_scenario "%cm_import_EU%" == "bal"   !! cm_import_EU
       2050 . DEU . ue_steel_secondary   19.725106
     /
   ;
-  
+ 
   !! convert Mt to Gt
   p37_industry_quantity_targets(t,regi,in)$(
                                       p37_industry_quantity_targets(t,regi,in) )
@@ -319,6 +319,45 @@ $ifthen.bal_scenario "%cm_import_EU%" == "bal"   !! cm_import_EU
  	                     AND t.val ge 2050                                 )
     = p37_industry_quantity_targets("2050",regi,in);
 $endif.bal_scenario
+
+$ifthen.quickCHASteelFix "%cm_chaSteelFix%" == "on"   !! cm_chaSteelFix
+  Parameter
+    p37_industry_quantity_targets(ttot,all_regi,all_in)   "quantity targets for industry in policy scenarios"
+    /
+      2020 . CHA . ue_steel_primary     833.85
+      2025 . CHA . ue_steel_primary     609.84
+      2030 . CHA . ue_steel_primary     543.6
+      2035 . CHA . ue_steel_primary     504.6
+      2040 . CHA . ue_steel_primary     448
+      2045 . CHA . ue_steel_primary     407.7
+      2050 . CHA . ue_steel_primary     373.36
+
+      2020 . CHA . ue_steel_secondary   147.15
+      2025 . CHA . ue_steel_secondary   358.16
+      2030 . CHA . ue_steel_secondary   362.4
+      2035 . CHA . ue_steel_secondary   365.4
+      2040 . CHA . ue_steel_secondary   352
+      2045 . CHA . ue_steel_secondary   347.3
+      2050 . CHA . ue_steel_secondary   344.64
+    /
+  ;
+
+!! convert Mt to Gt
+  p37_industry_quantity_targets(t,regi,in)$(
+                                      p37_industry_quantity_targets(t,regi,in) )
+    = p37_industry_quantity_targets(t,regi,in)
+      !! Mt/yr * 1e-3 Gt/Mt = Gt/yr
+    * 1e-3;
+
+!! extend beyond 2050
+!! FIXME: do this smarter, using something like GDPpC growth or something
+  p37_industry_quantity_targets(t,regi,in)$(
+                                 p37_industry_quantity_targets("2050",regi,in)
+                             AND t.val ge 2050                                 )
+    = p37_industry_quantity_targets("2050",regi,in);
+
+$endif.quickCHASteelFix
+
 
 pm_calibrate_eff_scale("feelhth_chemicals","fega_chemicals","level")     = 1.5;
 pm_calibrate_eff_scale("feelhth_chemicals","fega_chemicals","midperiod") = 2030;
@@ -383,6 +422,9 @@ $include "./modules/37_industry/subsectors/input/p37_steel_secondary_max_share.c
 $offdelim
   /
 ;
+
+f37_steel_secondary_max_share("2020","CHA","gdp_SSP2EU") = 0.16;
+f37_steel_secondary_max_share("2025","CHA","gdp_SSP2EU") = 0.38;
 
 p37_steel_secondary_max_share(t,regi)
   = f37_steel_secondary_max_share(t,regi,"%cm_GDPscen%");
@@ -468,56 +510,4 @@ execute_load "input_ref.gdx", vm_demFEsector;
     );
 );
 
-$ifthen.lowCHAsteelDem %cm_chaSteelScen% == "low"
-pm_fedemand_steelcha("2020") = 0.981;
-pm_fedemand_steelcha("2025") = 0.80;
-pm_fedemand_steelcha("2030") = 0.75;
-pm_fedemand_steelcha("2035") = 0.7;
-pm_fedemand_steelcha("2040") = 0.6;
-pm_fedemand_steelcha("2045") = 0.5;
-pm_fedemand_steelcha("2050") = 0.47;
-pm_fedemand_steelcha("2055") = 0.45;
-pm_fedemand_steelcha(tall)$((tall.val gt 2055) and (tall.val le 2200)) = 0.45;
-
-pm_fedemand_scraprate_cha("2020") = 0.15;
-pm_fedemand_scraprate_cha("2025") = 0.37;
-pm_fedemand_scraprate_cha("2030") = 0.42;
-pm_fedemand_scraprate_cha("2035") = 0.45;
-pm_fedemand_scraprate_cha("2040") = 0.47;
-pm_fedemand_scraprate_cha("2045") = 0.52;
-pm_fedemand_scraprate_cha("2050") = 0.55;
-pm_fedemand_scraprate_cha("2055") = 0.57;
-pm_fedemand_scraprate_cha(tall)$((tall.val gt 2055) and (tall.val le 2200)) = 0.6;
-$endif.lowCHAsteelDem
-
-$ifthen.highCHAsteelDem %cm_chaSteelScen% == "high"
-pm_fedemand_steelcha("2020") = 0.981;
-pm_fedemand_steelcha("2025") = 0.85;
-pm_fedemand_steelcha("2030") = 0.77;
-pm_fedemand_steelcha("2035") = 0.67;
-pm_fedemand_steelcha("2040") = 0.60;
-pm_fedemand_steelcha("2045") = 0.57;
-pm_fedemand_steelcha("2050") = 0.55;
-pm_fedemand_steelcha("2055") = 0.53;
-pm_fedemand_steelcha(tall)$((tall.val gt 2055) and (tall.val le 2200)) = 0.52;
-
-pm_fedemand_scraprate_cha("2020") = 0.15;
-pm_fedemand_scraprate_cha("2025") = 0.37;
-pm_fedemand_scraprate_cha("2030") = 0.4;
-pm_fedemand_scraprate_cha("2035") = 0.5;
-pm_fedemand_scraprate_cha("2040") = 0.5;
-pm_fedemand_scraprate_cha("2045") = 0.5;
-pm_fedemand_scraprate_cha("2050") = 0.5;
-pm_fedemand_scraprate_cha("2055") = 0.5;
-pm_fedemand_scraprate_cha(tall)$((tall.val gt 2055) and (tall.val le 2200)) = 0.5;
-$endif.highCHAsteelDem
-
-$ifthen.CHAsteelDem not %cm_chaSteelScen% == "off"
-pm_fedemand(tall,"CHA","ue_steel_primary")$(tall.val gt 2015) = pm_fedemand_steelcha(tall) * (1- pm_fedemand_scraprate_cha(tall));
-pm_fedemand(tall,"CHA","ue_steel_secondary")$(tall.val gt 2015) = pm_fedemand_steelcha(tall) * pm_fedemand_scraprate_cha(tall);
-
-pm_fedemand("2025","CHA","ue_steel_secondary") = 0.338; !! source: CMIPR
-pm_fedemand("2025","CHA","ue_steel_primary") = pm_fedemand_steelcha("2025") - pm_fedemand("2025","CHA","ue_steel_secondary");
-
-$endif.CHAsteelDem
 *** EOF ./modules/37_industry/subsectors/datainput.gms

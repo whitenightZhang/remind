@@ -1171,7 +1171,9 @@ parameter
   cm_deuCDRmax = -1; !! def = -1
 parameter
   cm_chaPcCost                 "switch to turn on the coal power plant cost change for CHA"
-*** switch to turn
+*** switch to turn on costs used in domestic models: 
+* (0) old values: 800/kW from 2015 till 2040
+* (1) new values: 500$/kW from 2015 till 2040
 ;
   cm_chaPcCost = 0; !! def = 0
 ***-----------------------------------------------------------------------------
@@ -1619,8 +1621,14 @@ $setGlobal cm_dispatchSetyDown  off   !! def = off  The amount that te producing
 $setGlobal cm_dispatchSeelDown  off   !! def = off  The amount that te producing seel can dispatch less (in percent) (overrides cm_dispatchSetyDown for te producing seel)
 *** set conopt version. Warning: conopt4 is in beta
 $setGlobal cm_conoptv  conopt3    !! def = conopt3
-
-$setglobal cm_chaSteelScen high      !! def = low
+*** quick fix for steel demand projection in China
+$setglobal cm_chaSteelFix off      !! def = off
+*** cm_chaCoalPOSpeed
+*** plateau25: plateau until 2025, po around 2045
+*** plateau30: plateau until 2030, po around 2050
+*** fast: fast PO, po around 2035
+*** medium: medium PO, po around 2040
+*** slow: slow PO, po around 2050
 $setglobal cm_chaCoalPOSpeed none    !! def = none
 $setglobal cm_secondary_steel_bound  scenario   !! def = scenario
 $setglobal c_GDPpcScen  SSP2EU     !! def = gdp_SSP2   (automatically adjusted by start_run() based on GDPscen) 

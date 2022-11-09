@@ -65,4 +65,10 @@ $ifthen.bal_scenario "%cm_import_EU%" == "bal"   !! cm_import_EU
   = p37_industry_quantity_targets(t,regi,in);
 $endif.bal_scenario
 
+!! Fix industry output for a quick fix of china steel demand trajectory
+$ifthen.quickCHASteelFix "%cm_chaSteelFix%" == "on"   !! cm_chaSteelFix
+  vm_cesIO.fx(t,regi,in)$( p37_industry_quantity_targets(t,regi,in) )
+  = p37_industry_quantity_targets(t,regi,in);
+$endif.quickCHASteelFix
+
 *** EOF ./modules/37_industry/subsectors/bounds.gms
