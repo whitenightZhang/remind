@@ -527,5 +527,10 @@ p37_BioShareMaxSubsec(t,regi,"fesos","steel")$(t.val gt 2050)=p37_BioShareMaxSub
 *** for Germany set maximum biomass share of solids in steel to 10% at all times
 p37_BioShareMaxSubsec(t,regi,"fesos","steel")$(t.val ge 2020 AND sameas(regi,"DEU"))=0.1;
 
+*** for China set maximum biomass share of solids in steel to 1% at all times
+p37_BioShareMaxSubsec(t,regi,"fesos","steel")$(t.val ge 2020 AND sameas(regi,"CHA"))=0.01;
+p37_BioShareMaxSubsec(t,regi,"fesos","chemicals")$(t.val ge 2020 AND sameas(regi,"CHA"))=0.01;
+p37_BioShareMaxSubsec(t,regi,"fesos","cement")$(t.val ge 2020 AND sameas(regi,"CHA"))=0.01;
+p37_BioShareMaxSubsec(t,regi,"fesos","otherInd")$(t.val ge 2020 AND sameas(regi,"CHA"))=0.1;
 
 *** EOF ./modules/37_industry/subsectors/datainput.gms
