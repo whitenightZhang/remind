@@ -21,6 +21,9 @@ parameters
     p32_windoffRegiGrid(all_regi)                   "wind offshore regional grid factor"
     p32_cspRegiGrid(all_regi)                       "CSP regional grid factor"
     p32_spvRegiGrid(all_regi)                       "spv regional grid factor"
+    p32_usableSe(ttot,all_regi,entySe)                     "total usable generation"
+    p32_usableSeTe(ttot,all_regi,entySe,all_te)            "usable generation per technology"
+    p32_shSeEl(ttot,all_regi,all_te)                "generation share"
 ;
 
 scalars
