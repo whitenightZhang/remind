@@ -1595,6 +1595,10 @@ $setglobal cm_chaSteelFix off      !! def = off
 *** medium: medium PO, po around 2040
 *** slow: slow PO, po around 2050
 $setglobal cm_chaCoalPOSpeed none    !! def = none
+*** cm_chaCoalPOSpeedMode 
+*** vredelta: adjust via VRE's deltaCap
+*** adjcost: adjust via adjustment cost
+$setglobal cm_chaCoalPOSpeedMode vredelta !! def = vredelta
 *' mode for solving nash problem
 *'
 *' * parallel  - all regions are run an parallel

@@ -582,7 +582,7 @@ loop((ext_regi,te)$p_techEarlyRetiRate(ext_regi,te),
 $ENDIF.tech_earlyreti
 
 *CG* CHA-specific pc rate
-
+$ontext
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "plateau30"
 *** Allow first slow then fast phase-out cap
 pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0.005;
@@ -629,6 +629,8 @@ pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.02;
 pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2045) = 0.03;
 pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2050) = 0.05;
 $endif.chaPOpolicy
+
+$offtext
 
 *SB* Time-dependent early retirement rates in Baseline scenarios
 $ifthen.Base_Cprice %carbonprice% == "none"
@@ -1135,6 +1137,58 @@ $ENDIF.WindOff
   p_adj_coeff(ttot,regi,teGrid)            = 0.3;
   p_adj_coeff(ttot,regi,teStor)            = 0.05;
 );
+
+$ifthen.chaPOpolicyMode "%cm_chaCoalPOSpeedMode%" == "adjcost"
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "base"
+p_adj_coeff(ttot,"CHA","spv")             = 0.5;
+p_adj_coeff(ttot,"CHA","wind")            = 0.75;
+p_adj_coeff(ttot,"CHA",teGrid)            = 1;
+p_adj_coeff(ttot,"CHA",teStor)            = 0.75;
+$endif.chaPOpolicy
+
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "slo"
+p_adj_coeff(ttot,"CHA","spv")$(ttot.val le 2040)             = 2;
+p_adj_coeff(ttot,"CHA","wind")$(ttot.val le 2040)            = 2.5;
+p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val le 2040)            = 2.5;
+p_adj_coeff(ttot,"CHA",teStor)$(ttot.val le 2040)            = 2.5;
+
+p_adj_coeff(ttot,"CHA","spv")$(ttot.val le 2040)             = 1.65;
+p_adj_coeff(ttot,"CHA","wind")$(ttot.val le 2040)            = 2.2;
+p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val le 2040)            = 2.2;
+p_adj_coeff(ttot,"CHA",teStor)$(ttot.val le 2040)            = 2.2;
+
+p_adj_coeff(ttot,"CHA","spv")$(ttot.val gt 2040)             = 1;
+p_adj_coeff(ttot,"CHA","wind")$(ttot.val gt 2040)            = 1.5;
+p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val gt 2040)            = 2;
+p_adj_coeff(ttot,"CHA",teStor)$(ttot.val gt 2040)            = 2;
+$endif.chaPOpolicy
+
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "med"
+p_adj_coeff(ttot,"CHA","spv")$(ttot.val le 2030)             = 2;
+p_adj_coeff(ttot,"CHA","wind")$(ttot.val le 2030)            = 2.5;
+p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val le 2030)            = 2.5;
+p_adj_coeff(ttot,"CHA",teStor)$(ttot.val le 2030)            = 2.5;
+
+p_adj_coeff(ttot,"CHA","spv")$(ttot.val gt 2030 and ttot.val le 2040)             = 1.5;
+p_adj_coeff(ttot,"CHA","wind")$(ttot.val gt 2030 and ttot.val le 2040)            = 2;
+p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val gt 2030 and ttot.val le 2040)            = 2;
+p_adj_coeff(ttot,"CHA",teStor)$(ttot.val gt 2030 and ttot.val le 2040)            = 2;
+
+p_adj_coeff(ttot,"CHA","spv")$(ttot.val gt 2040)             = 1;
+p_adj_coeff(ttot,"CHA","wind")$(ttot.val gt 2040)            = 1.5;
+p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val gt 2040)            = 2;
+p_adj_coeff(ttot,"CHA",teStor)$(ttot.val gt 2040)            = 2;
+$endif.chaPOpolicy
+
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "fast"
+p_adj_coeff(ttot,"CHA","spv")$(ttot.val le 2030)             = 1;
+p_adj_coeff(ttot,"CHA","wind")$(ttot.val le 2030)            = 1.5;
+p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val le 2030)            = 2;
+p_adj_coeff(ttot,"CHA",teStor)$(ttot.val le 2030)            = 2;
+$endif.chaPOpolicy
+
+$endif.chaPOpolicyMode
+
 
 ***Rescaling adj seed and coeff if adj cost multiplier switches are on
 $ifthen not "%cm_adj_seed_multiplier%" == "off"

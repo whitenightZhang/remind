@@ -105,10 +105,10 @@ p32_spvRegiGrid(regi) = 1;
 p32_cspRegiGrid(regi) = 1;
 
 $ifthen.calibrate %CES_parameters% == "load"
-p32_windRegiGrid("CHA") = 4/3;
-p32_windoffRegiGrid("CHA") = 2/3;
-p32_spvRegiGrid("CHA") = 2;
-p32_cspRegiGrid("CHA") = 3;
+p32_windRegiGrid("CHA") = 0.1;
+p32_windoffRegiGrid("CHA") = 0.05;
+p32_spvRegiGrid("CHA") = 1;
+p32_cspRegiGrid("CHA") = 1;
 $endif.calibrate
 
 
