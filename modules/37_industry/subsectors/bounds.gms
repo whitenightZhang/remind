@@ -62,10 +62,13 @@ if (cm_emiscen ne 1,   !! not a BAU scenario
 );
 
 !! Fix industry output for Bal and EnSec scenario
-$ifthen.policy_scenario (("%cm_indstExogScen%" == "forecast_bal") OR ("%cm_indstExogScen%" == "forecast_ensec"))   !! cm_indstExogScen
+$if "%cm_indstExogScen%" == "forecast_bal"   $set cm_indstExogScen_set "YES"
+$if "%cm_indstExogScen%" == "forecast_ensec" $set cm_indstExogScen_set "YES"
+$ifthen.policy_scenario "%cm_indstExogScen_set%" == "YES"
   vm_cesIO.fx(t,regi,in)$( p37_industry_quantity_targets(t,regi,in) )
   = p37_industry_quantity_targets(t,regi,in);
 $endif.policy_scenario
+$drop cm_indstExogScen_set
 
 !! Fix industry output for a quick fix of china steel demand trajectory
 $ifthen.quickCHASteelFix "%cm_chaSteelFix%" == "on"   !! cm_chaSteelFix
