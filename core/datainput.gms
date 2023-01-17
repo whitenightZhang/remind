@@ -149,19 +149,19 @@ if (cm_VRE_supply_assumptions eq 1,
   if (fm_dataglob("inco0","storspv") ne 8350,
     abort "fm_dataglob('inco0','storspv') is to be modified, but changed externally";
   else
-    fm_dataglob("inco0","storspv") = 7000;
+    fm_dataglob("inco0","storspv") = 1420;
   );
 
   if (fm_dataglob("incolearn","storspv") ne 5710,
     abort "fm_dataglob('incolearn','storspv') is to be modified, but changed externally";
   else
-    fm_dataglob("incolearn","storspv") = 4240;
+    fm_dataglob("incolearn","storspv") = 1000;
   );
 
   if (fm_dataglob("learn","storspv") ne 0.10,
     abort "fm_dataglob('learn','storspv') is to be modified, but changed externally";
   else
-    fm_dataglob("learn","storspv") = 0.12;
+    fm_dataglob("learn","storspv") = 0.15;
   );
 elseif cm_VRE_supply_assumptions eq 2,
   if (fm_dataglob("incolearn","spv") ne 5060,
