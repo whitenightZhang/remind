@@ -544,20 +544,21 @@ pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.1 * pm_cf("2020","CHA","pc");
 $endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "medium"
+pm_cf(ttot,"CHA","pc")$(ttot.val le 2025) = 1 * pm_cf("2020","CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.8 * pm_cf("2020","CHA","pc");
-pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.6 * pm_cf("2020","CHA","pc");
-pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.4 * pm_cf("2020","CHA","pc");
-pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.2 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.65 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.5 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.3 * pm_cf("2020","CHA","pc");
 $endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "slow"
 pm_cf(ttot,"CHA","pc")$(ttot.val le 2025) = 1 * pm_cf("2020","CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.85 * pm_cf("2020","CHA","pc");
-pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.7 * pm_cf("2020","CHA","pc");
-pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.5 * pm_cf("2020","CHA","pc");
-pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.3 * pm_cf("2020","CHA","pc");
-pm_cf(ttot,"CHA","pc")$(ttot.val ge 2050) = 0.2 * pm_cf("2020","CHA","pc");
-pm_cf(ttot,"CHA","pc")$(ttot.val gt 2050) = 0.1 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.8 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.7 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.6 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val ge 2050) = 0.5 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val gt 2050) = 0.5 * pm_cf("2020","CHA","pc");
 $endif.chaPOpolicy
 
 *RP* set H2 turbines to the same CF values
@@ -1146,7 +1147,7 @@ p_adj_coeff(ttot,"CHA",teGrid)            = 1;
 p_adj_coeff(ttot,"CHA",teStor)            = 0.75;
 $endif.chaPOpolicy
 
-$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "slo"
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "slow"
 p_adj_coeff(ttot,"CHA","spv")$(ttot.val le 2040)             = 2;
 p_adj_coeff(ttot,"CHA","wind")$(ttot.val le 2040)            = 2.5;
 p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val le 2040)            = 2.5;
@@ -1157,13 +1158,13 @@ p_adj_coeff(ttot,"CHA","wind")$(ttot.val le 2040)            = 2.2;
 p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val le 2040)            = 2.2;
 p_adj_coeff(ttot,"CHA",teStor)$(ttot.val le 2040)            = 2.2;
 
-p_adj_coeff(ttot,"CHA","spv")$(ttot.val gt 2040)             = 1;
-p_adj_coeff(ttot,"CHA","wind")$(ttot.val gt 2040)            = 1.5;
-p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val gt 2040)            = 2;
-p_adj_coeff(ttot,"CHA",teStor)$(ttot.val gt 2040)            = 2;
+p_adj_coeff(ttot,"CHA","spv")$(ttot.val gt 2040)             = 1.8;
+p_adj_coeff(ttot,"CHA","wind")$(ttot.val gt 2040)            = 2.5;
+p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val gt 2040)            = 2.5;
+p_adj_coeff(ttot,"CHA",teStor)$(ttot.val gt 2040)            = 2.5;
 $endif.chaPOpolicy
 
-$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "med"
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "medium"
 p_adj_coeff(ttot,"CHA","spv")$(ttot.val le 2030)             = 2;
 p_adj_coeff(ttot,"CHA","wind")$(ttot.val le 2030)            = 2.5;
 p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val le 2030)            = 2.5;
