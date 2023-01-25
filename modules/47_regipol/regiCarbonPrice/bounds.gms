@@ -137,8 +137,8 @@ $endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "plateau25"
 loop(regi$(sameAs(regi,"CHA")),
-  vm_deltaCap.up("2025",regi,"wind","1")= 0.16*vm_capCum.l("2020",regi,"wind");
-  vm_deltaCap.up("2025",regi,"spv","1")= 0.28*vm_capCum.l("2020",regi,"spv");
+  vm_deltaCap.up("2025",regi,"wind","1")= 0.15*vm_capCum.l("2020",regi,"wind");
+  vm_deltaCap.up("2025",regi,"spv","1")= 0.24*vm_capCum.l("2020",regi,"spv");
   vm_deltaCap.up("2030",regi,"wind","1")= 0.2*vm_capCum.l("2025",regi,"wind");
   vm_deltaCap.up("2030",regi,"spv","1")= 0.35*vm_capCum.l("2025",regi,"spv");
   vm_deltaCap.up("2035",regi,"wind","1")= 0.25*vm_capCum.l("2030",regi,"wind");
@@ -146,6 +146,19 @@ loop(regi$(sameAs(regi,"CHA")),
 );
 $endif.chaPOpolicy
 
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "plateau30"
+loop(regi$(sameAs(regi,"CHA")),
+  vm_deltaCap.up("2025",regi,"wind","1")= 0.15*vm_capCum.l("2020",regi,"wind");
+  vm_deltaCap.up("2025",regi,"spv","1")= 0.24*vm_capCum.l("2020",regi,"spv");
+  vm_deltaCap.up("2030",regi,"wind","1")= 0.15*vm_capCum.l("2025",regi,"wind");
+  vm_deltaCap.up("2030",regi,"spv","1")= 0.24*vm_capCum.l("2025",regi,"spv");
+  vm_deltaCap.up("2035",regi,"wind","1")= 0.20*vm_capCum.l("2030",regi,"wind");
+  vm_deltaCap.up("2035",regi,"spv","1")= 0.35*vm_capCum.l("2030",regi,"spv");
+  vm_deltaCap.up("2040",regi,"wind","1")= 0.25*vm_capCum.l("2030",regi,"wind");
+  vm_deltaCap.up("2040",regi,"spv","1")= 0.38*vm_capCum.l("2030",regi,"spv");
+
+);
+$endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "slow"
 loop(regi$(sameAs(regi,"CHA")),
