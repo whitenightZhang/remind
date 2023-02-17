@@ -15,14 +15,14 @@ $ifthen.process_based_steel "%cm_process_based_steel%" == "on"                 !
     scrap               "Steel scrap"
     ironore             "Iron ore"
   /
-  
+
   teMats(all_te)        "Technologies used in material-flow model"
   /
     idr                 "Iron direct reduction"
     eaf                 "Electric-arc furnace"
     bfbof               "Blast furnace/basic-oxygen furnace"
   /
-  
+
   opModes               "Operation modes for technologies in material-flow model"
   /
     ng                  "Direct reduction using natural gas"
@@ -30,21 +30,21 @@ $ifthen.process_based_steel "%cm_process_based_steel%" == "on"                 !
     pri                 "Primary production of steel (based on iron ore or DRI)"
     sec                 "Secondary production of steel (based on scrap)"
   /
-  
+
   teMats2matsIn(teMats,mats)    "Mapping of technologies onto input materials"
   /
     idr . ironore
     eaf . (dri,scrap)
     bfbof . (ironore,scrap)
   /
-  
+
   teMats2opModes(teMats,opModes)    "Mapping of technologies onto available operation modes"
   /
     idr . (ng,h2)
     eaf . (pri,sec)
     bfbof . (pri,sec)
   /
-  
+
   matsOut2teMats(mats,teMats)       "Mapping of output materials onto technologies producing these"
   /
     dri . idr
@@ -203,10 +203,10 @@ $endif.process_based_steel
     ue_cement . (feso_cement, feli_cement, fega_cement, feh2_cement,
                  feel_cement)
 
-    ue_chemicals . (feso_chemicals, feli_chemicals, fega_chemicals, 
+    ue_chemicals . (feso_chemicals, feli_chemicals, fega_chemicals,
                     feh2_chemicals, feelhth_chemicals, feelwlth_chemicals)
 
-    ue_steel_primary . (feso_steel, feli_steel, fega_steel, feh2_steel, 
+    ue_steel_primary . (feso_steel, feli_steel, fega_steel, feh2_steel,
                         feel_steel_primary)
 
     ue_steel_secondary . feel_steel_secondary
@@ -291,7 +291,7 @@ $endif.process_based_steel
     ue_cement . (en_cement, kap_cement, en_cement_non_electric, feso_cement,
                  feli_cement, fega_cement, feh2_cement, feel_cement)
 
-    ue_chemicals . (en_chemicals, kap_chemicals, en_chemicals_fhth, 
+    ue_chemicals . (en_chemicals, kap_chemicals, en_chemicals_fhth,
                     feso_chemicals, feli_chemicals, fega_chemicals,
 		    feh2_chemicals, feelhth_chemicals, feelwlth_chemicals)
 
@@ -326,7 +326,7 @@ $endif.process_based_steel
              feelwlth_otherInd)
   /
 
-  
+
  fe_tax_sub37(all_in,all_in)  "correspondence between tax and subsidy input data resolution and model sectoral resolution"
   /
     fesoi . (feso_cement, feso_chemicals, feso_steel, feso_otherInd)
@@ -345,6 +345,27 @@ energy_limits37(all_in,all_in)   "thermodynamic limit of energy"
     ue_steel_primary   . en_steel_primary
     ue_steel_secondary . feel_steel_secondary
   /
+
+steel37(all_in)   "steel"
+  /
+    ue_steel_primary
+    ue_steel_secondary
+  /
+
+ue2fe_steel37(all_in,all_in)   "UE to FE sets for steel"
+/   ue_steel_primary . (feso_steel, feli_steel, fega_steel, feh2_steel,
+                        feel_steel_primary)
+    ue_steel_secondary . feel_steel_secondary
+/
+
+fePrimSteel37(all_in)  "FE sets for primary steel"
+/ feso_steel, feli_steel, fega_steel, feh2_steel,
+                        feel_steel_primary
+/
+
+feSecSteel37(all_in)  "FE sets for secondary steel"
+/ feel_steel_secondary
+/
 
 entyFeCC37(all_enty)  "FE carriers in industry which can be used for CO2 capture"
   /

@@ -187,7 +187,7 @@ $offdelim
 
 if (cm_chaPcCost eq 1,
 p_inco0(t,"CHA","pc")$((t.val ge 2015) and (t.val le 2040)) = 500;
-p_inco0(t,"CHA","igcc")$((t.val ge 2015) and (t.val le 2060)) = 500 * 1.24;
+p_inco0(t,"CHA","igccc")$((t.val ge 2015) and (t.val le 2060)) = 500 * 1.24;
 );
 
 *JH* SSP energy technology scenario
