@@ -34,7 +34,7 @@ Parameters
   o37_demFeSteel(ttot,all_regi,all_in)                          "FE demand for prim and sec steel"
   o37_demFePrimSteel(ttot,all_regi)                          "FE demand for prim steel"
   o37_demFeSecSteel(ttot,all_regi)                          "FE demand for sec steel"
-  o37_emiFeNonElecPrimSteel(ttot,all_regi)                         "CO2 emission for prim steel (not from H2 or electricity)"
+  o37_emiFeNonElecNonH2PrimSteel(ttot,all_regi)                         "CO2 emission for prim steel (not from H2 or electricity)"
 
 $ifThen.CESMkup not "%cm_CESMkup_ind%" == "standard"
   p37_CESMkup_input(all_in)  "markup cost   parameter read in from config for CES levels in industry to influence demand-side cost and efficiencies in CES tree [trUSD/CES input]" / %cm_CESMkup_ind% /

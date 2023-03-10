@@ -63,12 +63,12 @@ pm_IndstCO2Captured(ttot,regi,entySe,entyFe,secInd37,emiMkt)$(
   / o37_demFeIndSub_SecCC(ttot,regi,secInd37);
 
 *** FE demand or producing primary and secondary steel
-o37_demFeSteel(t,regi,in)$(steel37(in)) = sum(ue2fe_steel37(in,in2), vm_cesIO.l(t, regi, in2));
+o37_demFeSteel(ttot,regi,in)$(steel37(in)) = sum(ue2fe_steel37(in,in2), vm_cesIO.l(ttot, regi, in2));
 
-o37_demFePrimSteel(t,regi) = sum(fePrimSteel37(in2), vm_cesIO.l(t, regi, in2));
-o37_demFeSecSteel(t,regi) = sum(feSecSteel37(in2), vm_cesIO.l(t, regi, in2));
+o37_demFePrimSteel(ttot,regi) = sum(fePrimSteel37(in2), vm_cesIO.l(ttot, regi, in2));
+o37_demFeSecSteel(ttot,regi) = sum(feSecSteel37(in2), vm_cesIO.l(ttot, regi, in2));
 
-o37_emiFeNonElecPrimSteel(t,regi) = sum(fePrimSteel37(in2), vm_cesIO.l(t, regi, in2)
- * sum(fe2ppfen37(enty,in2), sum(entySe, sum(te, pm_emifac(t,regi,entySe,enty,te,"co2"))) ) );
+o37_emiFeNonElecNonH2PrimSteel(ttot,regi) = sum(fePrimSteel37(in2), vm_cesIO.l(ttot, regi, in2)
+ * sum(fe2ppfen37(enty,in2), sum(entySe, sum(te, pm_emifac(ttot,regi,entySe,enty,te,"co2"))) ) );
 
 *** EOF ./modules/37_industry/subsectors/postsolve.gms
