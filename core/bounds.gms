@@ -272,42 +272,11 @@ loop(te$(sameas(te,"spv") OR sameas(te,"wind") OR sameas(te,"windoff")),
 
 $ENDIF.WindOff
 
-***CG: short-term fix of CHA gas power capacities
-loop(te$(sameas(te,"gaschp")),
-pm_histCap("2010","CHA",te) = 0.022;
-pm_histCap("2015","CHA",te) = 0.05;
-pm_histCap("2020","CHA",te) = 0.065;
+*** lower bound on capacities for ngcc and ngt and gaschp for regions defined at the pm_histCap file
+loop(te$(sameas(te,"ngcc") OR sameas(te,"ngt") OR sameas(te,"gaschp")),
+  vm_cap.lo("2015",regi,te,"1")$pm_histCap("2015",regi,te) = 0.95 * pm_histCap("2015",regi,te);
+  vm_cap.lo("2020",regi,te,"1")$pm_histCap("2020",regi,te) = 0.95 * pm_histCap("2020",regi,te);
 );
-
-loop(te$(sameas(te,"ngcc")),
-pm_histCap("2010","CHA",te) = 0.003;
-pm_histCap("2015","CHA",te) = 0.01;
-pm_histCap("2020","CHA",te) = 0.015;
-);
-
-loop(te$(sameas(te,"ngt")),
-pm_histCap("2010","CHA",te) = 0.001;
-pm_histCap("2015","CHA",te) = 0.01;
-pm_histCap("2020","CHA",te) = 0.01;
-);
-
-vm_cap.lo("2010","CHA","gaschp","1") = pm_histCap("2010","CHA","gaschp");
-vm_cap.lo("2015","CHA","gaschp","1") = pm_histCap("2015","CHA","gaschp");
-vm_cap.lo("2020","CHA","gaschp","1") = pm_histCap("2020","CHA","gaschp");
-
-*** lower bound on capacities for ngcc and ngt for regions defined at the pm_histCap file
-loop(te$(sameas(te,"ngcc") OR sameas(te,"ngt")),
-***  vm_cap.lo("2010",regi,te,"1")$pm_histCap("2010",regi,te) = pm_histCap("2010",regi,te);
-  vm_cap.lo("2015",regi,te,"1")$pm_histCap("2015",regi,te) = pm_histCap("2015",regi,te);
-  vm_cap.lo("2020",regi,te,"1")$pm_histCap("2020",regi,te) = 0.7 * pm_histCap("2020",regi,te);
-);
-
-
-*** lower bound on capacities for ngcc and ngt for regions defined at the pm_histCap file
-*loop(te$(sameas(te,"ngcc") OR sameas(te,"ngt")),
-***  vm_cap.lo("2010",regi,te,"1")$pm_histCap("2010",regi,te) = 0.75 * pm_histCap("2010",regi,te);
-*  vm_cap.lo("2015",regi,te,"1")$pm_histCap("2015",regi,te) = 0.75 * pm_histCap("2015",regi,te);
-*);
 
 *** fix emissions to historical emissions in 2010
 *** RP: turned off in March 2018, as it produces substantial negative side-effects (requiring strong early retirement in 2010, which influences the future investments even in Reference scenarios)
