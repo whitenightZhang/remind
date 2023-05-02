@@ -575,7 +575,7 @@ pm_cf(ttot,regi,"tdh2i") = pm_cf(ttot,regi,"tdh2s");
 *SB* Region- and tech-specific early retirement rates
 *Regional*
 loop(ext_regi$pm_extRegiEarlyRetiRate(ext_regi), 
-  pm_regiEarlyRetiRate(t,regi,te)$(regi_group(ext_regi,regi) and t.val ge 2020) = pm_extRegiEarlyRetiRate(ext_regi);
+  pm_regiEarlyRetiRate(t,regi,te)$(regi_group(ext_regi,regi)) = pm_extRegiEarlyRetiRate(ext_regi);
 );
 *Tech-specific*
 *RP*: reduce early retirement for technologies with additional characteristics that are difficult to represent in REMIND, eg. industries built around heating/CHP plants, or flexibility from ngt plants
