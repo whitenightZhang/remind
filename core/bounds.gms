@@ -418,12 +418,6 @@ vm_cap.lo("2015","CHN","coaltr","1")        = 0.88;  !! IEA says ~29.7EJ in 2012
 );
 $offtext
 
-if (cm_startyear le 2020,
-vm_cap.lo("2015","CHA","pc","1")            = 0.87;  !! Ember says 881GW in 2015, 1044GW in 2020
-*vm_cap.lo("2020","CHA","pc","1")            = 0.98;  !! add 5% to model 2020 standing capacity to stay with IEA's prodSe number
-vm_cap.lo("2020","CHA","pc","1")            = 1.044;  !! add 5% to model 2020 standing capacity to stay with IEA's prodSe number
-);
-
 $if  %c_SSP_forcing_adjust% == "forcing_SSP1"    vm_deltaCap.up(t,regi,"coalgas",rlf)$(t.val gt 2010) = 0.00001;
 
 *** -------------------------------------------------------------
