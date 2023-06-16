@@ -5,6 +5,7 @@
 # |  REMIND License Exception, version 1.0 (see LICENSE file).
 # |  Contact: remind@pik-potsdam.de
 
+skipIfFast()
 coupledConfig <- "config/tests/scenario_config_coupled_shortCascade.csv"
 magpie_folder <- "../../../magpie"
 config <- readCheckScenarioConfig(file.path("..", "..", coupledConfig), remindPath <- file.path("..", ".."))
@@ -12,6 +13,7 @@ max_iterations <- if ("max_iterations" %in% names(config)) max(config$max_iterat
 # for a fresh run, delete all left-overs from previous test
 del_iterations <- max(max_iterations, 9)
 deleteallfiles <- NULL
+Rprofile <- ".Rprofile"
 for (scen in rownames(config)) {
   deleteallfiles <- c(deleteallfiles,
     paste0("../../output/C_", scen, "-rem-", seq(del_iterations)),
@@ -27,7 +29,6 @@ for (scen in rownames(config)) {
 expect_true(0 == unlink(deleteallfiles, recursive = TRUE))
 
 test_that("environment is suitable for coupled tests", {
-  skipIfFast()
   skipIfPreviousFailed()
   # magpie needs to be cloned by the user before running coupled tests
   expect_true(dir.exists(magpie_folder))
@@ -36,11 +37,10 @@ test_that("environment is suitable for coupled tests", {
 })
 
 test_that("using start_bundle_coupled.R --gamscompile works", {
-  skipIfFast()
   skipIfPreviousFailed()
   # try compiling
   output <- localSystem2("Rscript", c("start_bundle_coupled.R", "--gamscompile", coupledConfig),
-                         env = "R_PROFILE_USER=.snapshot.Rprofile")
+                         env = paste0("R_PROFILE_USER=", Rprofile))
   printIfFailed(output)
   expectSuccessStatus(output)
   for (scen in rownames(config)[config$start == 1]) {
@@ -56,11 +56,10 @@ test_that("using start_bundle_coupled.R --gamscompile works", {
 })
 
 test_that("using start_bundle_coupled.R --test works", {
-  skipIfFast()
   skipIfPreviousFailed()
   # just test the settings and RData files are written
   output <- localSystem2("Rscript", c("start_bundle_coupled.R", "--test", coupledConfig),
-                         env = "R_PROFILE_USER=.snapshot.Rprofile")
+                         env = paste0("R_PROFILE_USER=", Rprofile))
   printIfFailed(output)
   expectSuccessStatus(output)
   expect_true(any(grepl("TEST mode", output)))
@@ -97,14 +96,14 @@ test_that("using start_bundle_coupled.R --test works", {
 })
 
 test_that("runs coupled to MAgPIE work", {
-  skipIfFast()
   skipIfPreviousFailed()
   # try running actual runs
   output <- localSystem2("Rscript", c("start_bundle_coupled.R", coupledConfig),
-                         env = "R_PROFILE_USER=.snapshot.Rprofile")
+                         env = paste0("R_PROFILE_USER=", Rprofile))
   printIfFailed(output)
   expectSuccessStatus(output)
-  expect_true("Copied REMIND .Rprofile to MAgPIE folder." %in% output)
+  expect_true(xor("Copied REMIND .Rprofile to MAgPIE folder." %in% output,
+                  any(grepl("^Finding R package dependencies.*Done.", output))))
   for (scen in rownames(config)[config$start == 1]) {
     expectedFiles <- c(
       paste0("../../output/C_", scen, "-rem-", seq(max_iterations)),
@@ -154,11 +153,10 @@ test_that("runs coupled to MAgPIE work", {
 })
 
 test_that("don't run again if completed", {
-  skipIfFast()
   skipIfPreviousFailed()
   # do not delete anything to simulate re-running already completed run
   output <- localSystem2("Rscript", c("start_bundle_coupled.R", coupledConfig),
-                         env = "R_PROFILE_USER=.snapshot.Rprofile")
+                         env = paste0("R_PROFILE_USER=", Rprofile))
   printIfFailed(output)
   writeLines(output, "C_TESTTHAT_startlog_1.txt")
   expectSuccessStatus(output)
@@ -168,7 +166,6 @@ test_that("don't run again if completed", {
 })
 
 test_that("delete last REMIND run to simulate re-starting aborted run", {
-  skipIfFast()
   skipIfPreviousFailed()
   scen <- rownames(config)[[2]]
   filestodelete <- c(
@@ -178,7 +175,7 @@ test_that("delete last REMIND run to simulate re-starting aborted run", {
   )
   expect_true(0 == unlink(filestodelete, recursive = TRUE))
   output <- localSystem2("Rscript", c("start_bundle_coupled.R", coupledConfig),
-                         env = "R_PROFILE_USER=.snapshot.Rprofile")
+                         env = paste0("R_PROFILE_USER=", Rprofile))
   writeLines(output, "C_TESTTHAT_startlog_2.txt")
   printIfFailed(output)
   expectSuccessStatus(output)
@@ -189,7 +186,7 @@ test_that("delete last REMIND run to simulate re-starting aborted run", {
   filestodelete <- file.path(magpie_folder, "output", paste0("C_", scen, "-mag-", (max_iterations - 1)))
   expect_true(0 == unlink(filestodelete, recursive = TRUE))
   output <- localSystem2("Rscript", c("start_bundle_coupled.R", coupledConfig),
-                         env = "R_PROFILE_USER=.snapshot.Rprofile")
+                         env = paste0("R_PROFILE_USER=", Rprofile))
   writeLines(output, "C_TESTTHAT_startlog_3.txt")
   expectFailStatus(output)
   expect_true(any(grepl("Something is wrong", output)))
@@ -203,7 +200,7 @@ test_that("delete last REMIND run to simulate re-starting aborted run", {
   )
   expect_true(0 == unlink(filestodelete, recursive = TRUE))
   output <- localSystem2("Rscript", c("start_bundle_coupled.R", coupledConfig),
-                         env = "R_PROFILE_USER=.snapshot.Rprofile")
+                         env = paste0("R_PROFILE_USER=", Rprofile))
   printIfFailed(output)
   writeLines(output, "C_TESTTHAT_startlog_4.txt")
   expectSuccessStatus(output)
@@ -215,7 +212,7 @@ test_that("delete last REMIND run to simulate re-starting aborted run", {
   filestodelete <- paste0("../../output/C_", scen, "-rem-", seq(max_iterations))
   expect_true(0 == unlink(filestodelete, recursive = TRUE))
   output <- localSystem2("Rscript", c("start_bundle_coupled.R", coupledConfig),
-                         env = "R_PROFILE_USER=.snapshot.Rprofile")
+                         env = paste0("R_PROFILE_USER=", Rprofile))
   writeLines(output, "C_TESTTHAT_startlog_5.txt")
   expectFailStatus(output)
   expect_true(any(grepl("Something is wrong", output)))
@@ -223,10 +220,9 @@ test_that("delete last REMIND run to simulate re-starting aborted run", {
 
 test_that("Check path_mif_ghgprice_land with file", {
   # note: needs Base-rem-1 and -2 still present
-  skipIfFast()
   skipIfPreviousFailed()
   output <- localSystem2("Rscript", c("start_bundle_coupled.R", coupledConfig, "startgroup=2"),
-                         env = "R_PROFILE_USER=.snapshot.Rprofile")
+                         env = paste0("R_PROFILE_USER=", Rprofile))
   writeLines(output, "C_TESTTHAT_startlog_6.txt")
   expectSuccessStatus(output)
   scen <- rownames(config)[config$start == 2][[1]]
@@ -244,7 +240,6 @@ test_that("Check path_mif_ghgprice_land with file", {
 
 test_that("delete files to leave clean state", {
   # leave clean state
-  skipIfFast()
   skipIfPreviousFailed()
   expect_true(0 == unlink(deleteallfiles, recursive = TRUE))
 })
