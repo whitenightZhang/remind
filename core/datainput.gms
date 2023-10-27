@@ -521,7 +521,7 @@ $endif.chaPOpolicy
 
 *CG* phasing down pc cf to "peak load" cf for CHA
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "plateau30"
-pm_cf(ttot,"CHA","pc")$(ttot.val le 2025) = 1 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val le 2025) = 1.1 * pm_cf("2020","CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.99 * pm_cf("2020","CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.75 * pm_cf("2020","CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.55 * pm_cf("2020","CHA","pc");
@@ -530,7 +530,7 @@ pm_cf(ttot,"CHA","pc")$(ttot.val ge 2050) = 0.15 * pm_cf("2020","CHA","pc");
 $endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "plateau25"
-pm_cf(ttot,"CHA","pc")$(ttot.val le 2025) = 1 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val le 2025) = 1.1 * pm_cf("2020","CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.75 * pm_cf("2020","CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.55 * pm_cf("2020","CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.35 * pm_cf("2020","CHA","pc");
@@ -538,7 +538,7 @@ pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.15 * pm_cf("2020","CHA","pc");
 $endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "fast"
-pm_cf(ttot,"CHA","pc")$(ttot.val le 2025) = 0.9 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val le 2025) = 0.95 * pm_cf("2020","CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.7 * pm_cf("2020","CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.3 * pm_cf("2020","CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.1 * pm_cf("2020","CHA","pc");
@@ -546,7 +546,7 @@ pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.1 * pm_cf("2020","CHA","pc");
 $endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "medium"
-pm_cf(ttot,"CHA","pc")$(ttot.val le 2025) = 1 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val le 2025) = 1.1 * pm_cf("2020","CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.8 * pm_cf("2020","CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.65 * pm_cf("2020","CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.5 * pm_cf("2020","CHA","pc");
@@ -554,7 +554,7 @@ pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.3 * pm_cf("2020","CHA","pc");
 $endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "slow"
-pm_cf(ttot,"CHA","pc")$(ttot.val le 2025) = 1 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val le 2025) = 1.2 * pm_cf("2020","CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.85 * pm_cf("2020","CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.8 * pm_cf("2020","CHA","pc");
 pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.7 * pm_cf("2020","CHA","pc");
@@ -598,8 +598,8 @@ $ENDIF.tech_earlyreti
 *$ontext
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "plateau30"
 *** Allow first slow then fast phase-out cap
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0.005;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0.0005;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0;
 pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2035) = 0.02;
 pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.03;
 pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2045) = 0.05;
@@ -608,17 +608,17 @@ $endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "plateau25"
 *** Allow first slow then fast phase-out cap
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0.005;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0.03;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2035) = 0.05;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.07;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2045) = 0.09;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0.02;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2035) = 0.04;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.05;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2045) = 0.07;
 $endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "fast"
 *** Allow first slow then fast phase-out cap
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0.005;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0.03;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0.1;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0.05;
 pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2035) = 0.07;
 pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.09;
 pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2045) = 0.09;
@@ -626,7 +626,7 @@ $endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "medium"
 *** Allow first slow then fast phase-out cap
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0.005;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0;
 pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0.02;
 pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2035) = 0.035;
 pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.06;
@@ -638,9 +638,9 @@ $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "slow"
 pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0.005;
 pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0.01;
 pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2035) = 0.02;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.05;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2045) = 0.09;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2050) = 0.05;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.035;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2045) = 0.05;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2050) = 0.06;
 $endif.chaPOpolicy
 
 *$offtext
@@ -1171,61 +1171,61 @@ p_adj_coeff(ttot,"CHA",teStor)            = 0.75;
 $endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "slow"
-p_adj_coeff(ttot,"CHA","spv")$(ttot.val le 2040)             = 4;
-p_adj_coeff(ttot,"CHA","wind")$(ttot.val le 2040)            = 5;
-p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val le 2040)            = 4;
-p_adj_coeff(ttot,"CHA",teStor)$(ttot.val le 2040)            = 4;
+p_adj_coeff(ttot,"CHA","spv")$(ttot.val le 2040)             = 0.4;
+p_adj_coeff(ttot,"CHA","wind")$(ttot.val le 2040)            = 0.5;
+p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val le 2040)            = 0.4;
+p_adj_coeff(ttot,"CHA",teStor)$(ttot.val le 2040)            = 0.4;
 
-p_adj_coeff(ttot,"CHA","spv")$(ttot.val gt 2040)             = 2.5;
-p_adj_coeff(ttot,"CHA","wind")$(ttot.val gt 2040)            = 3;
-p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val gt 2040)            = 3;
-p_adj_coeff(ttot,"CHA",teStor)$(ttot.val gt 2040)            = 3;
+p_adj_coeff(ttot,"CHA","spv")$(ttot.val gt 2040)             = 0.25;
+p_adj_coeff(ttot,"CHA","wind")$(ttot.val gt 2040)            = 0.3;
+p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val gt 2040)            = 0.3;
+p_adj_coeff(ttot,"CHA",teStor)$(ttot.val gt 2040)            = 0.3;
 $endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "medium"
-p_adj_coeff(ttot,"CHA","spv")$(ttot.val le 2030)             = 4;
-p_adj_coeff(ttot,"CHA","wind")$(ttot.val le 2030)            = 4;
-p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val le 2030)            = 3;
-p_adj_coeff(ttot,"CHA",teStor)$(ttot.val le 2030)            = 3;
+p_adj_coeff(ttot,"CHA","spv")$(ttot.val le 2030)             = 0.4;
+p_adj_coeff(ttot,"CHA","wind")$(ttot.val le 2030)            = 0.4;
+p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val le 2030)            = 0.3;
+p_adj_coeff(ttot,"CHA",teStor)$(ttot.val le 2030)            = 0.3;
 
-p_adj_coeff(ttot,"CHA","spv")$(ttot.val gt 2030 and ttot.val le 2040)             = 3;
-p_adj_coeff(ttot,"CHA","wind")$(ttot.val gt 2030 and ttot.val le 2040)            = 3.5;
-p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val gt 2030 and ttot.val le 2040)            = 3.5;
-p_adj_coeff(ttot,"CHA",teStor)$(ttot.val gt 2030 and ttot.val le 2040)            = 3.5;
+p_adj_coeff(ttot,"CHA","spv")$(ttot.val gt 2030 and ttot.val le 2040)             = 0.3;
+p_adj_coeff(ttot,"CHA","wind")$(ttot.val gt 2030 and ttot.val le 2040)            = 0.35;
+p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val gt 2030 and ttot.val le 2040)            = 0.35;
+p_adj_coeff(ttot,"CHA",teStor)$(ttot.val gt 2030 and ttot.val le 2040)            = 0.35;
 
-p_adj_coeff(ttot,"CHA","spv")$(ttot.val gt 2040)             = 1.5;
-p_adj_coeff(ttot,"CHA","wind")$(ttot.val gt 2040)            = 2;
-p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val gt 2040)            = 2.5;
-p_adj_coeff(ttot,"CHA",teStor)$(ttot.val gt 2040)            = 2.5;
+p_adj_coeff(ttot,"CHA","spv")$(ttot.val gt 2040)             = 0.15;
+p_adj_coeff(ttot,"CHA","wind")$(ttot.val gt 2040)            = 0.2;
+p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val gt 2040)            = 0.25;
+p_adj_coeff(ttot,"CHA",teStor)$(ttot.val gt 2040)            = 0.25;
 $endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "fast"
-p_adj_coeff(ttot,"CHA","spv")$(ttot.val le 2030)             = 1;
-p_adj_coeff(ttot,"CHA","wind")$(ttot.val le 2030)            = 1.5;
-p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val le 2030)            = 2;
-p_adj_coeff(ttot,"CHA",teStor)$(ttot.val le 2030)            = 2;
+p_adj_coeff(ttot,"CHA","spv")$(ttot.val le 2030)             = 0.1;
+p_adj_coeff(ttot,"CHA","wind")$(ttot.val le 2030)            = 0.15;
+p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val le 2030)            = 0.2;
+p_adj_coeff(ttot,"CHA",teStor)$(ttot.val le 2030)            = 0.2;
 $endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "plateau30"	
-p_adj_coeff(ttot,"CHA","spv")$(ttot.val le 2035)             = 5;
-p_adj_coeff(ttot,"CHA","wind")$(ttot.val le 2035)            = 5.5;
-p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val le 2035)            = 5.5;
-p_adj_coeff(ttot,"CHA",teStor)$(ttot.val le 2035)            = 5.5;
-p_adj_coeff(ttot,"CHA","spv")$(ttot.val gt 2035)             = 1;
-p_adj_coeff(ttot,"CHA","wind")$(ttot.val gt 2035)            = 1.5;
-p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val gt 2035)            = 2;
-p_adj_coeff(ttot,"CHA",teStor)$(ttot.val gt 2035)            = 2;
+p_adj_coeff(ttot,"CHA","spv")$(ttot.val le 2035)             = 0.5;
+p_adj_coeff(ttot,"CHA","wind")$(ttot.val le 2035)            = 0.55;
+p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val le 2035)            = 0.55;
+p_adj_coeff(ttot,"CHA",teStor)$(ttot.val le 2035)            = 0.55;
+p_adj_coeff(ttot,"CHA","spv")$(ttot.val gt 2035)             = 0.1;
+p_adj_coeff(ttot,"CHA","wind")$(ttot.val gt 2035)            = 0.15;
+p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val gt 2035)            = 0.2;
+p_adj_coeff(ttot,"CHA",teStor)$(ttot.val gt 2035)            = 0.2;
 $endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "plateau25"
-p_adj_coeff(ttot,"CHA","spv")$(ttot.val le 2030)             = 5;
-p_adj_coeff(ttot,"CHA","wind")$(ttot.val le 2030)            = 4.5;
-p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val le 2030)            = 3.5;
-p_adj_coeff(ttot,"CHA",teStor)$(ttot.val le 2030)            = 3.5;
-p_adj_coeff(ttot,"CHA","spv")$(ttot.val gt 2030)             = 1;
-p_adj_coeff(ttot,"CHA","wind")$(ttot.val gt 2030)            = 1.5;
-p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val gt 2030)            = 2;
-p_adj_coeff(ttot,"CHA",teStor)$(ttot.val gt 2030)            = 2;
+p_adj_coeff(ttot,"CHA","spv")$(ttot.val le 2030)             = 0.5;
+p_adj_coeff(ttot,"CHA","wind")$(ttot.val le 2030)            = 0.45;
+p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val le 2030)            = 0.35;
+p_adj_coeff(ttot,"CHA",teStor)$(ttot.val le 2030)            = 0.35;
+p_adj_coeff(ttot,"CHA","spv")$(ttot.val gt 2030)             = 0.1;
+p_adj_coeff(ttot,"CHA","wind")$(ttot.val gt 2030)            = 0.15;
+p_adj_coeff(ttot,"CHA",teGrid)$(ttot.val gt 2030)            = 0.2;
+p_adj_coeff(ttot,"CHA",teStor)$(ttot.val gt 2030)            = 0.2;
 $endif.chaPOpolicy
 
 
