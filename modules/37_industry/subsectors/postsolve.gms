@@ -42,25 +42,28 @@ o37_demFeIndSub(ttot,regi,entySe,entyFe,secInd37,emiMkt)
     * vm_demFeSector_afterTax.l(ttot,regi,entySe,entyFe,"indst",emiMkt)
   );
 
+*** industry captured fuel CO2
+pm_IndstCO2Captured(ttot,regi,entySE,entyFE(entyFEcc37),secInd37,emiMkt)$(
+                     macBaseInd37(entyFE,secInd37)
+                 AND sum(entyFE2, vm_macBaseInd.l(ttot,regi,entyFE2,secInd37)) )
+  = ( o37_demFEindsub(ttot,regi,entySE,entyFE,secInd37,emiMkt)
+    * sum(se2fe(entySE2,entyFE,te),
+        !! collapse entySE dimension, so emission factors apply to all entyFE
+	!! regardless or origin, and therefore entySEbio and entySEsyn have
+	!! non-zero emission factors
+        pm_emifac(ttot,regi,entySE2,entyFE,te,"co2")
+      )
+    ) !! subsector emissions (smokestack, i.e. including biomass & synfuels)
 
-*** FE per subsector whose emissions can be captured (helper parameter for
-*** calculation of industry captured CO2 below)
-o37_demFeIndSub_SecCC(ttot,regi,secInd37)
-  = sum((se2fe(entySe,entyFe,te),macBaseInd37(entyFe,secInd37),
-                                 sector2emiMkt("indst",emiMkt)),
-      o37_demFeIndSub(ttot,regi,entySe,entyFe,secInd37,emiMkt)
-    );
+  * ( sum(secInd37_2_emiInd37(secInd37,emiInd37(emiInd37_fuel)),
+        vm_emiIndCCS.l(ttot,regi,emiInd37)
+      ) !! subsector captured energy emissions
 
-*** industry captured CO2
-pm_IndstCO2Captured(ttot,regi,entySe,entyFe,secInd37,emiMkt)$(
-                        entyFeCC37(entyFe)
-                        AND o37_demFeIndSub_SecCC(ttot,regi,secInd37)
-                        AND macBaseInd37(entyFe,secInd37))
-  = sum( secInd37_2_emiInd37(secInd37,emiInd37)$(emiInd37_fuel(emiInd37)),
-      vm_emiIndCCS.l(ttot,regi,emiInd37)
-    )
-  * o37_demFeIndSub(ttot,regi,entySe,entyFe,secInd37,emiMkt)
-  / o37_demFeIndSub_SecCC(ttot,regi,secInd37);
+    / sum(entyFE2,
+        vm_macBaseInd.l(ttot,regi,entyFE2,secInd37)
+      ) !! subsector total energy emissions
+    ) !! subsector capture share
+;
 
 *** FE demand or producing primary and secondary steel
 o37_demFeSteel(ttot,regi,in)$(steel37(in)) = sum(ue2fe_steel37(in,in2), vm_cesIO.l(ttot, regi, in2));
