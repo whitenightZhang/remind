@@ -73,8 +73,9 @@ start_coupled <- function(path_remind, path_magpie, cfg_rem, cfg_mag, runname, m
     cfg_rem$title          <- paste0(runname,"-rem-",i)
     
     # Switch off generation of needless output for all but the last REMIND iteration
+    output_all_iter <- c("reporting", "reportingREMIND2MAgPIE", "emulator", "rds_report", "fixOnRef", "checkProjectSummations")
     if (i < max_iterations) {
-      cfg_rem$output <- intersect(c("reporting", "emulator", "rds_report", "reportingREMIND2MAgPIE"), cfg_rem_original)
+      cfg_rem$output <- intersect(cfg_rem_original, output_all_iter)
     } else {
       cfg_rem$output <- cfg_rem_original
     }
@@ -240,6 +241,9 @@ start_coupled <- function(path_remind, path_magpie, cfg_rem, cfg_mag, runname, m
       needfulldatagdx <- names(subseq.env$cfg_rem$files2export$start[pathes_to_gdx][subseq.env$cfg_rem$files2export$start[pathes_to_gdx] == fullrunname & !gdx_na])
       message("In ", RData_file, ", use current fulldata.gdx path for ", paste(needfulldatagdx, collapse = ", "), ".")
       subseq.env$cfg_rem$files2export$start[needfulldatagdx] <- fulldatapath
+      # let the subsequent run use the renv.lock of this run
+      message("In ", RData_file, ", use current renv.lock for subsequent run ", run, ".")
+      subseq.env$cfg_rem$renvLockFromPrecedingRun <- file.path(path_remind, cfg_rem$results_folder, "renv.lock")
 
       if (isTRUE(subseq.env$path_report == runname)) subseq.env$path_report <- report_mag
       save(list = ls(subseq.env), file = RData_file, envir = subseq.env)

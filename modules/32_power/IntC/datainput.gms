@@ -92,11 +92,18 @@ $offdelim
 /
 ; 
 *** convert from USD2015/MWh to trUSD2005/TWa
-p32_flex_maxdiscount(regi,te) = p32_flex_maxdiscount(regi,te) * sm_TWa_2_MWh * sm_D2015_2_D2005 * 1e-12;
+p32_flex_maxdiscount(regi,te) = p32_flex_maxdiscount(regi,te) * sm_TWa_2_MWh * s_D2015_2_D2005 * 1e-12;
 display p32_flex_maxdiscount;
 $offtext
 
-*** initialize p32_PriceDurSlope parameter
+*** Flexibility Tax Parameter
+
+*** Both flexibility tax parameters are based on a regression analysis with hourly dispatch data from high-VRE scenarios of the Langfristszenarien
+*** for Germany provided by the Enertile power system model.
+*** See: https://langfristszenarien.de/enertile-explorer-de/szenario-explorer/angebot.php
+
+*** This parameter determines by the maximum electricity price reduction for electrolysis at 100% VRE share and 0% share of electrolysis in total electricity demand.
+*** Standard value is derived based on the regression of the German Langfristzenarien.
 p32_PriceDurSlope(regi,"elh2") = cm_PriceDurSlope_elh2;
 
 p32_windRegiGrid(regi) = 1;
@@ -111,5 +118,9 @@ p32_spvRegiGrid("CHA") = 1;
 p32_cspRegiGrid("CHA") = 1;
 $endif.calibrate
 
+
+*** Slope of increase of electricity price for electrolysis with increasing share of electrolysis in power system
+*** The value of 1.1 is derived from the regression of the German Langfristzenarien.
+p32_flexSeelShare_slope(t,regi,"elh2") = 1.1;
 
 *** EOF ./modules/32_power/IntC/datainput.gms

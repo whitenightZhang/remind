@@ -78,21 +78,7 @@ run <- function() {
             sub("'([^']*)'.'([^']*)'.'([^']*)'.'([^']*)' (.*)[ ,][ /];?",
                 "pm_cesdata(\"\\1\",\"\\2\",\"\\3\",\"\\4\") = \\5;", x = .) %>%
             write(file_name)
-
-
-          pm_cesdata_putty = system("gdxdump fulldata.gdx symb=pm_cesdata_putty", intern = TRUE)
-          if (length(pm_cesdata_putty) == 2){
-            tmp_putty =  gsub("^Parameter *([A-z_(,)])+cesParameters\\).*$",'\\1"quantity")  =   0;',  pm_cesdata_putty[2])
-          } else {
-            tmp_putty = pm_cesdata_putty[-(1:2)] %>%
-              grep("quantity", x = ., value = TRUE) %>%
-              grep(expr_ces_in,x = ., value = T)
-          }
-          tmp_putty %>%
-            sub("'([^']*)'.'([^']*)'.'([^']*)'.'([^']*)' (.*)[ ,][ /];?",
-                "pm_cesdata_putty(\"\\1\",\"\\2\",\"\\3\",\"\\4\") = \\5;", x = .)%>% write(file_name,append =T)
-        }
-
+        } 
         getLoadFile()
 
         # Store all the interesting output
@@ -135,7 +121,7 @@ run <- function() {
     cat("\nREMIND run finished!\n\n")
 
     # Create solution report for Nash runs
-    if (cfg$gms$optimization == "nash" && cfg$gms$cm_nash_mode != "debug" && file.exists("fulldata.gdx")) {
+    if (cfg$gms$optimization == "nash" && cfg$gms$cm_nash_mode != 1 && file.exists("fulldata.gdx")) {
       system("gdxdump fulldata.gdx Format=gamsbas Delim=comma Output=output_nash.gms")
       file.append("full.lst", "output_nash.gms")
       file.remove("output_nash.gms")
@@ -207,6 +193,9 @@ run <- function() {
       }
       message("In ", RData_file, ", use current fulldata.gdx path for ", paste(needfulldatagdx, collapse = ", "), ".")
       cfg$files2export$start[needfulldatagdx] <- fulldatapath
+      # let the subsequent run use the renv.lock of this run
+      message("In ", RData_file, ", use current renv.lock for subsequent run ", run, ".")
+      cfg$renvLockFromPrecedingRun <- file.path(cfg_main$remind_folder, cfg_main$results_folder, "renv.lock")
 
       save(cfg, file = RData_file)
 
