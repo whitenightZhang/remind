@@ -100,11 +100,6 @@ $ifthen.no_calibration "%CES_parameters%" == "load"   !! CES_parameters
   q37_energy_limits(ttot,all_regi,all_in)                                           "thermodynamic/technical limit of energy use"
 $endif.no_calibration
   q37_BioLimitSubsec(ttot,all_regi,all_enty,all_emiMkt)   "limits of switching to biomass use in industry subsectors"
-;
-
-
-
-*** process-based implementation
   q37_limit_secondary_steel_share(ttot,all_regi)                                    "no more than 90% of steel from seconday production"
   q37_emiIndBase(ttot,all_regi,all_enty,secInd37)                                   "gross industry emissions before CCS"
   q37_emiIndCCSmax(ttot,all_regi,emiInd37)                                          "maximum abatable industry emissions at current CO2 price"
@@ -126,7 +121,7 @@ $endif.no_calibration
   q37_feedstockEmiUnknownFate(ttot,all_regi,all_enty,all_enty,all_emiMkt)           "calculate carbon contained in chemical feedstock with unknown fate [GtC]"
   q37_feedstocksLimit(ttot,all_regi,all_enty,all_enty,all_in,all_emiMkt)            "restrict feedstocks flow to total energy flows into industry"
 
-  !! process-based implementation
+!! process-based implementation
   q37_demMatPrc(tall,all_regi,mat)                                                  "Material demand of processes"
   q37_prodMat(tall,all_regi,mat)                                                    "Production volume of processes equals material flow of output material"
   q37_mat2ue(tall,all_regi,all_in)                                                  "Connect materials production to ue ces tree nodes"
@@ -136,6 +131,5 @@ $endif.no_calibration
   q37_limitOutflowCCPrc(tall,all_regi,all_te)                                       "Carbon capture processes can only capture as much co2 as the base process emits"
   q37_costMat(tall,all_regi)                                                        "External material cost (non-energy)"
 ;
-$endif.process_based_steel
 
 *** EOF ./modules/37_industry/subsectors/declarations.gms

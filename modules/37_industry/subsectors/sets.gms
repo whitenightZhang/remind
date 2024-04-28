@@ -296,7 +296,7 @@ $endif.cm_subsec_model_steel
     feh2s . (feh2_cement, feh2_chemicals, feh2_otherInd)
     fehes . fehe_otherInd
     feels . (feel_cement, feelhth_chemicals, feelwlth_chemicals,
-             feel_steel_primary, feel_steel_secondary, feelhth_otherInd,
+             feelhth_otherInd,
              feelwlth_otherInd)
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "ces"
     fesos . feso_steel
