@@ -206,15 +206,6 @@ p_inco0(t,"CHA","pc")$((t.val ge 2015) and (t.val le 2040)) = 500;
 p_inco0(t,"CHA","igccc")$((t.val ge 2015) and (t.val le 2060)) = 500 * 1.24;
 );
 
-*JH* SSP energy technology scenario
-table f_dataglob_SSP1(char,all_te)        "Techno-economic assumptions consistent with SSP1"
-$include "./core/input/generisdata_tech_SSP1.prn"
-$include "./core/input/generisdata_trade.prn"
-;
-table f_dataglob_SSP5(char,all_te)        "Techno-economic assumptions consistent with SSP5"
-$include "./core/input/generisdata_tech_SSP5.prn"
-$include "./core/input/generisdata_trade.prn"
-;
 *JH* New nuclear assumption for SSP5
 if (cm_nucscen eq 6,
   f_dataglob_SSP5("inco0","tnrs") = 6270; !! increased from 4000 to 6270 with the update of technology costs in REMIND 1.7 to keep the percentage increase between SSP2 and SSP5 constant
