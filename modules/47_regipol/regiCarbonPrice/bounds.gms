@@ -265,12 +265,12 @@ $endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "plateau25"
 vm_capEarlyReti.up('2025','CHA','pc') = 0.03;
-vm_capEarlyReti.up('2030','CHA','pc') = 0.25;
+vm_capEarlyReti.up('2030','CHA','pc') = 0.3;
 $endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "fast"
 vm_capEarlyReti.up('2025','CHA','pc') = 0.18;
-vm_capEarlyReti.up('2030','CHA','pc') = 0.45;
+vm_capEarlyReti.up('2030','CHA','pc') = 0.5;
 $endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "medium"
