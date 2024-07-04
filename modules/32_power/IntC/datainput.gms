@@ -111,12 +111,12 @@ p32_windoffRegiGrid(regi) = 1;
 p32_spvRegiGrid(regi) = 1;
 p32_cspRegiGrid(regi) = 1;
 
-$ifthen.calibrate %CES_parameters% == "load"
-p32_windRegiGrid("CHA") = 0.1;
-p32_windoffRegiGrid("CHA") = 0.05;
-p32_spvRegiGrid("CHA") = 1;
-p32_cspRegiGrid("CHA") = 1;
-$endif.calibrate
+*$ifthen.calibrate %CES_parameters% == "load"
+*p32_windRegiGrid("CHA") = 0.1;
+*p32_windoffRegiGrid("CHA") = 0.05;
+*p32_spvRegiGrid("CHA") = 1;
+*p32_cspRegiGrid("CHA") = 1;
+*$endif.calibrate
 
 
 *** Slope of increase of electricity price for electrolysis with increasing share of electrolysis in power system
