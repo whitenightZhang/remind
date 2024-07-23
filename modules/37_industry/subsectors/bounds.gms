@@ -134,7 +134,6 @@ $endif.policy_scenario
 $drop cm_indstExogScen_set
 
 
-$ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
 !! fix processes procudction in historic years
 if (cm_startyear eq 2005,
   loop(regi,
@@ -145,23 +144,28 @@ if (cm_startyear eq 2005,
 
   loop(regi,
     loop(ttot$(ttot.val ge 2005 AND ttot.val le 2020),
+$ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
+      vm_outflowPrc.fx(ttot,regi,"chemNew","standard") = 0.;
+$endif.cm_subsec_model_chemicals
+$ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
       vm_outflowPrc.fx(ttot,regi,"eaf","pri") = 0.;
       vm_outflowPrc.fx(ttot,regi,"idr","ng") = 0.;
       vm_outflowPrc.fx(ttot,regi,"idr","h2") = 0.;
       vm_outflowPrc.fx(ttot,regi,"bfcc","standard") = 0.;
       vm_outflowPrc.fx(ttot,regi,"idrcc","ng") = 0.;
+$endif.cm_subsec_model_steel
     );
   );
 );
 
 !! Switch to turn off steel CCS
+!! TODO Qianzhi: sector dependence is wrong
 if (cm_CCS_steel ne 1 OR cm_IndCCSscen ne 1,
   vm_cap.fx(t,regi,teCCPrc,rlf) = 0.;
 );
 
 v37_shareWithCC.lo(t,regi,tePrc,opmoPrc) = 0.;
 v37_shareWithCC.up(t,regi,tePrc,opmoPrc) = 1.;
-$endif.cm_subsec_model_steel
 
 $ifthen.fixedUE_scenario "%cm_fxIndUe%" == "on"
 
@@ -173,7 +177,7 @@ $endif.fixedUE_scenario
 
 *** fix plastic waste to zero until 2010, and possible to reference scenario
 *** values between 2015 and cm_startyear
-v37_plasticWaste.fx(t,regi,entySe,entyFe,emiMkt)$( 
+v37_plasticWaste.fx(t,regi,entySe,entyFe,emiMkt)$(
                             t.val lt max(2015, cm_startyear)
                         AND sefe(entySe,entyFe)
                         AND entyFE2sector2emiMkt_NonEn(entyFe,"indst",emiMkt) )

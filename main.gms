@@ -415,7 +415,7 @@ $setGlobal damages  off               !! def = off
 *' * (off):
 *' * (DiceLikeItr): Internalize DICE-like damages (calculate the SCC) adjust cm_damages_SccHorizon. Requires cm_emiscen set to 9 for now.
 *' * (BurkeLikeItr): Internalize Burke-like damages (calculate the SCC) adjust cm_damages_SccHorizo. Requires cm_emiscen set to 9 for now.
-*' * (KotzWenzItr): Internalize KotzWenz damages (calculate the SCC). Requires cm_emiscen set to 9. 
+*' * (KotzWenzItr): Internalize KotzWenz damages (calculate the SCC). Requires cm_emiscen set to 9.
 *' * (KWlikeItr): Internalize damage function based on Kalkuhl & Wenz (2020). Requires cm_emiscen set to 9 for now.
 *' * (KWlikeItrCPnash): Internalize damage function based on Kalkuhl & Wenz (2020), but with Nash SCC, i.e. each region only internalizes its own damages. Requires cm_emiscen set to 9 for now.
 *' * (KWlikeItrCPreg): Internalize damage function based on Kalkuhl & Wenz (2020), but with regional SCC instead of a global uniform price. Requires cm_emiscen set to 9 for now.
@@ -515,7 +515,7 @@ parameter
   cm_co2_tax_startyear = -1;     !! def = -1  !! regexp = -1|is.nonnegative
 *' * Parameter for realizations 'diffLin2Lin' and 'diffExp2Lin' of 45_carbonprice
 *' * (-1): default setting equivalent to no carbon tax
-*' * (any number >= 0): co2 tax in start year [if cm_iterative_target_adj eq 0]; 
+*' * (any number >= 0): co2 tax in start year [if cm_iterative_target_adj eq 0];
 *' *                    exogenous initialization of co2 tax in start year [if cm_iterative_target_adj ne 0]
 *'
 parameter
@@ -986,7 +986,7 @@ parameter
 parameter
   cm_CO2priceRegConvEndYr      "Year at which regional CO2 taxes converge in module 45 for realizations with differentiated carbon prices"
 ;
-  cm_CO2priceRegConvEndYr  = 2050;   !! def = 2050    
+  cm_CO2priceRegConvEndYr  = 2050;   !! def = 2050
 *'
 parameter
   cm_co2_tax_spread            "spread of carbon prices in 2025 given as a factor"
@@ -1290,8 +1290,8 @@ $setGlobal cm_regiExoPrice  off    !! def = off
 ***     cm_emiMktTarget = '2020.2050.EU27_regi.all.budget.netGHG_noBunkers 72, 2020.2050.DEU.all.year.netGHG_noBunkers 0.1'
 ***     sets a 72 GtCO2eq budget target for European 27 countries (EU27_regi), for all GHG emissions excluding bunkers between 2020 and 2050; and a 100 MtCO2 CO2eq emission target for the year 2050, for Germany"
 ***     cm_emiMktTarget = 'nzero'
-***     loads hard-coded options for regional target scenarios defined in the module '47_regipol/regiCarbonPrice' declarations file. 
-***     The 'nzero' scenario applies declared net-zero targets for countries explicitly handled by the model (DEU, CHA, USA, IND, JPN, UKI, FRA and EU27_regi)  
+***     loads hard-coded options for regional target scenarios defined in the module '47_regipol/regiCarbonPrice' declarations file.
+***     The 'nzero' scenario applies declared net-zero targets for countries explicitly handled by the model (DEU, CHA, USA, IND, JPN, UKI, FRA and EU27_regi)
 ***     Requires regiCarbonPrice realization in regipol module
 $setGlobal cm_emiMktTarget  off    !! def = off
 *** Tolerance for regipol emission target deviations convergence.
@@ -1299,7 +1299,7 @@ $setGlobal cm_emiMktTarget  off    !! def = off
 ***   def = GLO 0.01, i.e. regipol emission targets must be met within 1% of target deviation
 ***   Example on how to use:
 ***      cm_emiMktTarget_tolerance = 'GLO 0.004, DEU 0.01'. All regional emission targets will be considered converged if they have at most 0.4% of the target deviation, except for Germany that requires 1%.
-$setGlobal cm_emiMktTarget_tolerance  GLO 0.01    !! def = GLO 0.01 
+$setGlobal cm_emiMktTarget_tolerance  GLO 0.01    !! def = GLO 0.01
 *** cm_quantity_regiCO2target "emissions quantity upper bound from specific year for region group."
 ***   Example on how to use:
 ***     '2050.EUR_regi.netGHG 0.000001, obliges European GHG emissions to be approximately zero from 2050 onward"
@@ -1455,9 +1455,9 @@ $setGlobal cm_trade_SE_exog off !! def off
 *** This essentially makes an assumption about to what extend the power demand of electrolysis will be taxed and how much tax exemptions there will be at low shares of green hydrogen production.
 *** The parameter a defines how fast the tax increases with increasing share, with 4/a being the percentage point range over which the tax value increases from 12% to 88%
 *** The parameter b defines at which share the tax is halfway between the value at 0 share and the maximum value (defined by a region's electricity tax and the electricity grid cost) that it converges to for high shares.
-*** Example use: 
-*** cm_SEtaxRampUpParam = "GLO.elh2.a 0.2, GLO.elh2.b 20" sets the logistic function parameter values a=0.2 and b=20 for electrolysis (elh2) to all model regions (GLO). 
-*** cm_SEtaxRampUpParam = "off" disables v21_tau_SE_tax 
+*** Example use:
+*** cm_SEtaxRampUpParam = "GLO.elh2.a 0.2, GLO.elh2.b 20" sets the logistic function parameter values a=0.2 and b=20 for electrolysis (elh2) to all model regions (GLO).
+*** cm_SEtaxRampUpParam = "off" disables v21_tau_SE_tax
 *** For details, please see ./modules/21_tax/on/equations.gms.
 $setGlobal cm_SEtaxRampUpParam  GLO.elh2.a 0.2, GLO.elh2.b 20    !! def = GLO.elh2.a 0.2, GLO.elh2.b 20
 *** cm_EnSecScen             "switch for running an ARIADNE energy security scenario, introducing a tax on PE fossil energy in Germany"
@@ -1617,7 +1617,7 @@ $setGlobal cm_CESMkup_ind_data   ""        !! def = ""
 
 *** cm_fxIndUe "switch for fixing UE demand in industry to baseline level - no endogenous demand adjustment"
 *** default cm_fxIndUe = off -> endogenous demand, cm_fxIndUe = on -> exogenous demand fixed to baseline/NPi level (read in from input_ref.gdx)
-*** cm_fxIndUeReg indicates the regions under which the industry demand will be fixed 
+*** cm_fxIndUeReg indicates the regions under which the industry demand will be fixed
 *** for example, cm_fxIndUe = on and cm_fxIndUeReg = SSA,NEU,CHA,IND,OAS,MEA,LAM gives a scenario where all non global north (non-OECD) industry demand is fixed to baseline
 *** cm_fxIndUeReg = GLO fixes industry demand to baseline level everywhere
 $setGlobal cm_fxIndUe        off  !! def = off
@@ -1627,7 +1627,7 @@ $setGlobal cm_fxIndUeReg     ""       !! def = ""
 *** efficiency improvements.  See ./modules/37_subsectors/datainput.gms for
 *** implementation.
 *** "default" applies the following limits:
-*** 
+***
 *** ext_regi |     subsector      | period | maximum "efficiency gain" [0-1]
 *** ---------+--------------------+--------+--------------------------------
 *** GLO      | ue_cement          |  2050  | 0.75
@@ -1732,6 +1732,8 @@ $setGlobal c_regi_nucscen  all  !! def = all
 $setGlobal c_regi_capturescen  all  !! def = all
 *** cm_subsec_model_steel      "switch between ces-based and process-based steel implementation in subsectors realisation of industry module"
 $setglobal cm_subsec_model_steel  processes  !! def = processes  !! regexp = processes|ces
+*** cm_subsec_model_chemicals      "switch between ces-based and process-based chemicals implementation in subsectors realisation of industry module"
+$setglobal cm_subsec_model_chemicals  processes  !! def = processes  !! regexp = processes|ces
 *** set conopt version. Warning: conopt4 is in beta
 $setGlobal cm_conoptv  conopt3    !! def = conopt3
 *' c_empty_model  "Short-circuit the model, just use the input as solution"

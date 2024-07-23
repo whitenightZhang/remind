@@ -121,6 +121,10 @@ display v05_INIdemEn0.l, v05_INIcap0.l;
 
 pm_cap0(regi,te) = v05_INIcap0.l(regi,te);
 
+$ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
+pm_cap0(regi,'chemOld') = pm_outflowPrcIni(regi,'chemOld','standard') / pm_cf("2005",regi,'chemOld');
+pm_cap0(regi,'chemNew')  = 0.;
+$endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
 pm_cap0(regi,'bof') = pm_outflowPrcIni(regi,'bof','unheated') / pm_cf("2005",regi,'bof');
 pm_cap0(regi,'bf')  = pm_outflowPrcIni(regi,'bf','standard')  / pm_cf("2005",regi,'bf');
@@ -543,7 +547,7 @@ if (cm_startyear gt 2005,
 *** Only the eta values of chp technologies have been adapted by initialCap script above.
 *** This is to avoid overwriting all of pm_data and make sure that scenario switches which adapt pm_data before this module work as intended.
   Execute_Loadpoint 'input_ref' p05_pmdata_ref = pm_data;
-  pm_data(regi,char,te)$( (sameas(te,"coalchp")  
+  pm_data(regi,char,te)$( (sameas(te,"coalchp")
                               OR sameas(te,"gaschp")
                               OR sameas(te,"biochp") )
                             AND sameas(char,"eta") ) = p05_pmdata_ref(regi,char,te);
