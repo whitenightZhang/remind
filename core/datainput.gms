@@ -1745,6 +1745,25 @@ pm_fedemand(tall,all_regi,in) = f_fedemand(tall,all_regi,"%cm_demScen%",in);
 *** data input for industry FE that is no part of the CES tree
 pm_fedemand(tall,all_regi,ppfen_no_ces_use) = f_fedemand(tall,all_regi,"%cm_demScen%",ppfen_no_ces_use);
 
+parameter c_CHA_EAF_sed_shift "shift CHA EAF specific energy demand";
+c_CHA_EAF_sed_shift(tall) = 0.75;
+c_CHA_EAF_sed_shift("2015") = 0.85;
+
+
+*** Shift CHA EAF electricity to primary steel production to better match
+*** empirical specific energy demand
+loop (regi$( sameas(regi,"CHA") ),
+  pm_fedemand(tall,regi,"feel_steel_primary")
+    = pm_fedemand(tall,regi,"feel_steel_primary")
+    + ( c_CHA_EAF_sed_shift(tall)
+      * pm_fedemand(tall,regi,"feel_steel_secondary")
+      );
+
+  pm_fedemand(tall,regi,"feel_steel_secondary")
+    = (1 - c_CHA_EAF_sed_shift(tall))
+    * pm_fedemand(tall,regi,"feel_steel_secondary");
+);
+
 *** RCP-dependent demands in buildings (climate impact)
 $ifthen.cm_rcp_scen_build NOT "%cm_rcp_scen_build%" == "none"
 Parameter f_fedemand_build(tall,all_regi,all_demScen,all_rcp_scen,all_in) "RCP-dependent final energy demand in buildings"
