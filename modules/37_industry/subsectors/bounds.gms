@@ -158,10 +158,20 @@ $endif.cm_subsec_model_steel
   );
 );
 
-!! Switch to turn off steel CCS
-!! TODO Qianzhi: sector dependence is wrong
-if (cm_CCS_steel ne 1 OR cm_IndCCSscen ne 1,
+!! Switch to turn off all CCS
+if (cm_IndCCSscen ne 1,
   vm_cap.fx(t,regi,teCCPrc,rlf) = 0.;
+);
+!! TOCHECK:Qianzhi
+if (cm_CCS_steel ne 1,
+  loop(tePrc$(teCCPrc(tePrc) AND secInd37_tePrc("steel", tePrc)), 
+    vm_cap.fx(t,regi,tePrc,rlf) = 0.;
+  );
+);
+if (cm_CCS_chemicals ne 1,
+  loop(tePrc$(teCCPrc(tePrc) AND secInd37_tePrc("chemicals", tePrc)), 
+    vm_cap.fx(t,regi,tePrc,rlf) = 0.;
+  );
 );
 
 v37_shareWithCC.lo(t,regi,tePrc,opmoPrc) = 0.;
