@@ -725,6 +725,11 @@ pm_cf(ttot,regi,"tdsyndie") = 0.7;
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
 pm_cf(ttot,regi,"chemOld") = 0.8;
 pm_cf(ttot,regi,"chemNew") = 0.8;
+pm_cf(ttot,regi,"AmSyCoal") = 0.8; !! ammonia tech QIANZHI
+pm_cf(ttot,regi,"AmSyNG") = 0.8;
+pm_cf(ttot,regi,"AmSyCoalcc") = 0.8; 
+pm_cf(ttot,regi,"AmSyNGcc") = 0.8;
+pm_cf(ttot,regi,"AmSyH2") = 0.8;
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
 pm_cf(ttot,regi,"bf") = 0.8;
@@ -1208,6 +1213,10 @@ loop(ttot$(ttot.val ge 2005),
   p_adj_seed_te(ttot,regi,"coaltr")          = 4.00;
   p_adj_seed_te(ttot,regi,'dac')             = 0.25;
   p_adj_seed_te(ttot,regi,'geohe')           = 0.33;
+$ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
+  p_adj_seed_te(ttot,regi,"AmSyCoalcc")      = 0.05;  !! ammonia tech QIANZHI 
+  p_adj_seed_te(ttot,regi,"AmSyNGcc")        = 0.05;
+$endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
   p_adj_seed_te(ttot,regi,"bfcc")            = 0.05;
   p_adj_seed_te(ttot,regi,"idrcc")           = 0.05;
@@ -1243,6 +1252,10 @@ $endif.WindOff
   p_adj_coeff(ttot,regi,"spv")             = 0.15;
   p_adj_coeff(ttot,regi,"wind")            = 0.25;
   p_adj_coeff(ttot,regi,"geohe")           = 0.6;
+$ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
+  p_adj_coeff(ttot,regi,"AmSyCoalcc")      = 1.0;  !! ammonia tech QIANZHI 
+  p_adj_coeff(ttot,regi,"AmSyNGcc")        = 1.0;
+$endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
   p_adj_coeff(ttot,regi,"bfcc")            = 1.0;
   p_adj_coeff(ttot,regi,"idrcc")           = 1.0;

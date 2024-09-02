@@ -146,6 +146,9 @@ if (cm_startyear eq 2005,
     loop(ttot$(ttot.val ge 2005 AND ttot.val le 2020),
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
       vm_outflowPrc.fx(ttot,regi,"chemNew","standard") = 0.;
+      vm_outflowPrc.fx(ttot,regi,"AmSyCoalcc","standard") = 0.;
+      vm_outflowPrc.fx(ttot,regi,"AmSyNGcc","standard") = 0.;
+      vm_outflowPrc.fx(ttot,regi,"AmSyH2","standard") = 0.; !! ammonia tech QIANZHI 
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
       vm_outflowPrc.fx(ttot,regi,"eaf","pri") = 0.;

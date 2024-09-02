@@ -322,6 +322,17 @@ $ENDIF.WindOff
         chemNew
         chemRo_old
         chemRo_new
+
+        AmSyCoal   !! ammonia tech QIANZHI
+        AmSyNG
+        AmSyCoalcc
+        AmSyNGcc
+        AmSyH2
+        AmSyRo_Coal
+        AmSyRo_NG
+        AmSyRo_Coal_ccs
+        AmSyRo_NG_ccs
+        AmSyRo_H2
 *** PCV: technologies related to steel
         ironMine     "Mining of iron ore"
         idr          "Iron direct reduction"
@@ -429,6 +440,7 @@ all_enty             "all types of quantities"
         dripell      "DRI pellets"
         !! TOCHECK: QIANZHI
         olandar
+        ammonia
 
         !! emissions
         co2          "carbon dioxide emissions"
@@ -1237,6 +1249,11 @@ $ENDIF.WindOff
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
         chemOld
         chemNew
+        AmSyCoal !! ammonia tech QIANZHI 
+        AmSyNG
+        AmSyCoalcc
+        AmSyNGcc
+        AmSyH2
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
         idr             "Iron direct reduction"
@@ -1321,6 +1338,10 @@ $ENDIF.WindOff
 $IFTHEN.WindOff %cm_wind_offshore% == "1"
   gridwindoff     "grid between areas with high wind offshore production and the rest"
 $ENDIF.WindOff
+$ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
+  AmSyCoalcc      "Ammonia by Coal CCS" !! ammonia tech QIANZHI 
+  AmSyNGcc        "Ammonia by Gas CCS"
+$endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
   bfcc            "Blast furnace CCS"
   idrcc           "Direct reduction CCS"

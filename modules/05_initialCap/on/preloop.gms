@@ -124,6 +124,11 @@ pm_cap0(regi,te) = v05_INIcap0.l(regi,te);
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
 pm_cap0(regi,'chemOld') = pm_outflowPrcIni(regi,'chemOld','standard') / pm_cf("2005",regi,'chemOld');
 pm_cap0(regi,'chemNew')  = 0.;
+pm_cap0(regi,'AmSyCoal') = pm_outflowPrcIni(regi,'AmSyCoal','standard') / pm_cf("2005",regi,'AmSyCoal'); !! ammonia tech QIANZHI 
+pm_cap0(regi,'AmSyNG') = pm_outflowPrcIni(regi,'AmSyNG','standard') / pm_cf("2005",regi,'AmSyNG');
+pm_cap0(regi,'AmSyCoalcc')  = 0.;
+pm_cap0(regi,'AmSyNGcc')  = 0.;
+pm_cap0(regi,'AmSyH2')  = 0.;
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
 pm_cap0(regi,'bof') = pm_outflowPrcIni(regi,'bof','unheated') / pm_cf("2005",regi,'bof');
