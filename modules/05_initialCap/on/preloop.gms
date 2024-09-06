@@ -124,6 +124,13 @@ pm_cap0(regi,te) = v05_INIcap0.l(regi,te);
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
 pm_cap0(regi,'chemOld') = pm_outflowPrcIni(regi,'chemOld','standard') / pm_cf("2005",regi,'chemOld');
 pm_cap0(regi,'chemNew')  = 0.;
+pm_cap0(regi,'MeSySol') = pm_outflowPrcIni(regi,'MeSySol','greyh2') / pm_cf("2005",regi,'MeSySol'); !! methanol tech QIANZHI
+pm_cap0(regi,'MeSyNG') = pm_outflowPrcIni(regi,'MeSyNG','standard') / pm_cf("2005",regi,'MeSyNG');
+pm_cap0(regi,'MeSyLiq') = pm_outflowPrcIni(regi,'MeSyLiq','standard') / pm_cf("2005",regi,'MeSyLiq');
+pm_cap0(regi,'MeSySolcc')  = 0.;
+pm_cap0(regi,'MeSyNGcc')  = 0.;
+pm_cap0(regi,'MeSyLiqcc')  = 0.;
+pm_cap0(regi,'MeSyH2')  = 0.;
 pm_cap0(regi,'AmSyCoal') = pm_outflowPrcIni(regi,'AmSyCoal','standard') / pm_cf("2005",regi,'AmSyCoal'); !! ammonia tech QIANZHI 
 pm_cap0(regi,'AmSyNG') = pm_outflowPrcIni(regi,'AmSyNG','standard') / pm_cf("2005",regi,'AmSyNG');
 pm_cap0(regi,'AmSyCoalcc')  = 0.;

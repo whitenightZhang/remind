@@ -323,6 +323,22 @@ $ENDIF.WindOff
         chemRo_old
         chemRo_new
 
+        MeSySol    !! methanol tech QIANZHI
+        MeSyNG
+        MeSyLiq
+        MeSySolcc
+        MeSyNGcc
+        MeSyLiqcc
+        MeSyH2
+        MeSyRo_Sol_greyh2
+        MeSyRo_Sol_gh2
+        MeSyRo_Sol_ccs
+        MeSyRo_NG
+        MeSyRo_NG_ccs
+        MeSyRo_Liq
+        MeSyRo_Liq_ccs
+        MeSyRo_H2
+
         AmSyCoal   !! ammonia tech QIANZHI
         AmSyNG
         AmSyCoalcc
@@ -439,6 +455,7 @@ all_enty             "all types of quantities"
         ironore      "Iron ore"
         dripell      "DRI pellets"
         !! TOCHECK: QIANZHI
+        otherchem
         olandar
         ammonia
 
@@ -1249,6 +1266,13 @@ $ENDIF.WindOff
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
         chemOld
         chemNew
+        MeSySol !! methanol tech QIANZHI
+        MeSyNG
+        MeSyLiq
+        MeSySolcc
+        MeSyNGcc
+        MeSyLiqcc
+        MeSyH2
         AmSyCoal !! ammonia tech QIANZHI 
         AmSyNG
         AmSyCoalcc
@@ -1339,6 +1363,9 @@ $IFTHEN.WindOff %cm_wind_offshore% == "1"
   gridwindoff     "grid between areas with high wind offshore production and the rest"
 $ENDIF.WindOff
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
+  MeSySolcc       "Methanol by Soilds CCS" !! methanol tech QIANZHI
+  MeSyNGcc        "Methanol by Gas CCS"
+  MeSyLiqcc       "Methanol by Liquids CCS"
   AmSyCoalcc      "Ammonia by Coal CCS" !! ammonia tech QIANZHI 
   AmSyNGcc        "Ammonia by Gas CCS"
 $endif.cm_subsec_model_chemicals
