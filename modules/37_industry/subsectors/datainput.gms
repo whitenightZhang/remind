@@ -768,10 +768,10 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     pm_specFeDem(ttot,regi,"feh2s","ChemNew","standard") = p37_specFeDemTarget("feh2s","ChemNew","standard");
     pm_specFeDem(ttot,regi,"feels","ChemNew","standard") = p37_specFeDemTarget("feels","ChemNew","standard");
 
-    pm_specFeDem(ttot,regi,"fegas","ChemOld","standard") = pm_fedemand(ttot,regi,"fega_chemicals") * sm_EJ_2_TWa * p37_mat2ue("olandar","ue_chemicals") / pm_fedemand(ttot,regi,"ue_chemicals");
-    pm_specFeDem(ttot,regi,"fesos","ChemOld","standard") = pm_fedemand(ttot,regi,"feso_chemicals") * sm_EJ_2_TWa * p37_mat2ue("olandar","ue_chemicals") / pm_fedemand(ttot,regi,"ue_chemicals");
-    pm_specFeDem(ttot,regi,"fehos","ChemOld","standard") = pm_fedemand(ttot,regi,"feli_chemicals") * sm_EJ_2_TWa * p37_mat2ue("olandar","ue_chemicals") / pm_fedemand(ttot,regi,"ue_chemicals");
-    pm_specFeDem(ttot,regi,"feels","ChemOld","standard") = (pm_fedemand(ttot,regi,"feelhth_chemicals") + pm_fedemand(ttot,regi,"feelwlth_chemicals")) * sm_EJ_2_TWa * p37_mat2ue("olandar","ue_chemicals") / pm_fedemand(ttot,regi,"ue_chemicals");
+    pm_specFeDem(ttot,regi,"fegas","ChemOld","standard") = pm_fedemand(ttot,regi,"fega_chemicals") * sm_EJ_2_TWa / pm_outflowPrcIni(regi,"ChemOld","standard") * 0.7;
+    pm_specFeDem(ttot,regi,"fesos","ChemOld","standard") = pm_fedemand(ttot,regi,"feso_chemicals") * sm_EJ_2_TWa / pm_outflowPrcIni(regi,"ChemOld","standard") * 0.7;
+    pm_specFeDem(ttot,regi,"fehos","ChemOld","standard") = pm_fedemand(ttot,regi,"feli_chemicals") * sm_EJ_2_TWa / pm_outflowPrcIni(regi,"ChemOld","standard") * 1;
+    pm_specFeDem(ttot,regi,"feels","ChemOld","standard") = (pm_fedemand(ttot,regi,"feelhth_chemicals") + pm_fedemand(ttot,regi,"feelwlth_chemicals")) * sm_EJ_2_TWa / pm_outflowPrcIni(regi,"ChemOld","standard") * 0.7;
 
     pm_specFeDem(ttot,regi,"feh2s","AmSyH2","standard") = p37_specFeDemTarget("feh2s","AmSyH2","standard"); !!! ammonia tech QIANZHI
     pm_specFeDem(ttot,regi,"feels","AmSyH2","standard") = p37_specFeDemTarget("feels","AmSyH2","standard");
@@ -781,10 +781,10 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     pm_specFeDem(ttot,regi,"fegas","AmSyNGcc","standard") = p37_specFeDemTarget("fegas","AmSyNGcc","standard");
     pm_specFeDem(ttot,regi,"feels","AmSyNGcc","standard") = p37_specFeDemTarget("feels","AmSyNGcc","standard");
 
-    pm_specFeDem(ttot,regi,"fesos","AmSyCoal","standard") = pm_fedemand(ttot,regi,"feso_chemicals") * sm_EJ_2_TWa * (p37_mat2ue("ammonia","ue_chemicals") / pm_fedemand(ttot,regi,"ue_chemicals"));
-    pm_specFeDem(ttot,regi,"feels","AmSyCoal","standard") = (pm_fedemand(ttot,regi,"feelhth_chemicals") + pm_fedemand(ttot,regi,"feelwlth_chemicals")) * sm_EJ_2_TWa * (p37_mat2ue("ammonia","ue_chemicals") / pm_fedemand(ttot,regi,"ue_chemicals"));
-    pm_specFeDem(ttot,regi,"fegas","AmSyNG","standard") = pm_fedemand(ttot,regi,"fega_chemicals") * sm_EJ_2_TWa * (p37_mat2ue("ammonia","ue_chemicals") / pm_fedemand(ttot,regi,"ue_chemicals"));
-    pm_specFeDem(ttot,regi,"feels","AmSyNG","standard") = (pm_fedemand(ttot,regi,"feelhth_chemicals") + pm_fedemand(ttot,regi,"feelwlth_chemicals")) * sm_EJ_2_TWa * (p37_mat2ue("ammonia","ue_chemicals") / pm_fedemand(ttot,regi,"ue_chemicals"));
+    pm_specFeDem(ttot,regi,"fesos","AmSyCoal","standard") = pm_fedemand(ttot,regi,"feso_chemicals") * sm_EJ_2_TWa / pm_outflowPrcIni(regi,"AmSyCoal","standard") * 0.3;
+    pm_specFeDem(ttot,regi,"feels","AmSyCoal","standard") = (pm_fedemand(ttot,regi,"feelhth_chemicals") + pm_fedemand(ttot,regi,"feelwlth_chemicals")) * sm_EJ_2_TWa / pm_outflowPrcIni(regi,"AmSyCoal","standard") * 0.15;
+    pm_specFeDem(ttot,regi,"fegas","AmSyNG","standard") = pm_fedemand(ttot,regi,"fega_chemicals") * sm_EJ_2_TWa /pm_outflowPrcIni(regi,"AmSyNG","standard") * 0.3;
+    pm_specFeDem(ttot,regi,"feels","AmSyNG","standard") = (pm_fedemand(ttot,regi,"feelhth_chemicals") + pm_fedemand(ttot,regi,"feelwlth_chemicals")) * sm_EJ_2_TWa /pm_outflowPrcIni(regi,"AmSyNG","standard") * 0.15;
 
     );
 
