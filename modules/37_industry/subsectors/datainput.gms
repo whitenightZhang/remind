@@ -595,6 +595,9 @@ $endIf.cm_wasteIncinerationCCSshare
 
 p37_specMatDem(mat,all_te,opmoPrc) = 0.;
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
+p37_specMatDem("CO2","FertProd","standard")        = 1.44;  
+p37_specMatDem("ammonia","FertProd","standard")        = 1.44;  
+
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
 p37_specMatDem("dripell","idr","ng")        = 1.44;                                           !! Source: POSTED / Average of Devlin2022, Otto2017, Volg2018, Rechberge2020
@@ -671,6 +674,7 @@ p37_specFeDemTarget("feels","AmSyNGcc","standard")    = 0.4 / (sm_TWa_2_MWh/sm_g
 p37_specFeDemTarget("feh2s","AmSyH2","standard")    = 5 / (sm_TWa_2_MWh/sm_giga_2_non);
 p37_specFeDemTarget("feels","AmSyH2","standard")    = 0.73 / (sm_TWa_2_MWh/sm_giga_2_non);
 
+p37_specFeDemTarget("feels","FertProd","standard")    = 0.73 / (sm_TWa_2_MWh/sm_giga_2_non);
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
 
@@ -727,12 +731,12 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
 p37_mat2ue("olandar","ue_chemicals") = 1.27 * 3; 
 p37_mat2ue("otherchem","ue_chemicals") = 1.27 * 3; !! methanol tech QIANZHI
 !!p37_mat2ue("methanol","ue_chemicals") = 1.27;
-p37_mat2ue("ammonia","ue_chemicals") = 1.27 * 3; !! ammonia tech QIANZHI
+p37_mat2ue("Fert_Nitro","ue_chemicals") = 1.27 * 3; !! ammonia tech QIANZHI
 
 p37_ue_share("olandar","ue_chemicals") = 0.1;   !! methanol tech QIANZHI
-p37_ue_share("otherchem","ue_chemicals") = 0.6;
+p37_ue_share("otherchem","ue_chemicals") = 0.7;
 !!p37_ue_share("methanol","ue_chemicals") = 0.1;
-p37_ue_share("ammonia","ue_chemicals") = 0.3; !! ammonia tech QIANZHI
+p37_ue_share("Fert_Nitro","ue_chemicals") = 0.2; !! ammonia tech QIANZHI
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
 p37_ue_share("sesteel","ue_steel_secondary") = 1.;
@@ -801,12 +805,20 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
   pm_outflowPrcIni(regi,"MeSyLiqcc","standard") = 0;
   pm_outflowPrcIni(regi,"MeSyH2","standard") = 0;
 
-  pm_outflowPrcIni(regi,"AmSyCoal","standard") = pm_fedemand("2005",regi,"ue_chemicals")  * p37_ue_share("ammonia","ue_chemicals") / p37_mat2ue("ammonia","ue_chemicals") * 0.3; !!! ammonia tech QIANZHI
-  pm_outflowPrcIni(regi,"AmSyNG","standard") = pm_fedemand("2005",regi,"ue_chemicals")  * p37_ue_share("ammonia","ue_chemicals") / p37_mat2ue("ammonia","ue_chemicals") * 0.7;
+  pm_outflowPrcIni(regi,"FertProd","standard") = pm_fedemand("2005",regi,"ue_chemicals") * p37_ue_share("Fert_Nitro","ue_chemicals") / p37_mat2ue("Fert_Nitro","ue_chemicals");
+
+  pm_outflowPrcIni(regi,"AmSyCoal","standard") = p37_specMatDem("ammonia","FertProd","standard") *  pm_outflowPrcIni(regi,"FertProd","standard")  * 0.3; !!! ammonia tech QIANZHI
+  pm_outflowPrcIni(regi,"AmSyNG","standard") = p37_specMatDem("ammonia","FertProd","standard") *  pm_outflowPrcIni(regi,"FertProd","standard")  *  0.7;
   pm_outflowPrcIni(regi,"AmSyCoalcc","standard") = 0;
   pm_outflowPrcIni(regi,"AmSyNGcc","standard") = 0;
   pm_outflowPrcIni(regi,"AmSyH2","standard") = 0;
 
+  pm_outflowPrcIni(regi,"FertProd","standard") = pm_fedemand("2005",regi,"ue_chemicals") * p37_ue_share("Fert_Nitro","ue_chemicals") / p37_mat2ue("Fert_Nitro","ue_chemicals");
+
+  pm_outflowPrcIni(regi,"bof","unheated") = pm_fedemand("2005",regi,"ue_steel_primary");
+  pm_outflowPrcIni(regi,"bf","standard") = p37_specMatDem("pigiron","bof","unheated") * pm_outflowPrcIni(regi,"bof","unheated");
+  pm_outflowPrcIni(regi,"eaf","sec") = pm_fedemand("2005",regi,"ue_steel_secondary");
+  
   loop(ttot$(ttot.val ge 2005 AND ttot.val le 2020),
     pm_specFeDem(ttot,regi,"feh2s","ChemNew","standard") = p37_specFeDemTarget("feh2s","ChemNew","standard");
     pm_specFeDem(ttot,regi,"feels","ChemNew","standard") = p37_specFeDemTarget("feels","ChemNew","standard");
@@ -816,24 +828,20 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     pm_specFeDem(ttot,regi,"fehos","ChemOld","standard") = pm_fedemand(ttot,regi,"feli_chemicals") * sm_EJ_2_TWa * p37_mat2ue("otherchem","ue_chemicals") / pm_fedemand(ttot,regi,"ue_chemicals");
     pm_specFeDem(ttot,regi,"feels","ChemOld","standard") = (pm_fedemand(ttot,regi,"feelhth_chemicals") + pm_fedemand(ttot,regi,"feelwlth_chemicals")) * sm_EJ_2_TWa * p37_mat2ue("otherchem","ue_chemicals") / pm_fedemand(ttot,regi,"ue_chemicals");
 
-    !!pm_specFeDem(ttot,regi,"fesos","MeSySol","gh2") = p37_specFeDemTarget("fesos","MeSySol","gh2"); !! methanol tech QIANZHI
-    !!pm_specFeDem(ttot,regi,"feh2s","MeSySol","gh2") = p37_specFeDemTarget("feh2s","MeSySol","gh2");
-    !!pm_specFeDem(ttot,regi,"feels","MeSySol","gh2") = p37_specFeDemTarget("feels","MeSySol","gh2");
-    !!pm_specFeDem(ttot,regi,"fesos","MeSySolcc","greyh2") = p37_specFeDemTarget("fesos","MeSySolcc","greyh2");
-    !!pm_specFeDem(ttot,regi,"feels","MeSySolcc","greyh2") = p37_specFeDemTarget("feels","MeSySolcc","greyh2");
-    !!pm_specFeDem(ttot,regi,"fegas","MeSyNGcc","standard") = p37_specFeDemTarget("fegas","MeSyNGcc","standard");
-    !!pm_specFeDem(ttot,regi,"feels","MeSyNGcc","standard") = p37_specFeDemTarget("feels","MeSyNGcc","standard");
-    !!pm_specFeDem(ttot,regi,"fehos","MeSyLiqcc","standard") = p37_specFeDemTarget("fehos","MeSyLiqcc","standard");
-    !!pm_specFeDem(ttot,regi,"feels","MeSyLiqcc","standard") = p37_specFeDemTarget("feels","MeSyLiqcc","standard");
-    !!pm_specFeDem(ttot,regi,"feh2s","MeSyH2","standard") = p37_specFeDemTarget("feh2s","MeSyH2","standard");
-    !!pm_specFeDem(ttot,regi,"feels","MeSyH2","standard") = p37_specFeDemTarget("feels","MeSyH2","standard");
+    pm_specFeDem(ttot,regi,"fesos","MeSySol","gh2") = p37_specFeDemTarget("fesos","MeSySol","gh2"); !! methanol tech QIANZHI
+    pm_specFeDem(ttot,regi,"feh2s","MeSySol","gh2") = p37_specFeDemTarget("feh2s","MeSySol","gh2");
+    pm_specFeDem(ttot,regi,"feels","MeSySol","gh2") = p37_specFeDemTarget("feels","MeSySol","gh2");
+    pm_specFeDem(ttot,regi,"fesos","MeSySolcc","greyh2") = p37_specFeDemTarget("fesos","MeSySolcc","greyh2");
+    pm_specFeDem(ttot,regi,"feels","MeSySolcc","greyh2") = p37_specFeDemTarget("feels","MeSySolcc","greyh2");
+    pm_specFeDem(ttot,regi,"fegas","MeSyNGcc","standard") = p37_specFeDemTarget("fegas","MeSyNGcc","standard");
+    pm_specFeDem(ttot,regi,"feels","MeSyNGcc","standard") = p37_specFeDemTarget("feels","MeSyNGcc","standard");
+    pm_specFeDem(ttot,regi,"fehos","MeSyLiqcc","standard") = p37_specFeDemTarget("fehos","MeSyLiqcc","standard");
+    pm_specFeDem(ttot,regi,"feels","MeSyLiqcc","standard") = p37_specFeDemTarget("feels","MeSyLiqcc","standard");
+    pm_specFeDem(ttot,regi,"feh2s","MeSyH2","standard") = p37_specFeDemTarget("feh2s","MeSyH2","standard");
+    pm_specFeDem(ttot,regi,"feels","MeSyH2","standard") = p37_specFeDemTarget("feels","MeSyH2","standard");
 
-    !!pm_specFeDem(ttot,regi,"fesos","MeSySol","greyh2") = pm_fedemand(ttot,regi,"feso_chemicals") * sm_EJ_2_TWa * p37_mat2ue("olandar","ue_chemicals") / pm_fedemand(ttot,regi,"ue_chemicals");
-    !!pm_specFeDem(ttot,regi,"feels","MeSySol","greyh2") = (pm_fedemand(ttot,regi,"feelhth_chemicals") + pm_fedemand(ttot,regi,"feelwlth_chemicals")) * sm_EJ_2_TWa * p37_mat2ue("olandar","ue_chemicals") / pm_fedemand(ttot,regi,"ue_chemicals");
     pm_specFeDem(ttot,regi,"fegas","MeSyNG","standard") = pm_fedemand(ttot,regi,"fega_chemicals") * sm_EJ_2_TWa * p37_mat2ue("olandar","ue_chemicals") / pm_fedemand(ttot,regi,"ue_chemicals");
     pm_specFeDem(ttot,regi,"feels","MeSyNG","standard") = (pm_fedemand(ttot,regi,"feelhth_chemicals") + pm_fedemand(ttot,regi,"feelwlth_chemicals")) * sm_EJ_2_TWa * p37_mat2ue("olandar","ue_chemicals") / pm_fedemand(ttot,regi,"ue_chemicals");
-    !!pm_specFeDem(ttot,regi,"fehos","MeSyLiq","standard") = pm_fedemand(ttot,regi,"feli_chemicals") * sm_EJ_2_TWa * p37_mat2ue("olandar","ue_chemicals") / pm_fedemand(ttot,regi,"ue_chemicals");
-    !!pm_specFeDem(ttot,regi,"feels","MeSyLiq","standard") = (pm_fedemand(ttot,regi,"feelhth_chemicals") + pm_fedemand(ttot,regi,"feelwlth_chemicals")) * sm_EJ_2_TWa * p37_mat2ue("olandar","ue_chemicals") / pm_fedemand(ttot,regi,"ue_chemicals");
 
     pm_specFeDem(ttot,regi,"feh2s","AmSyH2","standard") = p37_specFeDemTarget("feh2s","AmSyH2","standard"); !!! ammonia tech QIANZHI
     pm_specFeDem(ttot,regi,"feels","AmSyH2","standard") = p37_specFeDemTarget("feels","AmSyH2","standard");
@@ -843,11 +851,12 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     pm_specFeDem(ttot,regi,"fegas","AmSyNGcc","standard") = p37_specFeDemTarget("fegas","AmSyNGcc","standard");
     pm_specFeDem(ttot,regi,"feels","AmSyNGcc","standard") = p37_specFeDemTarget("feels","AmSyNGcc","standard");
 
-    pm_specFeDem(ttot,regi,"fesos","AmSyCoal","standard") = pm_fedemand(ttot,regi,"feso_chemicals") * sm_EJ_2_TWa * p37_mat2ue("ammonia","ue_chemicals") / pm_fedemand(ttot,regi,"ue_chemicals");
-    pm_specFeDem(ttot,regi,"feels","AmSyCoal","standard") = (pm_fedemand(ttot,regi,"feelhth_chemicals") + pm_fedemand(ttot,regi,"feelwlth_chemicals")) * sm_EJ_2_TWa * p37_mat2ue("ammonia","ue_chemicals") / pm_fedemand(ttot,regi,"ue_chemicals");
-    pm_specFeDem(ttot,regi,"fegas","AmSyNG","standard") = pm_fedemand(ttot,regi,"fega_chemicals") * sm_EJ_2_TWa * p37_mat2ue("ammonia","ue_chemicals") / pm_fedemand(ttot,regi,"ue_chemicals");
-    pm_specFeDem(ttot,regi,"feels","AmSyNG","standard") = (pm_fedemand(ttot,regi,"feelhth_chemicals") + pm_fedemand(ttot,regi,"feelwlth_chemicals")) * sm_EJ_2_TWa * p37_mat2ue("ammonia","ue_chemicals") / pm_fedemand(ttot,regi,"ue_chemicals");
-
+    pm_specFeDem(ttot,regi,"fesos","AmSyCoal","standard") = pm_fedemand(ttot,regi,"feso_chemicals") * sm_EJ_2_TWa * p37_mat2ue("Fert_Nitro","ue_chemicals") / ( p37_specMatDem("ammonia","FertProd","standard") * pm_fedemand(ttot,regi,"ue_chemicals") );
+    pm_specFeDem(ttot,regi,"feels","AmSyCoal","standard") = (pm_fedemand(ttot,regi,"feelhth_chemicals") + pm_fedemand(ttot,regi,"feelwlth_chemicals")) * sm_EJ_2_TWa * p37_mat2ue("Fert_Nitro","ue_chemicals") / ( p37_specMatDem("ammonia","FertProd","standard") * pm_fedemand(ttot,regi,"ue_chemicals") );
+    pm_specFeDem(ttot,regi,"fegas","AmSyNG","standard") = pm_fedemand(ttot,regi,"fega_chemicals") * sm_EJ_2_TWa * p37_mat2ue("Fert_Nitro","ue_chemicals") / ( p37_specMatDem("ammonia","FertProd","standard") * pm_fedemand(ttot,regi,"ue_chemicals") );
+    pm_specFeDem(ttot,regi,"feels","AmSyNG","standard") = (pm_fedemand(ttot,regi,"feelhth_chemicals") + pm_fedemand(ttot,regi,"feelwlth_chemicals")) * sm_EJ_2_TWa * p37_mat2ue("ammonia","ue_chemicals") / ( p37_specMatDem("ammonia","FertProd","standard") * pm_fedemand(ttot,regi,"ue_chemicals") );
+    
+    pm_specFeDem(ttot,regi,"feels","bf","standard") = pm_fedemand(ttot,regi,"feel_steel_primary") * sm_EJ_2_TWa / ( p37_specMatDem("pigiron","bof","unheated") * pm_fedemand(ttot,regi,"ue_steel_primary") );
     );
 
 $endif.cm_subsec_model_chemicals

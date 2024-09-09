@@ -629,15 +629,10 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
    MeSySol   . (greyh2,gh2) . olandar !! methanol tech QIANZHI 
    MeSyNG    . standard     . olandar
    MeSyLiq   . standard     . olandar
-   !!MeSySolcc . coalh2       . olandar
-   !!MeSyNGcc  . standard     . olandar
-   !!MeSyLiqcc . standard     . olandar
    MeSyH2    . standard     . olandar
 
    AmSyCoal . standard . ammonia !! ammonia tech QIANZHI 
    AmSyNG . standard . ammonia
-   !!AmSyCoalcc . standard . ammonia
-   !!AmSyNGcc . standard . ammonia
    AmSyH2 . standard . ammonia
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"

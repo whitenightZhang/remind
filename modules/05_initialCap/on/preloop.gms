@@ -136,6 +136,8 @@ pm_cap0(regi,'AmSyNG') = pm_outflowPrcIni(regi,'AmSyNG','standard') / pm_cf("200
 pm_cap0(regi,'AmSyCoalcc')  = 0.;
 pm_cap0(regi,'AmSyNGcc')  = 0.;
 pm_cap0(regi,'AmSyH2')  = 0.;
+
+pm_cap0(regi,'FertProd') = pm_outflowPrcIni(regi,'FertProd','standard') / pm_cf("2005",regi,'FertProd'); 
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
 pm_cap0(regi,'bof') = pm_outflowPrcIni(regi,'bof','unheated') / pm_cf("2005",regi,'bof');
