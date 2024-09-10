@@ -403,21 +403,7 @@ q37_prodMat(t,regi,mat)$( matOut(mat) ) ..
 ***------------------------------------------------------
 *' Hand-over to CES
 ***------------------------------------------------------
-q37_mat2ue(t,regi,in)$( ppfUePrc(in) ) ..
-    vm_cesIO(t,regi,in)
-    + pm_cesdata(t,regi,in,"offset_quantity")
-  =e=
-    sum(mat2ue(mat,in),
-      p37_mat2ue(mat,in)
-      *
-      v37_matFlow(t,regi,mat)
-    )
-;
-
-***------------------------------------------------------
-*' Fixed share of final materials in ue !! ammonia tech QIANZHI
-***------------------------------------------------------
-q37_ue_share(t,regi,mat,in)$( ppfUePrc(in) ) ..
+q37_mat2ue(t,regi,mat,in)$( ppfUePrc(in) ) ..
     (vm_cesIO(t,regi,in)
     + pm_cesdata(t,regi,in,"offset_quantity"))
     * p37_ue_share(mat,in)
@@ -428,7 +414,6 @@ q37_ue_share(t,regi,mat,in)$( ppfUePrc(in) ) ..
       v37_matFlow(t,regi,mat)
     )
 ;
-
 
 ***------------------------------------------------------
 *' Definition of capacity constraints

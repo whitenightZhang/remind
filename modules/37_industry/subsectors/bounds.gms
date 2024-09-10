@@ -136,34 +136,9 @@ $drop cm_indstExogScen_set
 
 !! fix processes procudction in historic years
 if (cm_startyear eq 2005,
-  loop(regi,
-    loop(tePrc2opmoPrc(tePrc,opmoPrc),
-      vm_outflowPrc.fx("2005",regi,tePrc,opmoPrc) = pm_outflowPrcIni(regi,tePrc,opmoPrc);
+    loop((ttot,regi,tePrc2opmoPrc(tePrc,opmoPrc))$(ttot.val ge 2005 AND ttot.val le 2020),
+      vm_outflowPrc.fx(ttot,regi,tePrc,opmoPrc) = pm_outflowPrcHist(ttot,regi,tePrc,opmoPrc);
     );
-  );
-
-  loop(regi,
-    loop(ttot$(ttot.val ge 2005 AND ttot.val le 2020),
-$ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
-      vm_outflowPrc.fx(ttot,regi,"chemNew","standard") = 0.;
-      vm_outflowPrc.fx(ttot,regi,"MeSySol","gh2") = 0.; !! methanol tech QIANZHI
-      vm_outflowPrc.fx(ttot,regi,"MeSySolcc","greyh2") = 0.;
-      vm_outflowPrc.fx(ttot,regi,"MeSyNGcc","standard") = 0.;
-      vm_outflowPrc.fx(ttot,regi,"MeSyLiqcc","standard") = 0.;
-      vm_outflowPrc.fx(ttot,regi,"MeSyH2","standard") = 0.;
-      vm_outflowPrc.fx(ttot,regi,"AmSyCoalcc","standard") = 0.;
-      vm_outflowPrc.fx(ttot,regi,"AmSyNGcc","standard") = 0.;
-      vm_outflowPrc.fx(ttot,regi,"AmSyH2","standard") = 0.; !! ammonia tech QIANZHI 
-$endif.cm_subsec_model_chemicals
-$ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
-      vm_outflowPrc.fx(ttot,regi,"eaf","pri") = 0.;
-      vm_outflowPrc.fx(ttot,regi,"idr","ng") = 0.;
-      vm_outflowPrc.fx(ttot,regi,"idr","h2") = 0.;
-      vm_outflowPrc.fx(ttot,regi,"bfcc","standard") = 0.;
-      vm_outflowPrc.fx(ttot,regi,"idrcc","ng") = 0.;
-$endif.cm_subsec_model_steel
-    );
-  );
 );
 
 !! Switch to turn off all CCS
@@ -172,12 +147,12 @@ if (cm_IndCCSscen ne 1,
 );
 !! TOCHECK:Qianzhi
 if (cm_CCS_steel ne 1,
-  loop(tePrc$(teCCPrc(tePrc) AND secInd37_tePrc("steel", tePrc)), 
+  loop(tePrc$(teCCPrc(tePrc) AND secInd37_tePrc("steel", tePrc)),
     vm_cap.fx(t,regi,tePrc,rlf) = 0.;
   );
 );
 if (cm_CCS_chemicals ne 1,
-  loop(tePrc$(teCCPrc(tePrc) AND secInd37_tePrc("chemicals", tePrc)), 
+  loop(tePrc$(teCCPrc(tePrc) AND secInd37_tePrc("chemicals", tePrc)),
     vm_cap.fx(t,regi,tePrc,rlf) = 0.;
   );
 );

@@ -417,7 +417,7 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     MeSyLiqcc
     MeSyH2
 
-    AmSyCoal !! ammonia tech QIANZHI 
+    AmSyCoal !! ammonia tech QIANZHI
     AmSyNG
     AmSyCoalcc
     AmSyNGcc
@@ -439,7 +439,7 @@ mat(all_enty)   "Materials considered in process-based model; Can be input and/o
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     otherchem
     olandar
-    ammonia !! ammonia tech QIANZHI 
+    ammonia !! ammonia tech QIANZHI
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     prsteel
@@ -472,7 +472,7 @@ matOut(all_enty)   "Materials which serve as output of a process"
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     otherchem
     olandar
-    ammonia !! ammonia tech QIANZHI 
+    ammonia !! ammonia tech QIANZHI
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     prsteel
@@ -487,7 +487,7 @@ matFin(mat)   "Final products of a process-based production route"
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
    otherchem
    olandar
-   ammonia !! ammonia tech QIANZHI 
+   ammonia !! ammonia tech QIANZHI
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
    prsteel
@@ -537,7 +537,7 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     MeSyRo_Liq_ccs
     MeSyRo_H2
 
-    AmSyRo_Coal !! ammonia tech QIANZHI 
+    AmSyRo_Coal !! ammonia tech QIANZHI
     AmSyRo_NG
     AmSyRo_Coal_ccs
     AmSyRo_NG_ccs
@@ -591,7 +591,7 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     MeSyLiqcc . standard
     MeSyH2 . standard
 
-    AmSyCoal . standard !! ammonia tech QIANZHI 
+    AmSyCoal . standard !! ammonia tech QIANZHI
     AmSyNG . standard
     AmSyCoalcc . standard
     AmSyNGcc . standard
@@ -626,7 +626,7 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
    chemOld . standard . otherchem
    chemNew . standard . otherchem
 
-   MeSySol   . (greyh2,gh2) . olandar !! methanol tech QIANZHI 
+   MeSySol   . (greyh2,gh2) . olandar !! methanol tech QIANZHI
    MeSyNG    . standard     . olandar
    MeSyLiq   . standard     . olandar
    !!MeSySolcc . coalh2       . olandar
@@ -634,7 +634,7 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
    !!MeSyLiqcc . standard     . olandar
    MeSyH2    . standard     . olandar
 
-   AmSyCoal . standard . ammonia !! ammonia tech QIANZHI 
+   AmSyCoal . standard . ammonia !! ammonia tech QIANZHI
    AmSyNG . standard . ammonia
    !!AmSyCoalcc . standard . ammonia
    !!AmSyNGcc . standard . ammonia
@@ -655,15 +655,15 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
    chemOld . standard . ue_chemicals
    chemNew . standard . ue_chemicals
 
-   MeSySol             . (greyh2,gh2)     . ue_chemicals !! methanol tech QIANZHI 
+   MeSySol             . (greyh2,gh2)     . ue_chemicals !! methanol tech QIANZHI
    MeSySolcc           . greyh2           . ue_chemicals
    MeSyNG   . standard         . ue_chemicals
    (MeSyLiq,MeSyLiqcc) . standard         . ue_chemicals
-   MeSyH2              . standard         . ue_chemicals 
-   
+   MeSyH2              . standard         . ue_chemicals
+
    (AmSyCoal,AmSyCoalcc) . standard . ue_chemicals
-   (AmSyNG,AmSyNGcc) . standard . ue_chemicals !! ammonia tech QIANZHI 
-   AmSyH2 . standard . ue_chemicals 
+   (AmSyNG,AmSyNGcc) . standard . ue_chemicals !! ammonia tech QIANZHI
+   AmSyH2 . standard . ue_chemicals
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
    (bf,bfcc)  . standard        . ue_steel_primary
@@ -678,11 +678,11 @@ $endif.cm_subsec_model_steel
 tePrc2teCCPrc(tePrc,opmoPrc,tePrc,opmoPrc)  "Mapping of base technologies to CCS technologies"
   /
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
-    MeSySol   . greyh2   . MeSySolcc  . greyh2   !! methanol tech QIANZHI 
-    MeSyNG    . standard . MeSyNGcc   . standard 
+    MeSySol   . greyh2   . MeSySolcc  . greyh2   !! methanol tech QIANZHI
+    MeSyNG    . standard . MeSyNGcc   . standard
     MeSyLiq   . standard . MeSyLiqcc  . standard
 
-    AmSyCoal  . standard . AmSyCoalcc  . standard !! ammonia tech QIANZHI 
+    AmSyCoal  . standard . AmSyCoalcc  . standard !! ammonia tech QIANZHI
     AmSyNG    . standard . AmSyNGcc    . standard
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
@@ -697,7 +697,7 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
    chemOld . standard . chemRo_old
    chemNew . standard . chemRo_new
 
-   MeSySol . gh2       . MeSyRo_Sol_gh2 !! methanol tech QIANZHI 
+   MeSySol . gh2       . MeSyRo_Sol_gh2 !! methanol tech QIANZHI
    MeSySol . greyh2    . MeSyRo_Sol_greyh2
    MeSySol . greyh2    . MeSyRo_Sol_ccs
    MeSyNG  . standard  . MeSyRo_NG
@@ -709,7 +709,7 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
    MeSyLiqcc  . standard  . MeSyRo_Liq_ccs
    MeSyH2  . standard  . MeSyRo_H2
 
-   AmSyCoal . standard . AmSyRo_Coal !! ammonia tech QIANZHI 
+   AmSyCoal . standard . AmSyRo_Coal !! ammonia tech QIANZHI
    AmSyCoal . standard . AmSyRo_Coal_ccs
    AmSyNG . standard . AmSyRo_NG
    AmSyNG . standard . AmSyRo_NG_ccs
@@ -739,7 +739,7 @@ mat2ue(mat,all_in)   "Mapping of materials (final route products) onto the UE ce
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
    otherchem . ue_chemicals
    olandar   . ue_chemicals
-   ammonia   . ue_chemicals !! ammonia tech QIANZHI 
+   ammonia   . ue_chemicals !! ammonia tech QIANZHI
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
    prsteel . ue_steel_primary
@@ -761,7 +761,7 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     entydummy.entydummy.MeSyLiqcc
     entydummy.entydummy.MeSyH2
 
-    entydummy.entydummy.AmSyCoal !! ammonia tech QIANZHI 
+    entydummy.entydummy.AmSyCoal !! ammonia tech QIANZHI
     entydummy.entydummy.AmSyNG
     entydummy.entydummy.AmSyCoalcc
     entydummy.entydummy.AmSyNGcc
@@ -791,7 +791,7 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     chemicals . MeSyLiqcc
     chemicals . MeSyH2
 
-    chemicals . AmSyCoal !! ammonia tech QIANZHI 
+    chemicals . AmSyCoal !! ammonia tech QIANZHI
     chemicals . AmSyNG
     chemicals . AmSyCoalcc
     chemicals . AmSyNGcc
@@ -805,6 +805,36 @@ $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
 
     steel . bfcc
     steel . idrcc
+$endif.cm_subsec_model_steel
+  /
+
+fe2ppfen_no_ces_use(all_enty,all_in)   "Match ESM entyFe to ppfen that are not used in the CES tree, but for datainput for process-bases industry"
+  /
+$ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
+    fesos . feso_chemicals
+    fehos . feli_chemicals
+    fegas . fega_chemicals
+    feels . (feelhth_chemicals, feelwlth_chemicals)
+$endif.cm_subsec_model_chemicals
+$ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
+    fesos . feso_steel
+    fehos . feli_steel
+    fegas . fega_steel
+    feels . (feel_steel_primary, feel_steel_secondary)
+$endif.cm_subsec_model_steel
+  /
+
+ue2ppfenPrc(all_in,all_in)   "correspondant to ces_eff_target_dyn37, but for use in process-based context, i.e. contained subsectors are complements"
+  /
+$ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
+    ue_chemicals . (feso_chemicals, feli_chemicals, fega_chemicals,
+		                feh2_chemicals, feelhth_chemicals, feelwlth_chemicals)
+$endif.cm_subsec_model_chemicals
+$ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
+    ue_steel_primary . (feso_steel, feli_steel, fega_steel, feh2_steel,
+                        feel_steel_primary)
+
+    ue_steel_secondary . feel_steel_secondary
 $endif.cm_subsec_model_steel
   /
 
