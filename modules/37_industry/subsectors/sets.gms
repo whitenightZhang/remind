@@ -500,7 +500,7 @@ opmoPrc   "Operation modes for technologies in process-based model"
     standard   "Only one operation mode implemented"
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     greyh2  !! methanol tech QIANZHI
-    gh2        "Input of green hydrogen to adjust the C-H ratio"
+    greenh2        "Input of green hydrogen to adjust the C-H ratio"
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     ng         "Direct reduction using natural gas"
@@ -529,7 +529,7 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     chemRo_new
 
     MeSyRo_Sol_greyh2 !! methanol tech QIANZHI
-    MeSyRo_Sol_gh2
+    MeSyRo_Sol_greenh2
     MeSyRo_NG
     MeSyRo_Liq
     MeSyRo_Sol_ccs
@@ -583,7 +583,7 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     chemOld . standard
     chemNew . standard
 
-    MeSySol . (greyh2,gh2)  !! methanol tech QIANZHI
+    MeSySol . (greyh2,greenh2)  !! methanol tech QIANZHI
     MeSyNG . standard
     MeSyLiq . standard
     MeSySolcc . (greyh2)
@@ -626,7 +626,7 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
    chemOld . standard . otherchem
    chemNew . standard . otherchem
 
-   MeSySol   . (greyh2,gh2) . olandar !! methanol tech QIANZHI
+   MeSySol   . (greyh2,greenh2) . olandar !! methanol tech QIANZHI
    MeSyNG    . standard     . olandar
    MeSyLiq   . standard     . olandar
    !!MeSySolcc . coalh2       . olandar
@@ -655,7 +655,7 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
    chemOld . standard . ue_chemicals
    chemNew . standard . ue_chemicals
 
-   MeSySol             . (greyh2,gh2)     . ue_chemicals !! methanol tech QIANZHI
+   MeSySol             . (greyh2,greenh2)     . ue_chemicals !! methanol tech QIANZHI
    MeSySolcc           . greyh2           . ue_chemicals
    MeSyNG   . standard         . ue_chemicals
    (MeSyLiq,MeSyLiqcc) . standard         . ue_chemicals
@@ -697,7 +697,7 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
    chemOld . standard . chemRo_old
    chemNew . standard . chemRo_new
 
-   MeSySol . gh2       . MeSyRo_Sol_gh2 !! methanol tech QIANZHI
+   MeSySol . greenh2       . MeSyRo_Sol_greenh2 !! methanol tech QIANZHI
    MeSySol . greyh2    . MeSyRo_Sol_greyh2
    MeSySol . greyh2    . MeSyRo_Sol_ccs
    MeSyNG  . standard  . MeSyRo_NG

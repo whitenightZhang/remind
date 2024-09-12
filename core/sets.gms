@@ -320,10 +320,10 @@ $ENDIF.WindOff
 
 *** TOCHECK: Qianzhi      
 *** PCV: technologies related to chemical
-        chemOld
-        chemNew
-        chemRo_old
-        chemRo_new
+        ChemOld
+        ChemNew
+        ChemRo_old
+        ChemRo_new
 
         MeSySol    !! methanol tech QIANZHI
         MeSyNG
@@ -333,7 +333,7 @@ $ENDIF.WindOff
         MeSyLiqcc
         MeSyH2
         MeSyRo_Sol_greyh2
-        MeSyRo_Sol_gh2
+        MeSyRo_Sol_greenh2
         MeSyRo_Sol_ccs
         MeSyRo_NG
         MeSyRo_NG_ccs
@@ -1266,8 +1266,8 @@ $ENDIF.WindOff
         termM_lng       "Import terminals for LNG (regasification)"
         vess_lng        "Vessels transporting LNG"
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
-        chemOld
-        chemNew
+        ChemOld
+        ChemNew
         MeSySol !! methanol tech QIANZHI
         MeSyNG
         MeSyLiq
@@ -1280,6 +1280,9 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
         AmSyCoalcc
         AmSyNGcc
         AmSyH2
+
+        !!MtOMtA
+        !!FertProd
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
         idr             "Iron direct reduction"
@@ -1365,11 +1368,14 @@ $IFTHEN.WindOff %cm_wind_offshore% == "1"
   gridwindoff     "grid between areas with high wind offshore production and the rest"
 $ENDIF.WindOff
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
+  ChemNew         "Other chemicals by Hydrogen"
   MeSySolcc       "Methanol by Soilds CCS" !! methanol tech QIANZHI
   MeSyNGcc        "Methanol by Gas CCS"
   MeSyLiqcc       "Methanol by Liquids CCS"
+  MeSyH2          "Methanol by Hydrogen"
   AmSyCoalcc      "Ammonia by Coal CCS" !! ammonia tech QIANZHI 
   AmSyNGcc        "Ammonia by Gas CCS"
+  AmSyH2          "Ammonia by Hydrogen"
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
   bfcc            "Blast furnace CCS"

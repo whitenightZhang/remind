@@ -729,8 +729,8 @@ pm_cf(ttot,regi,"tdsynpet") = 0.7;
 pm_cf(ttot,regi,"tdsyndie") = 0.7;
 *JD eternal short-term fix for process-based industry
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
-pm_cf(ttot,regi,"chemOld") = 0.8;
-pm_cf(ttot,regi,"chemNew") = 0.8;
+pm_cf(ttot,regi,"ChemOld") = 0.8;
+pm_cf(ttot,regi,"ChemNew") = 0.8;
 pm_cf(ttot,regi,"MeSySol") = 0.8; !! methanol tech QIANZHI
 pm_cf(ttot,regi,"MeSyNG") = 0.8; 
 pm_cf(ttot,regi,"MeSyLiq") = 0.8;
@@ -743,6 +743,9 @@ pm_cf(ttot,regi,"AmSyNG") = 0.8;
 pm_cf(ttot,regi,"AmSyCoalcc") = 0.8; 
 pm_cf(ttot,regi,"AmSyNGcc") = 0.8;
 pm_cf(ttot,regi,"AmSyH2") = 0.8;
+
+!!pm_cf(ttot,regi,"MtOMtA") = 0.8;
+!!pm_cf(ttot,regi,"FertProd") = 0.8;
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
 pm_cf(ttot,regi,"bf") = 0.8;
@@ -1229,11 +1232,14 @@ loop(ttot$(ttot.val ge 2005),
   p_adj_seed_te(ttot,regi,'oae_el')          = 0.25;
   p_adj_seed_te(ttot,regi,'geohe')           = 0.33;
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
+  p_adj_seed_te(ttot,regi,"ChemNew")         = 0.05;
   p_adj_seed_te(ttot,regi,"MeSySolcc")       = 0.05;  !! methanol tech QIANZHI
   p_adj_seed_te(ttot,regi,"MeSyNGcc")        = 0.05;  
-  p_adj_seed_te(ttot,regi,"MeSyLiqcc")       = 0.05;  
+  p_adj_seed_te(ttot,regi,"MeSyLiqcc")       = 0.05; 
+  p_adj_seed_te(ttot,regi,"MeSyH2")          = 0.05;
   p_adj_seed_te(ttot,regi,"AmSyCoalcc")      = 0.05;  !! ammonia tech QIANZHI 
   p_adj_seed_te(ttot,regi,"AmSyNGcc")        = 0.05;
+  p_adj_seed_te(ttot,regi,"AmSyH2")          = 0.05;
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
   p_adj_seed_te(ttot,regi,"bfcc")            = 0.05;
@@ -1271,11 +1277,14 @@ $endif.WindOff
   p_adj_coeff(ttot,regi,"wind")            = 0.25;
   p_adj_coeff(ttot,regi,"geohe")           = 0.6;
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
+  p_adj_coeff(ttot,regi,"ChemNew")        = 1.0;
   p_adj_coeff(ttot,regi,"MeSySolcc")       = 1.0;  !! methanol tech QIANZHI
   p_adj_coeff(ttot,regi,"MeSyNGcc")        = 1.0;  
   p_adj_coeff(ttot,regi,"MeSyLiqcc")       = 1.0;  
+  p_adj_coeff(ttot,regi,"MeSyH2")        = 1.0;
   p_adj_coeff(ttot,regi,"AmSyCoalcc")      = 1.0;  !! ammonia tech QIANZHI 
   p_adj_coeff(ttot,regi,"AmSyNGcc")        = 1.0;
+  p_adj_coeff(ttot,regi,"AmSyH2")        = 1.0;
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
   p_adj_coeff(ttot,regi,"bfcc")            = 1.0;

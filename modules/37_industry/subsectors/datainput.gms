@@ -616,17 +616,11 @@ $endif.cm_subsec_model_steel
 p37_specFeDemTarget(all_enty,all_te,opmoPrc) = 0.;
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
 !! TODO Qianzhi 1MWh NH3,LHV = 0.19355 tons
-!! p37_specFeDemTarget("fegas","chemOld","standard")  = 7.65 / (sm_TWa_2_MWh/sm_giga_2_non);    !! Source: IEA, The Future of Hydrogen 2019
-!!p37_specFeDemTarget("feels","chemOld","standard")  = 0.08 / (sm_TWa_2_MWh/sm_giga_2_non);    !! Source: IEA, The Future of Hydrogen 2019
-!!p37_specFeDemTarget("fesos","chemOld","standard")    = sm_eps / (sm_TWa_2_MWh/sm_giga_2_non);    !! Source: DUMMY
-!!p37_specFeDemTarget("fehos","chemOld","standard")    = sm_eps / (sm_TWa_2_MWh/sm_giga_2_non);    !! Source: DUMMY
 
 p37_specFeDemTarget("fegas","chemOld","standard")  = 3.2 / (sm_TWa_2_MWh/sm_giga_2_non);
 p37_specFeDemTarget("feels","chemOld","standard")  = 0.4 / (sm_TWa_2_MWh/sm_giga_2_non);
 p37_specFeDemTarget("fesos","chemOld","standard")    = 0.6 / (sm_TWa_2_MWh/sm_giga_2_non);
 p37_specFeDemTarget("fehos","chemOld","standard")    = 5.0 / (sm_TWa_2_MWh/sm_giga_2_non);
-
-!!p37_specFeDemTarget("feh2s","chemOld","standard")    = sm_eps / (sm_TWa_2_MWh/sm_giga_2_non);    !! Source: DUMMY
 
 p37_specFeDemTarget("feh2s","chemNew","standard")  = 5  / (sm_TWa_2_MWh/sm_giga_2_non);    !! Source: M. Fasihi, R. Weiss, J. Savolainen and C. Breyer, Appl. Energy, 2021
 p37_specFeDemTarget("feels","chemNew","standard")  = 0.73 / (sm_TWa_2_MWh/sm_giga_2_non);    !! Source: M. Fasihi, R. Weiss, J. Savolainen and C. Breyer, Appl. Energy, 2021
@@ -634,9 +628,9 @@ p37_specFeDemTarget("feels","chemNew","standard")  = 0.73 / (sm_TWa_2_MWh/sm_gig
 p37_specFeDemTarget("fesos","MeSySol","greyh2")  = 3.2 / (sm_TWa_2_MWh/sm_giga_2_non);  !! methanol tech QIANZHI
 p37_specFeDemTarget("feels","MeSySol","greyh2")  = 0.4 / (sm_TWa_2_MWh/sm_giga_2_non);
 
-p37_specFeDemTarget("fesos","MeSySol","gh2")  = 1.6 / (sm_TWa_2_MWh/sm_giga_2_non);
-p37_specFeDemTarget("feh2s","MeSySol","gh2")  = 1.6 / (sm_TWa_2_MWh/sm_giga_2_non);
-p37_specFeDemTarget("feels","MeSySol","gh2")  = 0.4 / (sm_TWa_2_MWh/sm_giga_2_non);
+p37_specFeDemTarget("fesos","MeSySol","greenh2")  = 1.6 / (sm_TWa_2_MWh/sm_giga_2_non);
+p37_specFeDemTarget("feh2s","MeSySol","greenh2")  = 1.6 / (sm_TWa_2_MWh/sm_giga_2_non);
+p37_specFeDemTarget("feels","MeSySol","greenh2")  = 0.4 / (sm_TWa_2_MWh/sm_giga_2_non);
 
 p37_specFeDemTarget("fegas","MeSyNG","standard")    = 3.2 / (sm_TWa_2_MWh/sm_giga_2_non);
 p37_specFeDemTarget("feels","MeSyNG","standard")    = 0.4 / (sm_TWa_2_MWh/sm_giga_2_non);
@@ -737,8 +731,8 @@ $endif.cm_subsec_model_steel
 
 p37_ue_share(all_enty,all_in) = 0.;
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
-p37_ue_share("olandar","ue_chemicals") = 0.1;   !! methanol tech QIANZHI
-p37_ue_share("otherchem","ue_chemicals") = 0.6;
+p37_ue_share("olandar","ue_chemicals") = 0.3;   !! methanol tech QIANZHI
+p37_ue_share("otherchem","ue_chemicals") = 0.4;
 !!p37_ue_share("methanol","ue_chemicals") = 0.1;
 p37_ue_share("ammonia","ue_chemicals") = 0.3; !! ammonia tech QIANZHI
 $endif.cm_subsec_model_chemicals
