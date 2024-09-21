@@ -406,8 +406,13 @@ $endif.cm_subsec_model_steel
 tePrc(all_te)  "Technologies used in process-based model (including CCS)"
   /
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
-    ChemOld
-    ChemNew
+    ChemSol
+    ChemNG
+    ChemLiq
+    ChemH2
+
+    StCrNG
+    StCrLiq
 
     MeSySol !! methanol tech QIANZHI
     MeSyNG
@@ -419,12 +424,17 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
 
     AmSyCoal !! ammonia tech QIANZHI
     AmSyNG
+    AmSyLiq
     AmSyCoalcc
     AmSyNGcc
+    AmSyLiqcc
     AmSyH2
 
     MtOMtA
     FertProd
+    MeToFinal
+    AmToFinal
+
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     bf
@@ -445,6 +455,9 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     Fertilizer
     methanol
     ammonia !! ammonia tech QIANZHI
+    MethFinal
+    AmmoFinal
+
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     prsteel
@@ -481,7 +494,9 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     HVC
     Fertilizer
     methanol
-    ammonia !! ammonia tech QIANZHI
+    ammonia !! ammonia tech 
+    MethFinal
+    AmmoFinal
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     prsteel
@@ -497,6 +512,8 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
    OtherChem
    HVC
    Fertilizer !! ammonia tech QIANZHI
+   MethFinal
+   AmmoFinal
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
    prsteel
@@ -534,8 +551,13 @@ $endif.cm_subsec_model_steel
 route(all_te)  "Process routes; Currently only used for reporting"
   /
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
-    ChemRo_old
-    ChemRo_new
+    ChemRo_Sol
+    ChemRo_NG
+    ChemRo_Liq
+    ChemRo_H2
+
+    StCrNG_Ro
+    StCrLiq_Ro
 
     MeSyRo_Sol_greyh2 !! methanol tech QIANZHI
     MeSyRo_Sol_greenh2
@@ -548,12 +570,16 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
 
     AmSyRo_Coal !! ammonia tech QIANZHI
     AmSyRo_NG
+    AmSyRo_Liq
     AmSyRo_Coal_ccs
     AmSyRo_NG_ccs
+    AmSyRo_Liq_ccs
     AmSyRo_H2
 
     MtOMtA_Ro
     FertProd_Ro
+    MeToFinal_Ro
+    AmToFinal_Ro
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     idreaf_ng
@@ -592,8 +618,13 @@ $endif.cm_subsec_model_steel
 tePrc2opmoPrc(tePrc,opmoPrc)   "Mapping of technologies onto available operation modes"
   /
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
-    ChemOld . standard
-    ChemNew . standard
+    ChemSol . standard
+    ChemNG . standard
+    ChemLiq . standard
+    ChemH2 . standard
+
+    StCrNG . standard  
+    StCrLiq . standard  
 
     MeSySol . (greyh2,greenh2)  !! methanol tech QIANZHI
     MeSyNG . standard
@@ -605,12 +636,16 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
 
     AmSyCoal . standard !! ammonia tech QIANZHI
     AmSyNG . standard
+    AmSyLiq . standard
     AmSyCoalcc . standard
     AmSyNGcc . standard
+    AmSyLiqcc . standard
     AmSyH2 . standard
 
     MtOMtA . standard
     FertProd . standard
+    MeToFinal . standard
+    AmToFinal . standard
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     idr . (ng,h2)
@@ -627,6 +662,8 @@ tePrc2matIn(tePrc,opmoPrc,mat)   "Mapping of technologies onto input materials"
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     FertProd . standard  . ammonia
     MtOMtA . standard  . methanol
+    MeToFinal . standard  . methanol
+    AmToFinal . standard  . ammonia
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     idr . (h2,ng) . dripell
@@ -640,8 +677,13 @@ $endif.cm_subsec_model_steel
 tePrc2matOut(tePrc,opmoPrc,mat)   "Mapping of industry process technologies onto their output materials"
   /
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
-   ChemOld . standard . OtherChem
-   ChemNew . standard . OtherChem
+   ChemSol . standard . OtherChem
+   ChemNG . standard . OtherChem
+   ChemLiq . standard . OtherChem
+   ChemH2 . standard . OtherChem
+
+   StCrNG . standard . HVC
+   StCrLiq . standard . HVC
 
    MeSySol   . (greyh2,greenh2) . methanol !! methanol tech QIANZHI
    MeSyNG    . standard     . methanol
@@ -650,10 +692,13 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
 
    AmSyCoal . standard . ammonia !! ammonia tech QIANZHI
    AmSyNG . standard . ammonia
+   AmSyLiq . standard . ammonia
    AmSyH2 . standard . ammonia
 
    MtOMtA . standard . HVC
    FertProd . standard . Fertilizer
+   MeToFinal . standard . MethFinal
+   AmToFinal . standard . AmmoFinal
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
    bf  . standard . pigiron
@@ -667,8 +712,13 @@ $endif.cm_subsec_model_steel
 tePrc2ue(tePrc,opmoPrc,all_in)   "Mapping of industry process technologies to the UE ces nodes they directly or indirectly feed into"
   /
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
-   ChemOld . standard . ue_chemicals
-   ChemNew . standard . ue_chemicals
+   ChemSol . standard . ue_chemicals
+   ChemNG . standard . ue_chemicals
+   ChemLiq . standard . ue_chemicals
+   ChemH2 . standard . ue_chemicals
+    
+   StCrNG . standard . ue_chemicals
+   StCrLiq . standard . ue_chemicals
 
    MeSySol             . (greyh2,greenh2)     . ue_chemicals !! methanol tech QIANZHI
    MeSySolcc           . greyh2           . ue_chemicals
@@ -678,10 +728,13 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
 
    (AmSyCoal,AmSyCoalcc) . standard . ue_chemicals
    (AmSyNG,AmSyNGcc) . standard . ue_chemicals !! ammonia tech QIANZHI
+   (AmSyLiq,AmSyLiqcc) . standard . ue_chemicals
    AmSyH2 . standard . ue_chemicals
 
    MtOMtA . standard . ue_chemicals
    FertProd . standard . ue_chemicals
+   MeToFinal . standard . ue_chemicals
+   AmToFinal . standard . ue_chemicals
    
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
@@ -703,6 +756,7 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
 
     AmSyCoal  . standard . AmSyCoalcc  . standard !! ammonia tech QIANZHI
     AmSyNG    . standard . AmSyNGcc    . standard
+    AmSyLiq   . standard . AmSyLiqcc    . standard
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     bf  . standard . bfcc  . standard
@@ -713,8 +767,12 @@ $endif.cm_subsec_model_steel
 tePrc2route(tePrc,opmoPrc,route)  "Mapping of technologies onto the production routes they belong to"
   /
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
-   ChemOld . standard . ChemRo_old
-   ChemNew . standard . ChemRo_new
+   ChemSol . standard . ChemRo_Sol
+   ChemNG . standard . ChemRo_NG
+   ChemLiq . standard . ChemRo_Liq
+
+   StCrNG . standard . StCrNG_Ro
+   StCrLiq . standard . StCrLiq_Ro
 
    MeSySol . greenh2       . MeSyRo_Sol_greenh2 !! methanol tech QIANZHI
    MeSySol . greyh2    . MeSyRo_Sol_greyh2
@@ -732,12 +790,17 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
    AmSyCoal . standard . AmSyRo_Coal_ccs
    AmSyNG . standard . AmSyRo_NG
    AmSyNG . standard . AmSyRo_NG_ccs
+   AmSyLiq . standard . AmSyRo_Liq
+   AmSyLiq . standard . AmSyRo_Liq_ccs
    AmSyCoalcc . standard . AmSyRo_Coal_ccs
    AmSyNGcc . standard . AmSyRo_NG_ccs
+   AmSyLiqcc . standard . AmSyRo_Liq_ccs
    AmSyH2 . standard . AmSyRo_H2
 
    MtOMtA . standard . MtOMtA_Ro
    FertProd . standard . FertProd_Ro
+   MeToFinal . standard . MeToFinal_Ro
+   AmToFinal . standard . AmToFinal_Ro
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     eaf . sec . seceaf
@@ -762,6 +825,8 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
    OtherChem . ue_chemicals
    HVC   . ue_chemicals
    Fertilizer   . ue_chemicals !! ammonia tech QIANZHI
+   MethFinal   . ue_chemicals
+   AmmoFinal   . ue_chemicals
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
    prsteel . ue_steel_primary
@@ -772,8 +837,13 @@ $endif.cm_subsec_model_steel
 fe2mat(all_enty,all_enty,all_te)   "Set of industry technologies to be included in en2en, which connects capex and opex to budget"
   /
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
-    entydummy.entydummy.ChemOld
-    entydummy.entydummy.ChemNew
+    entydummy.entydummy.ChemSol
+    entydummy.entydummy.ChemNG
+    entydummy.entydummy.ChemLiq
+    entydummy.entydummy.ChemH2
+
+    entydummy.entydummy.StCrNG
+    entydummy.entydummy.StCrLiq
 
     entydummy.entydummy.MeSySol !! methanol tech QIANZHI
     entydummy.entydummy.MeSyNG
@@ -785,12 +855,16 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
 
     entydummy.entydummy.AmSyCoal !! ammonia tech QIANZHI
     entydummy.entydummy.AmSyNG
+    entydummy.entydummy.AmSyLiq
     entydummy.entydummy.AmSyCoalcc
     entydummy.entydummy.AmSyNGcc
+    entydummy.entydummy.AmSyLiqcc
     entydummy.entydummy.AmSyH2
 
     entydummy.entydummy.MtOMtA
     entydummy.entydummy.FertProd
+    entydummy.entydummy.MeToFinal
+    entydummy.entydummy.AmToFinal
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     entydummy.entydummy.bf
@@ -805,8 +879,13 @@ $endif.cm_subsec_model_steel
 secInd37_tePrc(secInd37,tePrc)   "Mapping of technologies onto industry subsectors"
   /
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
-    chemicals . ChemOld
-    chemicals . ChemNew
+    chemicals . ChemSol
+    chemicals . ChemNG
+    chemicals . ChemLiq
+    chemicals . ChemH2
+
+    chemicals . StCrNG
+    chemicals . StCrLiq
 
     chemicals . MeSySol !! methanol tech QIANZHI
     chemicals . MeSyNG
@@ -818,12 +897,16 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
 
     chemicals . AmSyCoal !! ammonia tech QIANZHI
     chemicals . AmSyNG
+    chemicals . AmSyLiq
     chemicals . AmSyCoalcc
     chemicals . AmSyNGcc
+    chemicals . AmSyLiqcc
     chemicals . AmSyH2
 
     chemicals . MtOMtA
     chemicals . FertProd
+    chemicals . MeToFinal
+    chemicals . AmToFinal
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     steel . idr

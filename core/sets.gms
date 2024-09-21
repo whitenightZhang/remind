@@ -320,10 +320,19 @@ $ENDIF.WindOff
 
 *** TOCHECK: Qianzhi      
 *** PCV: technologies related to chemical
-        ChemOld
-        ChemNew
-        ChemRo_old
-        ChemRo_new
+        ChemSol
+        ChemNG
+        ChemLiq
+        ChemH2
+        ChemRo_Sol
+        ChemRo_NG
+        ChemRo_Liq
+        ChemRo_H2
+
+        StCrNG
+        StCrLiq
+        StCrNG_Ro
+        StCrLiq_Ro
 
         MeSySol    !! methanol tech QIANZHI
         MeSyNG
@@ -343,19 +352,27 @@ $ENDIF.WindOff
 
         AmSyCoal   !! ammonia tech QIANZHI
         AmSyNG
+        AmSyLiq
         AmSyCoalcc
         AmSyNGcc
+        AmSyLiqcc
         AmSyH2
         AmSyRo_Coal
         AmSyRo_NG
+        AmSyRo_Liq
         AmSyRo_Coal_ccs
         AmSyRo_NG_ccs
+        AmSyRo_Liq_ccs
         AmSyRo_H2
 
         MtOMtA
         MtOMtA_Ro
         FertProd
         FertProd_Ro
+        MeToFinal
+        MeToFinal_Ro
+        AmToFinal
+        AmToFinal_Ro
 *** PCV: technologies related to steel
         ironMine     "Mining of iron ore"
         idr          "Iron direct reduction"
@@ -467,6 +484,8 @@ all_enty             "all types of quantities"
         Fertilizer
         methanol
         ammonia
+        MethFinal
+        AmmoFinal
 
         !! emissions
         co2          "carbon dioxide emissions"
@@ -1273,8 +1292,12 @@ $ENDIF.WindOff
         termM_lng       "Import terminals for LNG (regasification)"
         vess_lng        "Vessels transporting LNG"
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
-        ChemOld
-        ChemNew
+        ChemSol
+        ChemNG
+        ChemLiq
+        ChemH2
+        StCrNG
+        StCrLiq
         MeSySol !! methanol tech QIANZHI
         MeSyNG
         MeSyLiq
@@ -1284,12 +1307,17 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
         MeSyH2
         AmSyCoal !! ammonia tech QIANZHI 
         AmSyNG
+        AmSyLiq
         AmSyCoalcc
         AmSyNGcc
+        AmSyLiqcc
         AmSyH2
 
         MtOMtA
         FertProd
+        AmToFinal
+        MeToFinal
+
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
         idr             "Iron direct reduction"
@@ -1375,13 +1403,14 @@ $IFTHEN.WindOff %cm_wind_offshore% == "1"
   gridwindoff     "grid between areas with high wind offshore production and the rest"
 $ENDIF.WindOff
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
-  ChemNew         "Other chemicals by Hydrogen"
+  ChemH2          "Other chemicals by Hydrogen"
   MeSySolcc       "Methanol by Soilds CCS" !! methanol tech QIANZHI
   MeSyNGcc        "Methanol by Gas CCS"
   MeSyLiqcc       "Methanol by Liquids CCS"
   MeSyH2          "Methanol by Hydrogen"
   AmSyCoalcc      "Ammonia by Coal CCS" !! ammonia tech QIANZHI 
   AmSyNGcc        "Ammonia by Gas CCS"
+  AmSyLiqcc        "Ammonia by Liquids CCS"
   AmSyH2          "Ammonia by Hydrogen"
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
