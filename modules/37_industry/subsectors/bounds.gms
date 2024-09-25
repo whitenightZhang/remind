@@ -133,6 +133,8 @@ $ifthen.policy_scenario "%cm_indstExogScen_set%" == "YES"
 $endif.policy_scenario
 $drop cm_indstExogScen_set
 
+v37_regionalWasteIncinerationCCSshare.lo(t,regi) = 0.;
+v37_regionalWasteIncinerationCCSshare.up(t,regi) = p37_regionalWasteIncinerationCCSMaxShare(t,regi);
 
 !! fix processes procudction in historic years
 if (cm_startyear eq 2005,

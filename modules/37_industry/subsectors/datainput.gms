@@ -580,11 +580,11 @@ execute_load "input_ref.gdx", vm_demFeSector_afterTax;
 
 * Define carbon capture and storage share in waste incineration emissions
 * capture rate increases linearly from zero in 2025 to value the set in the switch for the defined year, and it is kept constant for years afterwards
-p37_regionalWasteIncinerationCCSshare(ttot,all_regi) = 0;
+p37_regionalWasteIncinerationCCSMaxShare(ttot,all_regi) = 0;
 $ifthen.cm_wasteIncinerationCCSshare not "%cm_wasteIncinerationCCSshare%" == "off"
-loop((ttot,ext_regi)$p37_wasteIncinerationCCSshare(ttot,ext_regi),
+loop((ttot,ext_regi)$p37_wasteIncinerationCCSMaxShare(ttot,ext_regi),
   loop(regi$regi_groupExt(ext_regi,regi),
-    p37_regionalWasteIncinerationCCSshare(t,regi)$((t.val gt 2025)) = min(p37_wasteIncinerationCCSshare(ttot,ext_regi), (p37_wasteIncinerationCCSshare(ttot,ext_regi)/(ttot.val -  2025))*(t.val-2025));
+    p37_regionalWasteIncinerationCCSMaxShare(t,regi)$((t.val gt 2025)) = min(p37_wasteIncinerationCCSMaxShare(ttot,ext_regi), (p37_wasteIncinerationCCSMaxShare(ttot,ext_regi)/(ttot.val -  2025))*(t.val-2025));
   );
 );
 $endIf.cm_wasteIncinerationCCSshare
@@ -846,13 +846,13 @@ $endif.cm_subsec_model_steel
 p37_priceMat(all_enty) = 0.;
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
 !! IEA STeel Roadmap Fig 1.3 Caption: Scrap price 200-300 $/t
-!! => take 250 $/t, inflation 2005 --> 2020 / 1.33
-p37_priceMat("eafscrap") = 0.188;
-p37_priceMat("bofscrap") = 0.188;
-!! Agora KSV-Rechner: 114 €/tSteel / (1.4 2005$/2023€) / (tn$ /bn t)
-p37_priceMat("ironore")  = 0.081;
-!! Agora KSV-Rechner: 154 €/tSteel / (1.4 2005$/2023€) / (tn$ /bn t)
-p37_priceMat("dripell")  = 0.110;
+!! => take 250 $/t, unit 2020$US
+p37_priceMat("eafscrap") = sm_D2020_2_D2017 * 0.250 ;
+p37_priceMat("bofscrap") = sm_D2020_2_D2017 * 0.250;
+!! Agora KSV-Rechner: 114 €2023/tSteel / (tn$ /bn t)
+p37_priceMat("ironore")  = sm_EURO2023_2_D2017 * 0.114;
+!! Agora KSV-Rechner: 154 €2023/tSteel / (tn$ /bn t)
+p37_priceMat("dripell")  = sm_EURO2023_2_D2017 * 0.154;
 $endif.cm_subsec_model_steel
 
 *** --------------------------------

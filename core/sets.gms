@@ -76,7 +76,9 @@ gdp_SSP2EU_NAV_lce "NAVIGATE demand scenarios: Low consumption energy (act + tec
 gdp_SSP2EU_NAV_all "NAVIGATE demand scenarios: All measures (ele + act + tec)"
 gdp_SSP2EU_CAMP_weak   "CAMPAIGNers scenario with low ambition lifestyle change"
 gdp_SSP2EU_CAMP_strong "CAMPAIGNers scenario with high ambition lifestyle change"
-gdp_SSP2EU_demRedStrong "edget internal demScen, might be removed soon"
+gdp_SSP2_demDiffer_IKEA "Demand reduction in Global North (CAZ,EUR,JPN,NEU,USA) and demand increase in Emerging regions (IND,LAM,OAS,SSA). Reduction follows the factor f of demRedStrong scenario, while increase uses factor 2-f."
+gdp_SSP2_demRedStrong "edget internal demScen, might be removed soon"
+gdp_SSP2_demRedWeak
 /
 
 all_GDPpcScen    "all possible GDP per capita scenarios (GDP and Population from the same SSP-scenario"
@@ -469,6 +471,8 @@ all_enty             "all types of quantities"
         ueelTt       "transport useful energy for electric trains"
 
         !! materials, feedstock, and industrial goods
+        co2f         "feedstock CO2"
+
         prsteel      "Primary steel"
         sesteel      "Secondary steel"
         dri          "Directly reduced iron"
@@ -1102,8 +1106,20 @@ RCP_regions_world(RCP_regions_world_bunkers) "five RCP regions plus total (world
 ***-----------------------------------------------------------------------------
 Sets
   counter   "helper set to facilitate looping in defined order"   / 1 * 20 /
-  NDC_version "NDC data version for NDC realizations of 40_techpol and 45_carbonprice"  /2018_cond, 2018_uncond, 2021_cond, 2021_uncond, 2022_cond, 2022_uncond, 2023_cond, 2023_uncond/
-  bounds "helper set to define upper and lower bounds read in from input data" /low, up/
+  project_status "project status read in from input data to define upper and lower near-term capacitiy bounds for CCS"
+  /
+    "operational",
+    "construction",
+    "planned"
+  /
+  NDC_version "NDC data version for NDC realizations of 40_techpol and 45_carbonprice"
+  /
+    2018_cond, 2018_uncond,
+    2021_cond, 2021_uncond,
+    2022_cond, 2022_uncond,
+    2023_cond, 2023_uncond,
+    2024_cond, 2024_uncond
+  /
 ;
 
 ***-----------------------------------------------------------------------------

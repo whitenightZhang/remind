@@ -113,7 +113,9 @@
 *' Sets are treated differently: instead of a prefix, sets exclusively used within a module get that module's
 *' number added as a suffix. If the set is used in more than one module no suffix is given.
 *'
-*' The units (e.g., TWa, EJ, GtC, GtCO2, ...) of variables and parameters are documented in the declaration files.
+*' The units (e.g., TWa, EJ, GtC, GtCO2, ...) of variables and parameters are
+*' documented in the declaration files using square brackets at the end of the
+*' explanatory text (e.g. `v_var(set1,set2)   "variable [unit]"`).
 *'
 *' For the labels of parameters, scalars and set, use double quotes only.
 *'
@@ -1140,9 +1142,9 @@ parameter
 parameter
   c_fracRealfromAnnouncedCCScap2030         "switch to adjust the share of realised CCS capacities from total announced/planned projects from database in 2030"
 ;
-  c_fracRealfromAnnouncedCCScap2030 = 0.4; !! def = 0.4
+  c_fracRealfromAnnouncedCCScap2030 = 0.3; !! def = 0.3
 *' This switch changes the assumption about the share of timely realised capacities from sum of announced/planned in 2030 from the IEA CCS data base
-*' Default assumption is that only 40% of announced or planned capacities will be realised, either due to discontinuation or delay
+*' Default assumption is that only 30% of announced or planned capacities will be realised, either due to discontinuation or delay
 
 parameter
   cm_startIter_EDGET          "starting iteration of EDGE-T"
@@ -1207,10 +1209,12 @@ $setglobal cm_MAgPIE_coupling  off     !! def = "off"  !! regexp = off|on
 *' *  (rcp85): RCP8.5
 $setglobal cm_rcp_scen  none         !! def = "none"  !! regexp = none|rcp20|rcp26|rcp37|rcp45|rcp60|rcp85
 *' cm_NDC_version            "choose version year of NDC targets as well as conditional vs. unconditional targets"
+*' *  (2024_cond):   all NDCs conditional to international financial support published until August 31, 2024
+*' *  (2024_uncond): all NDCs independent of international financial support published until August 31, 2024
 *' *  (2023_cond):   all NDCs conditional to international financial support published until December 31, 2023
 *' *  (2023_uncond): all NDCs independent of international financial support published until December 31, 2023
 *' *  Other supported years are 2022, 2021 and 2018, always containing NDCs published until December 31 of that year
-$setglobal cm_NDC_version  2023_cond    !! def = "2023_cond"  !! regexp = 20(18|2[1-3])_(un)?cond
+$setglobal cm_NDC_version  2024_cond    !! def = "2024_cond"  !! regexp = 20(18|2[1-4])_(un)?cond
 *' cm_netZeroScen     "choose scenario of net zero targets of netZero realization of module 46_carbonpriceRegi"
 *'
 *'  (NGFS_v4):        settings used for NGFS v4, 2023
