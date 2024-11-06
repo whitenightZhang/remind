@@ -27,6 +27,7 @@ parameters
     p32_shThresholdTotVREAddIntCost(ttot)           "Total VRE share threshold above which additional integration challenges arise. Increases with time as eg in 2030, there is still little experience with managing systems with 80% VRE share. Unit: Percent"
     p32_FactorAddIntCostTotVRE                      "Multiplicative factor that influences how much the total VRE share increases integration challenges"
     p32_flexSeelShare_slope(ttot,all_regi,all_te)   "Slope of relationship between average electricity price for flexible technology and share of this technology in total electricity demand. Unit: [ % percentage of average electricity price / % share in electricity demand]."
+    pm_prodSe_fixrun(ttot,all_regi,all_enty, all_enty, all_te)          "prod se to be fixed"
 ;
 
 scalars
