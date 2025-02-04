@@ -322,13 +322,11 @@ $ENDIF.WindOff
 
 *** TOCHECK: Qianzhi      
 *** PCV: technologies related to chemical
-        ChemSol
-        ChemNG
-        ChemLiq
+        ChemOld
+        ChemELec
         ChemH2
-        ChemRo_Sol
-        ChemRo_NG
-        ChemRo_Liq
+        ChemRo_Old
+        ChemRo_Elec
         ChemRo_H2
 
         StCrNG
@@ -1313,9 +1311,8 @@ $ENDIF.WindOff
         termM_lng       "Import terminals for LNG (regasification)"
         vess_lng        "Vessels transporting LNG"
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
-        ChemSol
-        ChemNG
-        ChemLiq
+        ChemOld
+        ChemELec
         ChemH2
         StCrNG
         StCrLiq
