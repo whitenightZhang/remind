@@ -685,7 +685,7 @@ p37_specFeDemTarget("fehos","ChemOld","standard")  = 3.9 * 3 / (sm_TWa_2_MWh/sm_
 p37_specFeDemTarget("feels","ChemOld","standard")  = 2.4 / (sm_TWa_2_MWh/sm_giga_2_non);
 
 
-p37_specFeDemTarget("fesos","ChemELec","standard")  = 1.2 * 3 / (sm_TWa_2_MWh/sm_giga_2_non);
+p37_specFeDemTarget("fesos","ChemElec","standard")  = 1.2 * 3 / (sm_TWa_2_MWh/sm_giga_2_non);
 p37_specFeDemTarget("fegas","ChemElec","standard")  = 2.7 * 3 / (sm_TWa_2_MWh/sm_giga_2_non);
 p37_specFeDemTarget("fehos","ChemElec","standard")  = 3.3 * 3 / (sm_TWa_2_MWh/sm_giga_2_non);
 p37_specFeDemTarget("feels","ChemElec","standard")  = 3.6/ (sm_TWa_2_MWh/sm_giga_2_non);
