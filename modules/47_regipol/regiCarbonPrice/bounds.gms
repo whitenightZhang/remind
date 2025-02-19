@@ -164,7 +164,6 @@ vm_deltaCap.up("2025",regi,"ngcc","1") = 0.0015;
 vm_capEarlyReti.up('2025',regi,'pc') = 0.65; 
 );
 
-***$ontext
 $ifthen.chaPOpolicyMode "%cm_chaCoalPOSpeedMode%" == "vredelta"
 loop(regi$(sameAs(regi,"CHA")),
   vm_deltaCap.up("2025",regi,"gaschp","1")= 0.005;
@@ -172,86 +171,56 @@ loop(regi$(sameAs(regi,"CHA")),
   vm_deltaCap.up("2035",regi,"gaschp","1")= 0.0025;
 );
 
+***$ontext
 ** wind capacity addition speed is 16.9%, spv is 28.8% (2022 first 9 months)
+** wind capacity addition speed is 21%, spv is 55% (2023)
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "base"
 loop(regi$(sameAs(regi,"CHA")),
-  vm_deltaCap.up("2025",regi,"wind","1")= 0.16*vm_capCum.l("2020",regi,"wind");
-  vm_deltaCap.up("2025",regi,"spv","1")= 0.28*vm_capCum.l("2020",regi,"spv");
-  vm_deltaCap.up("2030",regi,"wind","1")= 0.16*vm_capCum.l("2025",regi,"wind");
-  vm_deltaCap.up("2030",regi,"spv","1")= 0.28*vm_capCum.l("2025",regi,"spv");
-  vm_deltaCap.up("2035",regi,"wind","1")= 0.16*vm_capCum.l("2030",regi,"wind");
-  vm_deltaCap.up("2035",regi,"spv","1")= 0.28*vm_capCum.l("2030",regi,"spv");
-  
-);
-$endif.chaPOpolicy
-
-$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "medium"
-loop(regi$(sameAs(regi,"CHA")),
-  vm_deltaCap.up("2025",regi,"wind","1")= 0.15*vm_capCum.l("2020",regi,"wind");
-  vm_deltaCap.up("2025",regi,"spv","1")= 0.25*vm_capCum.l("2020",regi,"spv");
-  vm_deltaCap.up("2030",regi,"wind","1")= 0.15*vm_capCum.l("2025",regi,"wind");
-  vm_deltaCap.up("2030",regi,"spv","1")= 0.26*vm_capCum.l("2025",regi,"spv");
-  vm_deltaCap.up("2035",regi,"wind","1")= 0.16*vm_capCum.l("2030",regi,"wind");
-  vm_deltaCap.up("2035",regi,"spv","1")= 0.27*vm_capCum.l("2030",regi,"spv");
-  vm_deltaCap.up("2040",regi,"wind","1")= 0.17*vm_capCum.l("2035",regi,"wind");
-  vm_deltaCap.up("2040",regi,"spv","1")= 0.28*vm_capCum.l("2035",regi,"spv");
-  vm_deltaCap.up("2045",regi,"wind","1")= 0.18*vm_capCum.l("2040",regi,"wind");
-  vm_deltaCap.up("2045",regi,"spv","1")= 0.29*vm_capCum.l("2040",regi,"spv");
+  vm_deltaCap.up("2025",regi,"wind","1")= 0.27*vm_capCum.l("2020",regi,"wind");
+  vm_deltaCap.up("2025",regi,"spv","1")= 0.55*vm_capCum.l("2020",regi,"spv");
+  vm_deltaCap.up("2030",regi,"wind","1")= 0.3*vm_capCum.l("2025",regi,"wind");
+  vm_deltaCap.up("2030",regi,"spv","1")= 0.65*vm_capCum.l("2025",regi,"spv");
+  vm_deltaCap.up("2035",regi,"wind","1")= 0.33*vm_capCum.l("2030",regi,"wind");
+  vm_deltaCap.up("2035",regi,"spv","1")= 0.75*vm_capCum.l("2030",regi,"spv");
 
 );
 $endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "plateau25"
 loop(regi$(sameAs(regi,"CHA")),
-  vm_deltaCap.up("2025",regi,"wind","1")= 0.15*vm_capCum.l("2020",regi,"wind");
-  vm_deltaCap.up("2025",regi,"spv","1")= 0.24*vm_capCum.l("2020",regi,"spv");
-  vm_deltaCap.up("2030",regi,"wind","1")= 0.2*vm_capCum.l("2025",regi,"wind");
-  vm_deltaCap.up("2030",regi,"spv","1")= 0.35*vm_capCum.l("2025",regi,"spv");
-  vm_deltaCap.up("2035",regi,"wind","1")= 0.25*vm_capCum.l("2030",regi,"wind");
-  vm_deltaCap.up("2035",regi,"spv","1")= 0.38*vm_capCum.l("2030",regi,"spv");
+  vm_deltaCap.up("2025",regi,"wind","1")= 0.3*vm_capCum.l("2020",regi,"wind");
+  vm_deltaCap.up("2025",regi,"spv","1")= 0.7*vm_capCum.l("2020",regi,"spv");
+  vm_deltaCap.up("2030",regi,"wind","1")= 0.4*vm_capCum.l("2025",regi,"wind");
+  vm_deltaCap.up("2030",regi,"spv","1")= 0.8*vm_capCum.l("2025",regi,"spv");
+  vm_deltaCap.up("2035",regi,"wind","1")= 0.5*vm_capCum.l("2030",regi,"wind");
+  vm_deltaCap.up("2035",regi,"spv","1")= 1*vm_capCum.l("2030",regi,"spv");
 );
 $endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "plateau30"
 loop(regi$(sameAs(regi,"CHA")),
-  vm_deltaCap.up("2025",regi,"wind","1")= 0.15*vm_capCum.l("2020",regi,"wind");
-  vm_deltaCap.up("2025",regi,"spv","1")= 0.24*vm_capCum.l("2020",regi,"spv");
-  vm_deltaCap.up("2030",regi,"wind","1")= 0.15*vm_capCum.l("2025",regi,"wind");
-  vm_deltaCap.up("2030",regi,"spv","1")= 0.24*vm_capCum.l("2025",regi,"spv");
-  vm_deltaCap.up("2035",regi,"wind","1")= 0.20*vm_capCum.l("2030",regi,"wind");
-  vm_deltaCap.up("2035",regi,"spv","1")= 0.35*vm_capCum.l("2030",regi,"spv");
-  vm_deltaCap.up("2040",regi,"wind","1")= 0.25*vm_capCum.l("2030",regi,"wind");
-  vm_deltaCap.up("2040",regi,"spv","1")= 0.38*vm_capCum.l("2030",regi,"spv");
+  vm_deltaCap.up("2025",regi,"wind","1")= 0.3*vm_capCum.l("2020",regi,"wind");
+  vm_deltaCap.up("2025",regi,"spv","1")= 0.65*vm_capCum.l("2020",regi,"spv");
+  vm_deltaCap.up("2030",regi,"wind","1")= 0.3*vm_capCum.l("2025",regi,"wind");
+  vm_deltaCap.up("2030",regi,"spv","1")= 0.65*vm_capCum.l("2025",regi,"spv");
+  vm_deltaCap.up("2035",regi,"wind","1")= 0.5*vm_capCum.l("2030",regi,"wind");
+  vm_deltaCap.up("2035",regi,"spv","1")= 1*vm_capCum.l("2030",regi,"spv");
 
 );
 $endif.chaPOpolicy
 
-$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "slow"
-loop(regi$(sameAs(regi,"CHA")),
-  vm_deltaCap.up("2025",regi,"wind","1")= 0.15*vm_capCum.l("2020",regi,"wind");
-  vm_deltaCap.up("2025",regi,"spv","1")= 0.25*vm_capCum.l("2020",regi,"spv");
-  vm_deltaCap.up("2030",regi,"wind","1")= 0.14*vm_capCum.l("2025",regi,"wind");
-  vm_deltaCap.up("2030",regi,"spv","1")= 0.25*vm_capCum.l("2025",regi,"spv");
-  vm_deltaCap.up("2035",regi,"wind","1")= 0.14*vm_capCum.l("2030",regi,"wind");
-  vm_deltaCap.up("2035",regi,"spv","1")= 0.24*vm_capCum.l("2030",regi,"spv");
-  vm_deltaCap.up("2040",regi,"wind","1")= 0.13*vm_capCum.l("2035",regi,"wind");
-  vm_deltaCap.up("2040",regi,"spv","1")= 0.22*vm_capCum.l("2035",regi,"spv");
-  vm_deltaCap.up("2045",regi,"wind","1")= 0.13*vm_capCum.l("2040",regi,"wind");
-  vm_deltaCap.up("2045",regi,"spv","1")= 0.22*vm_capCum.l("2040",regi,"spv");
-);
-$endif.chaPOpolicy
 
 $ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "fast"
 loop(regi$(sameAs(regi,"CHA")),
-  vm_deltaCap.up("2025",regi,"wind","1")= 0.18*vm_capCum.l("2020",regi,"wind");
-  vm_deltaCap.up("2025",regi,"spv","1")= 0.32*vm_capCum.l("2020",regi,"spv");
-  vm_deltaCap.up("2030",regi,"wind","1")= 0.20*vm_capCum.l("2025",regi,"wind");
-  vm_deltaCap.up("2030",regi,"spv","1")= 0.35*vm_capCum.l("2025",regi,"spv");
+  vm_deltaCap.up("2025",regi,"wind","1")= 0.3*vm_capCum.l("2020",regi,"wind");
+  vm_deltaCap.up("2025",regi,"spv","1")= 0.8*vm_capCum.l("2020",regi,"spv");
+  vm_deltaCap.up("2030",regi,"wind","1")= 0.5*vm_capCum.l("2025",regi,"wind");
+  vm_deltaCap.up("2030",regi,"spv","1")= 1*vm_capCum.l("2025",regi,"spv");
   );
 $endif.chaPOpolicy
+$offtext
 
 $endif.chaPOpolicyMode
-***$offtext
 
 *** $ontext
 *** limit early retirement of coal power in China in 2020s to avoid extremly fast phase-out
