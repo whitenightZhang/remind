@@ -477,6 +477,11 @@ v_co2capturevalve.up(t,regi) = 1 * s_MtCO2_2_GtC;
 *** Fixing will produce clearly attributable errors (good for debugging) when using inconsistent data, as the GAMS accuracy when comparing fixed results is very high (< 1e-8).
 *** vm_prodFe.fx("2005",regi,se2fe(enty,enty2,te)) = sum(fe2ppfEn(enty2,in), pm_cesdata("2005",regi,in,"quantity") );
 
+if (cm_startyear le 2025,
+vm_cap.lo("2015","CHA","pc","1")            = 0.8;  !! Ember says 881GW in 2015, 1044GW in 2020
+vm_cap.lo("2020","CHA","pc","1")            = 0.97; 
+);
+
 $if  %c_SSP_forcing_adjust% == "forcing_SSP1"    vm_deltaCap.up(t,regi,"coalgas",rlf)$(t.val gt 2010) = 0.00001;
 
 *** -------------------------------------------------------------

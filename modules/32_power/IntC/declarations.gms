@@ -15,11 +15,21 @@ parameters
     f32_storageCap(char, all_te)                    "multiplicative factor between dummy seel<-->h2 technologies and storXXX technologies"
     p32_storageCap(all_te,char)                     "multiplicative factor between dummy seel<-->h2 technologies and storXXX technologies"
     p32_PriceDurSlope(all_regi,all_te)              "slope of price duration curve used for calculation of electricity price for flexible technologies, determines how fast electricity price declines at lower capacity factors"
-    o32_dispatchDownPe2se(ttot,all_regi,all_te)     "output parameter to check by how much a pe2se te reduced its output below the normal, in % of the normal output."
+    o32_dispatchDownPe2se(ttot,all_regi,all_te)           "output parameter to check by how much a pe2se te reduced its output below the normal, in % of the normal output."
+
+    p32_windRegiGrid(all_regi)                      "wind regional grid factor"
+    p32_windoffRegiGrid(all_regi)                   "wind offshore regional grid factor"
+    p32_cspRegiGrid(all_regi)                       "CSP regional grid factor"
+    p32_spvRegiGrid(all_regi)                       "spv regional grid factor"
+    p32_usableSe(ttot,all_regi,entySe)                     "total usable generation"
+    p32_usableSeTe(ttot,all_regi,entySe,all_te)            "usable generation per technology"
+    p32_shSeEl(ttot,all_regi,all_te)                "generation share"
     p32_shThresholdTotVREAddIntCost(ttot)           "Total VRE share threshold above which additional integration challenges arise. Increases with time as eg in 2030, there is still little experience with managing systems with 80% VRE share. Unit: Percent"
     p32_FactorAddIntCostTotVRE                      "Multiplicative factor that influences how much the total VRE share increases integration challenges"
     p32_phaseInElh2VREcap(ttot)                     "phase-in factor for electrolysis capacities built from stored VRE electricity, scale up from 2030 to 2040"
     p32_flexSeelShare_slope(ttot,all_regi,all_te)   "Slope of relationship between average electricity price for flexible technology and share of this technology in total electricity demand. Unit: [ % percentage of average electricity price / % share in electricity demand]."
+    pm_prodSe_fixrun(ttot,all_regi,all_enty, all_enty, all_te)          "prod se to be fixed"
+    pm_capFac_fixrun(ttot,all_regi,all_te)          "cap to be fixed"
 ;
 
 scalars

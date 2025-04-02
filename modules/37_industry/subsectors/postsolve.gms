@@ -84,6 +84,15 @@ pm_IndstCO2Captured(ttot,regi,entySe,entyFe(entyFeCC37),secInd37,emiMkt)$(
     ) !! subsector capture share
 ;
 
+*** FE demand or producing primary and secondary steel
+o37_demFeSteel(ttot,regi,in)$(steel37(in)) = sum(ue2fe_steel37(in,in2), vm_cesIO.l(ttot, regi, in2));
+
+o37_demFePrimSteel(ttot,regi) = sum(fePrimSteel37(in2), vm_cesIO.l(ttot, regi, in2));
+o37_demFeSecSteel(ttot,regi) = sum(feSecSteel37(in2), vm_cesIO.l(ttot, regi, in2));
+
+o37_emiFeNonElecNonH2PrimSteel(ttot,regi) = sum(fePrimSteel37(in2), vm_cesIO.l(ttot, regi, in2)
+ * sum(fe2ppfen37(enty,in2), sum(entySe, sum(te, pm_emifac(ttot,regi,entySe,enty,te,"co2"))) ) );
+
 
 *** calculate share of sebio- and sesyn-based co2 captured
 pm_NonFos_IndCC_fraction0(ttot,regi,emiInd37)$(

@@ -116,7 +116,11 @@ test-coupled:    ## Test if the coupling with MAgPIE works. Takes significantly
 test-coupled-slurm: ## test-coupled, but on slurm
 	$(info Coupling tests take around 75 minutes to run. Sent to slurm, find log in test-coupled.log)
 	make ensure-reqs
+<<<<<<< HEAD
 	@sbatch --qos=priority --wrap="make test-coupled" --job-name=test-coupled --mail-type=END,FAIL --time=180 --output=test-coupled.log --comment="test-coupled.log"
+=======
+	@sbatch --qos=priority --partition=priority --wrap="make test-coupled" --job-name=test-coupled --mail-type=END,FAIL --output=test-coupled.log --comment="test-coupled.log"
+>>>>>>> v3.3.0dev132b_china
 
 test-full:       ## Run all tests, including coupling tests and a default
                  ## REMIND scenario. Takes several hours to run.
@@ -126,7 +130,11 @@ test-full:       ## Run all tests, including coupling tests and a default
 test-full-slurm: ##test-full, but on slurm
 	$(info Full tests take more than an hour to run, please be patient)
 	make ensure-reqs
+<<<<<<< HEAD
 	@sbatch --qos=priority --wrap="make test-full" --job-name=test-full --mail-type=END,FAIL --output=test-full.log --comment="test-full.log"
+=======
+	@sbatch --qos=priority --partition=priority --wrap="make test-full" --job-name=test-full --mail-type=END,FAIL --output=test-full.log --comment="test-full.log"
+>>>>>>> v3.3.0dev132b_china
 
 test-validation: ## Run validation tests, requires a full set of runs in the output folder
 	$(info Run validation tests, requires a full set of runs in the output folder)

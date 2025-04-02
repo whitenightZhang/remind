@@ -135,6 +135,12 @@ $drop cm_indstExogScen_set
 
 v37_regionalWasteIncinerationCCSshare.lo(t,regi) = 0.;
 v37_regionalWasteIncinerationCCSshare.up(t,regi) = p37_regionalWasteIncinerationCCSMaxShare(t,regi);
+!! Fix industry output for a quick fix of china steel demand trajectory
+$ifthen.quickCHASteelFix "%cm_chaSteelFix%" == "on"   !! cm_chaSteelFix
+  vm_cesIO.fx(t,regi,in)$( p37_industry_quantity_targets(t,regi,in) )
+  = p37_industry_quantity_targets(t,regi,in);
+$endif.quickCHASteelFix
+
 
 !! fix processes procudction in historic years
 if (cm_startyear eq 2005,
@@ -175,5 +181,14 @@ vm_demFeSector_afterTax.lo(t,regi,entySe,"fesos","indst",emiMkt)$(NOT sameAs(emi
 
 v37_matShareChange.lo(t,regi,tePrc,opmoPrc,mat)$(tePrcStiffShare(tePrc,opmoPrc,mat)) = -cm_maxIndPrcShareChange;
 v37_matShareChange.up(t,regi,tePrc,opmoPrc,mat)$(tePrcStiffShare(tePrc,opmoPrc,mat)) =  cm_maxIndPrcShareChange;
+
+$ifthen.fixedUE_scenario "%cm_fxIndUe%" == "on"
+
+loop ((ue_industry_dyn37(in),regi_groupExt(regi_fxDem37(ext_regi),regi)),
+  vm_cesIO.fx(t,regi,in)$( p37_cesIO_baseline(t,regi,in) )
+  = p37_cesIO_baseline(t,regi,in);
+);
+$endif.fixedUE_scenario
+
 
 *** EOF ./modules/37_industry/subsectors/bounds.gms

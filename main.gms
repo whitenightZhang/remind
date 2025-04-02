@@ -1143,6 +1143,14 @@ parameter
   cm_deuCDRmax                 "switch to limit maximum annual CDR amount in Germany in MtCO2 per y"
 ;
   cm_deuCDRmax = -1; !! def = -1
+parameter
+  cm_chaPcCost                 "switch to turn on the coal power plant cost change for CHA"
+*** switch to turn on costs used in domestic models: 
+* (0) old values: 800/kW from 2015 till 2040
+* (1) new values: 500$/kW from 2015 till 2040
+;
+  cm_chaPcCost = 0; !! def = 0
+*'
 *'  switch to cap annual DEU CDR amount by value assigned to switch, or no cap if -1, in MtCO2
 parameter
   cm_EnSecScen_limit        "switch for limiting the gas demand from 2025 onward, currently only applied to Germany"
@@ -1311,6 +1319,8 @@ $setglobal c_ccsinjecrateRegi  off  !! def = "off"
 $setglobal c_SSP_forcing_adjust  forcing_SSP2   !! def = forcing_SSP2  !! regexp = forcing_SSP(1|2|3|5)
 *** cm_regiExoPrice "set exogenous co2 tax path for specific regions using a switch, require regipol module to be set to regiCarbonPrice (e.g. GLO.(2025 38,2030 49,2035 63,2040 80,2045 102,2050 130,2055 166,2060 212,2070 346,2080 563,2090 917,2100 1494,2110 1494,2130 1494,2150 1494) )"
 $setGlobal cm_regiExoPrice  off    !! def = off
+*** cm_input_coalRef "whether to use a reference scenario for exogenous coal pathway"
+$setglobal cm_input_coalRef  off   !! def = off
 *** cm_emiMktTarget "set a budget or year emission target, for all (all) or specific emission markets (ETS, ESD or other), and specific regions (e.g. DEU) or region groups (e.g. EU27)"
 ***   Example on how to use:
 ***     cm_emiMktTarget = '2020.2050.EU27_regi.all.budget.netGHG_noBunkers 72, 2020.2050.DEU.all.year.netGHG_noBunkers 0.1'
@@ -1679,7 +1689,10 @@ $setGlobal cm_CESMkup_build  standard  !! def = standard
 $setGlobal cm_CESMkup_ind        standard  !! def = standard
 $setGlobal cm_CESMkup_ind_data   ""        !! def = ""
 
+<<<<<<< HEAD
 *** cm_fxIndUe "switch for fixing UE demand in industry to baseline level - no endogenous demand adjustment"
+=======
+>>>>>>> v3.3.0dev132b_china
 *** off: endogenous demand.
 *** on: exogenous demand fixed to baseline/NPi level (read in from input_ref.gdx)
 *** cm_fxIndUeReg "indicates the regions under which the industry demand will be fixed, requires cm_fxIndUe set to on"
@@ -1689,6 +1702,7 @@ $setGlobal cm_CESMkup_ind_data   ""        !! def = ""
 $setGlobal cm_fxIndUe        off   !! def = off  !! regexp = off|on
 $setGlobal cm_fxIndUeReg     ""    !! def = ""
 
+<<<<<<< HEAD
 *** cm_taxCO2_functionalForm "switch for choosing the functional form of the global anchor trajectory in 45_carbonprice/functionalForm"
 *** (linear): The linear curve is determined by the two points (cm_taxCO2_historicalYr, cm_taxCO2_historical) and (cm_startyear, cm_taxCO2_startyear).
 *** (exponential): The exponential curve is determined by the point (cm_startyear, cm_taxCO2_startyear) and the exponential growth rate (cm_taxCO2_expGrowth).
@@ -1744,6 +1758,8 @@ $setglobal cm_taxCO2_lowerBound_path_gdx_ref  on    !! def = "on" !! regexp = on
 $setglobal cm_ind_energy_limit          default   !! def = default   !! regexp = default|manual
 $setglobal cm_ind_energy_limit_manual   "2050 . GLO . (ue_cement, ue_steel_primary, ue_steel_secondary)   0.75, 2100 . GLO . (ue_chemicals, ue_otherInd)   0.90"
 
+=======
+>>>>>>> v3.3.0dev132b_china
 *** cm_wasteIncinerationCCSshare, proportion of waste incineration emissions that is captured and geologically stored at a given year and region
 *** off: means that all plastics incineration emissions in the World goes back to the atmosphere.
 *** 2050.GLO 0.5, 2050.EUR 0.8: means that 50% of waste incineration emissions are captured for all regions from 2050 onward, except for Europe that has 80% of its waste incineration emissions captured.
@@ -1848,6 +1864,19 @@ $setglobal cm_tech_bounds_2025  on  !! def = on  !! regexp = on|off
 $setglobal cm_subsec_model_chemicals  processes  !! def = processes  !! regexp = processes|ces
 *** set conopt version. Warning: conopt4 is in beta
 $setGlobal cm_conoptv  conopt3    !! def = conopt3
+*** quick fix for steel demand projection in China
+$setglobal cm_chaSteelFix off      !! def = off
+*** cm_chaCoalPOSpeed
+*** plateau25: plateau until 2025, po around 2045
+*** plateau30: plateau until 2030, po around 2050
+*** fast: fast PO, po around 2035
+*** medium: medium PO, po around 2040
+*** slow: slow PO, po around 2050
+$setglobal cm_chaCoalPOSpeed none    !! def = none
+*** cm_chaCoalPOSpeedMode 
+*** vredelta: adjust via VRE's deltaCap
+*** adjcost: adjust via adjustment cost
+$setglobal cm_chaCoalPOSpeedMode vredelta !! def = vredelta
 *' c_empty_model  "Short-circuit the model, just use the input as solution"
 *'
 *' (off): normal model operation, default

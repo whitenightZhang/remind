@@ -25,6 +25,7 @@ Parameters
   p37_steel_secondary_max_share(tall,all_regi)                                 "maximum share of secondary steel production"
   p37_BAU_industry_ETS_solids(tall,all_regi)                                   "industry solids demand in baseline scenario"
   p37_cesIO_baseline(tall,all_regi,all_in)                                     "vm_cesIO from the baseline scenario"
+  p37_BioShareMaxSubsec(ttot,all_regi,all_enty,secInd37)                       "maximum biomass share in industry subsector per energy carrier"
   !! process-based implementation
   p37_specMatDem(mat,all_te,opmoPrc)                                           "Specific materials demand of a production technology and operation mode [t_input/t_output]"
   pm_specFeDem(tall,all_regi,all_enty,all_te,opmoPrc)                          "Actual specific final-energy demand of a tech; blends between IEA data and Target [TWa/Gt_output]"
@@ -55,6 +56,10 @@ Parameters
   o37_demFeIndTotEn(ttot,all_regi,all_enty,all_emiMkt)                   "total FE per energy carrier and emissions market in industry (sum over subsectors)"
   o37_shIndFE(ttot,all_regi,all_enty,secInd37,all_emiMkt)                "share of subsector in FE industry energy carriers and emissions markets"
   o37_demFeIndSub(ttot,all_regi,all_enty,all_enty,secInd37,all_emiMkt)   "FE demand per industry subsector"
+  o37_demFeSteel(ttot,all_regi,all_in)                          "FE demand for prim and sec steel"
+  o37_demFePrimSteel(ttot,all_regi)                          "FE demand for prim steel"
+  o37_demFeSecSteel(ttot,all_regi)                          "FE demand for sec steel"
+  o37_emiFeNonElecNonH2PrimSteel(ttot,all_regi)                         "CO2 emission for prim steel (not from H2 or electricity)"
   !! process-based implementation
   o37_demFePrc(ttot,all_regi,all_enty,all_te,opmoPrc)                    "Process-based FE demand per FE type and process"
   o37_shareRoute(ttot,all_regi,all_te,opmoPrc,route)                     "The relative share (between 0 and 1) of a technology and operation mode outflow which belongs to a certain route; For example, bf.standard belongs partly to the route bfbof and partly to the route bfbof"
@@ -121,6 +126,8 @@ vm_emiNonFosNonIncineratedPlastics(ttot,all_regi,all_enty,all_emiMkt)    "Negati
 v37_emiNonPlasticWaste(ttot,all_regi,all_enty,all_emiMkt)                 "Emissions from non-plastic waste, so far only CO2 emissions [GtC]"
 ;
 
+
+
 Equations
 $ifthen.no_calibration "%CES_parameters%" == "load"   !! CES_parameters
   q37_energy_limits(ttot,all_regi,all_in)                                           "thermodynamic/technical limit of energy use"
@@ -153,7 +160,7 @@ $endif.no_calibration
   q37_emiNonPlasticWaste(ttot,all_regi,all_enty,all_emiMkt)                         "calculate emissions from non-plastic waste"
   q37_emiFeedstockNoEnergy(ttot,all_regi,all_enty,all_emiMkt)                       "calculate total emissions from feedstocks that are not accounted as energy-related emissions"
 
-  !! process-based implementation
+!! process-based implementation
   q37_demMatPrc(tall,all_regi,mat)                                                  "Material demand of processes"
   q37_prodMat(tall,all_regi,mat)                                                    "Production volume of processes equals material flow of output material"
   q37_mat2ue(tall,all_regi,mat,all_in)                                              "Connect materials production to ue ces tree nodes"

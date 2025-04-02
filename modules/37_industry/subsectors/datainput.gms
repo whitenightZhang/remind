@@ -379,7 +379,7 @@ $ifthen.bal_scenario "%cm_indstExogScen%" == "forecast_bal"   !! cm_indstExogSce
       2050 . DEU . ue_steel_secondary   19.725106
     /
   ;
-
+  
   !! convert Mt to Gt
   p37_industry_quantity_targets(t,regi,in)$(
                                       p37_industry_quantity_targets(t,regi,in) )
@@ -394,6 +394,45 @@ $ifthen.bal_scenario "%cm_indstExogScen%" == "forecast_bal"   !! cm_indstExogSce
  	                     AND t.val ge 2050                                 )
     = p37_industry_quantity_targets("2050",regi,in);
 $endif.bal_scenario
+
+$ifthen.quickCHASteelFix "%cm_chaSteelFix%" == "on"   !! cm_chaSteelFix
+  Parameter
+    p37_industry_quantity_targets(ttot,all_regi,all_in)   "quantity targets for industry in policy scenarios"
+    /
+      2020 . CHA . ue_steel_primary     833.85
+      2025 . CHA . ue_steel_primary     609.84
+      2030 . CHA . ue_steel_primary     543.6
+      2035 . CHA . ue_steel_primary     504.6
+      2040 . CHA . ue_steel_primary     448
+      2045 . CHA . ue_steel_primary     407.7
+      2050 . CHA . ue_steel_primary     373.36
+
+      2020 . CHA . ue_steel_secondary   147.15
+      2025 . CHA . ue_steel_secondary   358.16
+      2030 . CHA . ue_steel_secondary   362.4
+      2035 . CHA . ue_steel_secondary   365.4
+      2040 . CHA . ue_steel_secondary   352
+      2045 . CHA . ue_steel_secondary   347.3
+      2050 . CHA . ue_steel_secondary   344.64
+    /
+  ;
+
+!! convert Mt to Gt
+  p37_industry_quantity_targets(t,regi,in)$(
+                                      p37_industry_quantity_targets(t,regi,in) )
+    = p37_industry_quantity_targets(t,regi,in)
+      !! Mt/yr * 1e-3 Gt/Mt = Gt/yr
+    * 1e-3;
+
+!! extend beyond 2050
+!! FIXME: do this smarter, using something like GDPpC growth or something
+  p37_industry_quantity_targets(t,regi,in)$(
+                                 p37_industry_quantity_targets("2050",regi,in)
+                             AND t.val ge 2050                                 )
+    = p37_industry_quantity_targets("2050",regi,in);
+
+$endif.quickCHASteelFix
+
 
 $ifthen.ensec_scenario "%cm_indstExogScen%" == "forecast_ensec"   !! cm_indstExogScen
   Parameter
@@ -540,6 +579,9 @@ $include "./modules/37_industry/subsectors/input/p37_steel_secondary_max_share.c
 $offdelim
   /
 ;
+
+f37_steel_secondary_max_share("2020","CHA","gdp_SSP2EU") = 0.16;
+f37_steel_secondary_max_share("2025","CHA","gdp_SSP2EU") = 0.38;
 
 p37_steel_secondary_max_share(t,regi)
   = f37_steel_secondary_max_share(t,regi,"%cm_GDPpopScen%");

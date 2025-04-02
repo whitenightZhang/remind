@@ -341,6 +341,27 @@ $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "ces"
 $endif.cm_subsec_model_steel
   /
 
+steel37(all_in)   "steel"
+  /
+    ue_steel_primary
+    ue_steel_secondary
+  /
+
+ue2fe_steel37(all_in,all_in)   "UE to FE sets for steel"
+/   ue_steel_primary . (feso_steel, feli_steel, fega_steel, feh2_steel,
+                        feel_steel_primary)
+    ue_steel_secondary . feel_steel_secondary
+/
+
+fePrimSteel37(all_in)  "FE sets for primary steel"
+/ feso_steel, feli_steel, fega_steel, feh2_steel,
+                        feel_steel_primary
+/
+
+feSecSteel37(all_in)  "FE sets for secondary steel"
+/ feel_steel_secondary
+/
+
 entyFeCC37(all_enty)   "FE carriers in industry which can be used for CO2 capture"
   /
     fesos

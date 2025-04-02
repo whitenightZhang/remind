@@ -764,6 +764,9 @@ f_cf(ttot,regi,"windoff") = f_cf(ttot,regi,"windon");
 f_cf(ttot,regi,"storwindoff") = f_cf(ttot,regi,"storwindon");
 f_cf(ttot,regi,"gridwindoff") = f_cf(ttot,regi,"gridwindon");
 
+** CG: update on nuclear plant capacity factor in China (http://static.sse.com.cn/disclosure/listedinfo/announcement/c/new/2022-04-28/601985_20220428_5_yMPns6pY.pdf)
+f_cf(ttot,"CHA","tnrs") = 0.9227;
+
 pm_cf(ttot,regi,te) =  f_cf(ttot,regi,te);
 ***pm_cf(ttot,regi,"h2turbVRE") = 0.15;
 pm_cf(ttot,regi,"elh2VRE") = 0.6;
@@ -819,6 +822,56 @@ pm_cf(ttot,regi,"ngt")$(ttot.val eq 2030) = 0.8 * pm_cf(ttot,regi,"ngt");
 pm_cf(ttot,regi,"ngt")$(ttot.val eq 2035) = 0.7 * pm_cf(ttot,regi,"ngt");
 pm_cf(ttot,regi,"ngt")$(ttot.val ge 2040) = 0.6 * pm_cf(ttot,regi,"ngt");
 
+*CG* phasing down pc cf to "peak load" cf for CHA
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "base"
+pm_cf(ttot,"CHA","pc")$(ttot.val le 2035) = 1 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val ge 2040) = 0.8 * pm_cf("2020","CHA","pc");
+$endif.chaPOpolicy
+
+*CG* phasing down pc cf to "peak load" cf for CHA
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "plateau30"
+pm_cf(ttot,"CHA","pc")$(ttot.val le 2025) = 1.1 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.99 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.75 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.55 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.35 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val ge 2050) = 0.15 * pm_cf("2020","CHA","pc");
+$endif.chaPOpolicy
+
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "plateau25"
+pm_cf(ttot,"CHA","pc")$(ttot.val le 2025) = 1.1 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.7 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.55 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.35 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.15 * pm_cf("2020","CHA","pc");
+$endif.chaPOpolicy
+
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "fast"
+pm_cf(ttot,"CHA","pc")$(ttot.val le 2025) = 0.95 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.6 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.3 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.1 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.1 * pm_cf("2020","CHA","pc");
+$endif.chaPOpolicy
+
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "medium"
+pm_cf(ttot,"CHA","pc")$(ttot.val le 2025) = 1.1 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.8 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.65 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.5 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.3 * pm_cf("2020","CHA","pc");
+$endif.chaPOpolicy
+
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "slow"
+pm_cf(ttot,"CHA","pc")$(ttot.val le 2025) = 1.08 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2030) = 0.85 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2035) = 0.8 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val eq 2040) = 0.7 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val ge 2045) = 0.6 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val ge 2050) = 0.5 * pm_cf("2020","CHA","pc");
+pm_cf(ttot,"CHA","pc")$(ttot.val gt 2050) = 0.5 * pm_cf("2020","CHA","pc");
+$endif.chaPOpolicy
+
 *RP* set H2 turbines to the same CF values
 pm_cf(ttot,regi,"h2turb")$(ttot.val ge 2025) = pm_cf(ttot,regi,"ngt");
 pm_cf(ttot,regi,"h2turbVRE")$(ttot.val ge 2025) = pm_cf(ttot,regi,"ngt");
@@ -849,7 +902,58 @@ loop((ext_regi,te)$p_techEarlyRetiRate(ext_regi,te),
 );
 $endif.tech_earlyreti
 
-*** Time-dependent early retirement rates in Baseline scenarios
+*CG* CHA-specific pc rate
+*$ontext
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "plateau30"
+*** Allow first slow then fast phase-out cap
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2035) = 0.02;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.03;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2045) = 0.05;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2050) = 0.07;
+$endif.chaPOpolicy
+
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "plateau25"
+*** Allow first slow then fast phase-out cap
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0.02;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2035) = 0.04;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.05;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2045) = 0.07;
+$endif.chaPOpolicy
+
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "fast"
+*** Allow first slow then fast phase-out cap
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0.1;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0.05;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2035) = 0.07;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.09;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2045) = 0.09;
+$endif.chaPOpolicy
+
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "medium"
+*** Allow first slow then fast phase-out cap
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0.02;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2035) = 0.035;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.06;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2045) = 0.09;
+$endif.chaPOpolicy
+
+$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "slow"
+*** Allow first slow then fast phase-out cap
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0.005;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0.01;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2035) = 0.02;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.035;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2045) = 0.05;
+pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2050) = 0.06;
+$endif.chaPOpolicy
+
+*$offtext
+
+*SB* Time-dependent early retirement rates in Baseline scenarios
 $ifthen.Base_Cprice %carbonprice% == "none"
 $ifthen.Base_techpol %techpol% == "none"
 *** CG: Allow no early retirement in future periods under baseline for developing countries
@@ -1395,6 +1499,7 @@ $endif.cm_subsec_model_steel
 
 );
 
+
 ***Rescaling adj seed and coeff if adj cost multiplier switches are on
 $ifthen not "%cm_adj_seed_multiplier%" == "off"
    p_adj_seed_te(ttot,regi,te)$(p_adj_seed_multiplier(te)) = p_adj_seed_multiplier(te) * p_adj_seed_te(ttot,regi,te);
@@ -1710,6 +1815,25 @@ $offdelim
 pm_fedemand(tall,all_regi,in) = f_fedemand(tall,all_regi,"%cm_demScen%",in);
 *** data input for industry FE that is no part of the CES tree
 pm_fedemand(tall,all_regi,ppfen_no_ces_use) = f_fedemand(tall,all_regi,"%cm_demScen%",ppfen_no_ces_use);
+
+parameter c_CHA_EAF_sed_shift "shift CHA EAF specific energy demand";
+c_CHA_EAF_sed_shift(tall) = 0.75;
+c_CHA_EAF_sed_shift("2015") = 0.85;
+
+
+*** Shift CHA EAF electricity to primary steel production to better match
+*** empirical specific energy demand
+loop (regi$( sameas(regi,"CHA") ),
+  pm_fedemand(tall,regi,"feel_steel_primary")
+    = pm_fedemand(tall,regi,"feel_steel_primary")
+    + ( c_CHA_EAF_sed_shift(tall)
+      * pm_fedemand(tall,regi,"feel_steel_secondary")
+      );
+
+  pm_fedemand(tall,regi,"feel_steel_secondary")
+    = (1 - c_CHA_EAF_sed_shift(tall))
+    * pm_fedemand(tall,regi,"feel_steel_secondary");
+);
 
 *** RCP-dependent demands in buildings (climate impact)
 $ifthen.cm_rcp_scen_build not "%cm_rcp_scen_build%" == "none"

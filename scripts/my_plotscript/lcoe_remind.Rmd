@@ -1,0 +1,746 @@
+---
+title: "LCOE Analysis"
+output: html_notebook
+---
+
+libraries
+
+
+```{r}
+library(gdx)
+library(quitte)
+library(dplyr)
+library(purrr)
+library(tidyr)
+library(ggplot2)
+library(data.table)
+```
+
+configure script
+
+```{r}
+# set config
+run_number <- "standalone_v23"
+data.dir <- "~/source/REMIND_integrate/remind/output/"
+
+data.dir = paste0(data.dir,run_number)
+
+ylimit <- 200
+
+LCOE.from.file <- T
+# end config 
+
+
+
+# end set config
+
+
+
+# prepare configurations
+plot.dir = paste0("./plots/", run_number,"/")
+
+
+if (!dir.exists(plot.dir)) {
+  dir.create(plot.dir)
+}
+
+```
+
+read data
+
+```{r}
+
+### read mif
+
+# read data in folder
+mifpath <- grep("REMIND_generic.*.mif", list.files(data.dir, full.names = T), value=T)
+#mifpath <- mifpath[-grep("without", mifpath)] # remove without plus mif files
+
+df.mod <- read.quitte(mifpath)
+
+### read gdx
+gdx.files <- list.files(data.dir, pattern = "fulldata_.*.gdx$", full.names = T)
+
+```
+
+read or calculate LCOE
+
+```{r}
+
+if (LCOE.from.file) {
+  
+  lcoe.file <- grep("REMIND_LCOE.*", list.files(data.dir, full.names = T), value=T)
+  for (i in 1:length(lcoe.file)) {
+     df.lcoe.in <- read.csv(lcoe.file[i], sep = ";", header = T, colClasses = c(rep("factor", 3), "numeric", rep("factor", 6), "numeric") )
+     if (i == 1) {
+       df.lcoe <- df.lcoe.in
+     } else {
+       df.lcoe <- rbind(df.lcoe, df.lcoe.in)
+     }
+  }
+  
+  # df.lcoe <- read.csv(lcoe.file, sep = ";", header = T, colClasses = c(rep("factor", 3), "numeric", rep("factor", 6), "numeric") )
+
+} else {
+  
+  source("~/source/remind2/R/reportLCOE.R")
+
+
+  for (i in 1:length(gdx.files)) {
+    df.lcoe.scen <- as.quitte(reportLCOE(gdx.files[i], output.type = "both"))
+  
+    scen.name <- sub(".*fulldata_", "", gdx.files[i])
+    scen.name <- substr(scen.name, 1,nchar(scen.name)-4)
+    df.lcoe.scen <- df.lcoe.scen %>% 
+                    mutate( scenario = scen.name)
+  
+    if (i == i) {
+      df.lcoe <- df.lcoe.scen
+    } else {
+      df.lcoe <- rbind(df.lcoe, df.lcoe.scen)
+    }
+  }
+
+}
+
+
+```
+
+
+
+add LCOE components for some technologies
+
+```{r}
+
+# use average LCOE for integration cost as marginal LCOE (storage cost, grid cost, curtailment cost)
+
+# average integration cost LCOE
+df.lcoe.int <- df.lcoe %>% 
+                filter(type == "average", 
+                        cost %in% c("Storage Cost","Grid Cost", "Curtailment Cost")) %>% 
+                revalue.levels(type = c("average" = "marginal"))
+
+# recalculate total LCOE
+df.lcoe <- df.lcoe %>% 
+              rbind(df.lcoe.int)
+
+df.lcoe <- df.lcoe %>%
+              filter(cost != "Total LCOE") %>% 
+              sum_total(cost, value) %>% 
+              revalue.levels(cost = c("Total" = "Total LCOE"))
+
+```
+
+plot LCOE
+
+```{r}
+
+### config
+
+scenarios_mapping_WB2C = c(
+  "Base_INT" = "Baseline",
+  "elec_INT_800_po_plateau30" = "WB2C plateau 30",
+  "elec_INT_800_po_plateau25" = "WB2C plateau 25",
+  "elec_INT_800_po_slope_slo" = "WB2C slow",
+  "elec_INT_800_po_slope_med" = "WB2C medium",
+  "elec_INT_800_po_slope_fast" = "WB2C fast",
+  NULL)
+
+scenarios_mapping_2C = c(
+  "Base_INT" = "Baseline",
+  # "elec_INT_1150_po_plateau30" = "2C plateau 30",
+  # "elec_INT_1150_po_plateau25" = "2C plateau 25",
+  # "elec_INT_1150_po_slope_fast" = "2C fast",
+  # "elec_INT_1150_po_slope_med" = "2C med",
+  # "elec_INT_1150_po_slope_slo" = "2C slow",
+  
+  "elec_INT_1150_po_plateau30_adj" = "2C plateau 30 adj",
+  "elec_INT_1150_po_plateau25_adj" = "2C plateau 25 adj",
+  "elec_INT_1150_po_slope_fast_adj" = "2C fast adj",
+  "elec_INT_1150_po_slope_med_adj" = "2C med adj",
+  "elec_INT_1150_po_slope_slo_adj" = "2C slow adj",
+  NULL)
+
+for (i in c(1:length(scenarios_mapping_2C))){
+  # i = 2
+  plot.scen = names(scenarios_mapping_2C)[[i]]
+  
+  fulldata_file = paste0(data.dir, "/","fulldata_", plot.scen, ".gdx")
+    
+  plot.period <- seq(2020,2070,5)
+  plot.reg <- "CHA"
+  
+  plot.tech <- c("pc","ngcc","spv","wind","tnrs")
+  plot.sector <- c("supply-side")
+  plot.name <- "SEEL"
+
+  tech_genshare <-c(
+                   "wind",
+                   "windoff",
+                   "spv",
+                   "pc",
+                   "ngcc",
+                   "gaschp",
+                   "tnrs",
+                   "csp",
+                   "coalchp",
+                   "ngt",
+                   "dot",
+                   "tnrs",
+                   "biochp",
+                   "bioigcc",
+                   "hydro",
+                   NULL)
+
+ plot.tech <- tech_genshare
+ 
+map.price.tech <- data.frame(
+  variable = c(     # SE
+                    "Price|Secondary Energy|Gases|Biomass", 
+                    "Price|Secondary Energy|Gases|Fossil", 
+                    "Price|Secondary Energy|Gases|Synthetic (CCU)",
+                    "Price|Secondary Energy|Liquids|Biomass", 
+                    "Price|Secondary Energy|Liquids|Biomass", 
+                    "Price|Secondary Energy|Liquids|Fossil", 
+                    "Price|Secondary Energy|Liquids|Synthetic (CCU)", 
+                    "Price|Secondary Energy|Hydrogen", 
+                    "Price|Secondary Energy|Electricity", 
+                    "Price|Secondary Energy|Electricity",
+                    "Price|Secondary Energy|Electricity", 
+                    "Price|Secondary Energy|Electricity",
+                    "Price|Secondary Energy|Electricity",
+                    "Price|Secondary Energy|Electricity", 
+                    "Price|Secondary Energy|Electricity",
+                    "Price|Secondary Energy|Electricity", 
+                    "Price|Secondary Energy|Electricity",
+                    "Price|Secondary Energy|Electricity",
+                    "Price|Secondary Energy|Electricity", 
+                    "Price|Secondary Energy|Electricity",
+                    "Price|Secondary Energy|Electricity",
+                    #FE
+                    "Price|Final Energy|Buildings|Liquids",
+                    "Price|Final Energy|Industry|Liquids",
+                    "Price|Final Energy|Transport|Liquids",
+                    "Price|Final Energy|Buildings|Liquids",
+                    "Price|Final Energy|Industry|Liquids",
+                    "Price|Final Energy|Transport|Liquids",
+                    "Price|Final Energy|Transport|Liquids",
+                    "Price|Final Energy|Transport|Liquids",
+                    # Gases, H2, Heat
+                    "Price|Final Energy|Buildings|Gases",
+                    "Price|Final Energy|Industry|Gases",
+                    "Price|Final Energy|Buildings|Hydrogen",
+                    "Price|Final Energy|Industry|Hydrogen",
+                    "Price|Final Energy|Transport|Hydrogen",
+                    "Price|Final Energy|Buildings|Heat",
+                    "Price|Final Energy|Industry|Heat",
+                     # gases
+                    "Price|Final Energy|Industry|Gases",
+                    "Price|Final Energy|Industry|Gases",
+                    "Price|Final Energy|Industry|Gases",
+                    "Price|Final Energy|Transport|Gases",
+                    "Price|Final Energy|Transport|Gases",
+                    "Price|Final Energy|Transport|Gases",
+                    #transport
+                    "Price|Final Energy|Transport|Electricity"),
+  tech = c(# SE
+           "biogas",
+           "gastr",
+           "h22ch4",
+           "bioftcrec",
+           "bioftrec",
+           "refliq",
+           "MeOH",
+           "elh2",
+           "wind",
+           "spv",
+           "pc",
+           "ngcc",
+           "tnrs",
+           "csp",
+           "coalchp",
+           "ngt",
+           "dot",
+           "tnrs",
+           "biochp",
+           "bioigcc",
+           "hydro",
+           # FE
+           "tdsynhos",
+           "tdsynhos",
+           "tdsyndie",
+           "tdfoshos",
+           "tdfoshos",
+           "tdfosdie",
+           "tdfospet",
+           "tdsynpet",
+           "tdfosgas",
+           "tdfosgas",
+           "tdh2s",
+           "tdh2s",
+           "tdh2t",
+           "tdhes",
+           "tdhes",
+           # gases
+           "tdfosgas",
+           "tdbiogas",
+           "tdsyngas",
+           "tdfosgat",
+           "tdbiogat",
+           "tdsyngat",
+           "tdelt"),
+  
+  sector = c("supply-side","supply-side","supply-side","supply-side","supply-side","supply-side","supply-side",
+             "supply-side","supply-side","supply-side", "supply-side","supply-side","supply-side",  
+             "supply-side","supply-side", "supply-side","supply-side","supply-side", 
+             "supply-side","supply-side","supply-side", 
+             "buildings", "industry", "transport",
+             "buildings", "industry", "transport",
+             "transport","transport",
+             "buildings","industry","buildings","industry","transport","buildings","industry",
+             #gases
+             "industry","industry","industry",
+             "transport","transport","transport",
+             "transport")
+)
+
+tech.label <- c("spv" ="Solar PV", 
+                "wind" = "Wind Onshore", 
+                "windoff" = "Wind Offshore",
+                "csp" = "Solar CSP",  
+                "pc" = "Coal w/o CCS",
+                "igcc" = "Coal w/o CCS",
+                "coalchp" = "Coal w/o CCS", 
+                "ngcc" = "Gas w/o CCS",
+                "ngt" = "Gas w/o CCS",
+                "gaschp" = "Gas w/o CCS", 
+                "dot" = "Oil",
+                "pcc" = "Coal w/ CCS", 
+                "pco" = "Coal w/ CCS", 
+                "igccc" = "Coal w/ CCS",
+                "ngccc" = "Gas w/ CCS", 
+                "tnrs" = "Nuclear",
+                "geohdr" = "Geothermal",
+                "biochp" = "Biomass",
+                "bioigcc" = "Biomass",
+                "bioigccc" = "Biomass w/ CCS",
+                "hydro" = "Hydro",
+                "h2turbVRE" = "H2 Turbine", 
+                "MeOH" = "Synthetic Liquids, SE Level", "elh2" = "Electrolysis",
+                "refliq" = "Oil Liquids, SE Level",
+                "tdsynhos" = "(Synthetic) Liquids, FE Level",
+                "tdsynhos" = "(Synthetic) Liquids, FE Level",
+                "tdsyndie" = "(Synthetic) Liquids, FE Level")
+
+# cost components
+cost.colors <- c(
+              #  "Additional H2 t&d Cost" = "grey",
+                 "FE Tax" = "darkseagreen",
+                 "Flex Tax" = "lightblue",
+                 "CO2 Cost" = "indianred",
+                 "Curtailment Cost" = "darkblue",
+                 "Storage Cost" = "darkorchid",
+                 "Grid Cost" = "darkolivegreen3",
+                 "CCS Cost" = "darkgoldenrod2",
+                 "Second Fuel Cost" = "violet",
+                 "Adjustment Cost" = "darkgoldenrod1",
+                 # "CO2 Tax Cost" = "indianred",
+                 "Investment Cost" = "azure4",
+                 "OMV Cost" = "cyan",
+                 "OMF Cost" = "darkcyan",
+                 "Fuel Cost" = "orange3")
+
+tech.colors <-   c("Gas w/o CCS" = "#999959", "Coal w/o CCS" = "#0c0c0c",
+                       "Solar PV" = "#ffcc00", "Wind Onshore" = "#337fff", 
+                       "Wind Offshore" = "#334cff", "Biomass" = "#005900",
+                       "Gas w/o CCS" = "#e51900", "Hydro" = "#191999", "Nuclear" = "#ff33ff",
+                       NULL)
+### end config
+
+# prepare LCOE for plot
+df.lcoe.plot.nonco2 <- df.lcoe %>% 
+                  filter(region %in% plot.reg, scenario %in% plot.scen,
+                         period %in% plot.period, type == "marginal",
+                         tech %in% plot.tech, sector %in% plot.sector,
+                         value != 0) %>% 
+                  filter( !cost %in% c("Total LCOE", "CO2 Tax Cost")) %>% 
+                  order.levels(tech = plot.tech, cost = names(cost.colors)) %>% 
+                  # revalue.levels(tech = tech.label)%>% 
+                  select(-type)
+
+df.lcoe.plot.co2 <- df.lcoe %>% 
+                  filter(region %in% plot.reg, scenario %in% plot.scen,
+                         period %in% plot.period, type == "average",
+                         tech %in% plot.tech, sector %in% plot.sector,
+                         value != 0) %>% 
+                  filter( cost %in% c("CO2 Cost")) %>% 
+                  mutate( value = value/2) %>% 
+                  order.levels(tech = plot.tech, cost = names(cost.colors)) %>% 
+                  # revalue.levels(tech = tech.label) %>% 
+                  select(-type)
+
+df.lcoe.plot <- list(df.lcoe.plot.nonco2, df.lcoe.plot.co2) %>%
+  reduce(full_join) %>% 
+  select(period,tech,cost,value)
+
+# filter for total LCOE
+df.lcoe.total <- df.lcoe %>% 
+                  filter(region %in% plot.reg, scenario %in% plot.scen,
+                         period %in% plot.period, type == "marginal",
+                         tech %in% plot.tech, sector %in% plot.sector) %>% 
+                  filter( cost == c("Total LCOE")) %>%
+                  select(-unit, -cost) %>% 
+                  order.levels(tech = plot.tech) %>%  
+                  dplyr::rename( `Total LCOE` = value )
+
+df.price <- df.mod %>% 
+              filter(region %in% plot.reg, scenario %in% plot.scen,
+                     period %in% plot.period, variable %in% map.price.tech$variable) %>% 
+              # convert from USD2005/GJ to USD2015/MWh
+              mutate( value = value * 1.2 * 3.66) %>% 
+              left_join(map.price.tech) %>% 
+              select(-unit, -variable) %>% 
+              # dplyr::rename( `REMIND Price` = value) %>% 
+              filter( tech %in% plot.tech, sector %in% plot.sector) %>% 
+              mutate( variable = "REMIND Price") %>% 
+              order.levels(tech = plot.tech) 
+              # left_join(df.lcoe.total) %>% 
+              # gather(variable, value, `Total LCOE`, `REMIND Price`) %>% 
+
+p.LCOE <- ggplot() +
+            geom_col( data = df.lcoe.plot, 
+                      aes(period, value, fill=cost)) +
+            geom_line(data = df.price,
+                      aes(period, value, linetype=variable), size=1.2) +
+            facet_wrap(~tech) +
+            scale_y_continuous("LCOE and REMIND Price\n(USD2015/MWh)") +
+            scale_x_continuous(breaks = seq(2020,2045,10)) +
+            scale_fill_manual(values = cost.colors) +
+            theme_bw() +
+            ylim(-50,600) +
+            theme( axis.text.x = element_text(angle = 90),
+                   strip.background = element_blank())+
+            theme(legend.position="bottom", legend.direction="horizontal", legend.title = element_blank(),legend.text = element_text(size=5))
+
+ggsave(plot = p.LCOE, filename = paste0(plot.dir, "LCOE_", plot.name, "_", plot.scen, ".png"),
+       width = 7, height = 6)
+}
+```
+
+plot LCOE
+
+```{r}
+
+# cost.colors <- c( "Curtailment Cost" = "darkblue",
+#                   "Storage Cost" = "darkorchid",
+#                   "Grid Cost" = "darkolivegreen3",
+#                   "CO2 Cost" = "indianred",
+#                   "OMV Cost" = "cyan",
+#                   "OMF Cost" = "darkcyan",
+#                   "Investment Cost" = "deepskyblue2",
+#                   "Fuel Cost" = "orange3",
+#                   "Adjustment Cost" = "darkgoldenrod1",
+#                   NULL)
+
+cost.colors <- c("Additional H2 t&d Cost" = "grey",
+                 "FE Tax" = "darkseagreen",
+                 "Flex Tax" = "lightblue",
+                 "CO2 Cost" = "indianred",
+                 "Curtailment Cost" = "darkblue",
+                 "Storage Cost" = "darkorchid",
+                 "Grid Cost" = "darkolivegreen3",
+                 "CCS Cost" = "darkgoldenrod2",
+                 "Second Fuel Cost" = "violet",
+                 # "CO2 Tax Cost" = "indianred",
+                 "Adjustment Cost" = "darkgoldenrod1",
+                 "Investment Cost" = "azure4",
+                 "OMV Cost" = "cyan",
+                 "OMF Cost" = "darkcyan",
+                 "Fuel Cost" = "orange3")
+
+source("~/source/remind2/R/reportLCOE.R")
+tdptwyr2dpgj <- 31.71   # conversion factor trUSD2005/TWa to USD2005/GJ
+
+output.type = "both"
+scen = names(scenarios_mapping_2C)[[1]]
+gdx = paste0(data.dir, "/","fulldata_", scen, ".gdx")
+
+for (i in c(2:lengths(scenarios_mapping_2C))){
+  # i = 2
+  scen = names(scenarios_mapping_2C)[[i]]
+  gdx = paste0(data.dir, "/","fulldata_", scen, ".gdx")
+  
+df.lcoe.marg <- as.quitte(reportLCOE(gdx, output.type = "marginal"))  %>% 
+                  mutate(scenario = scen)
+
+df.lcoe.avg <- as.quitte(reportLCOE(gdx, output.type = "average"))  %>% 
+                  mutate(scenario = scen)
+
+df.lcoe.marg.nonco2 <- df.lcoe.marg %>% 
+  filter(region %in% plot.reg, scenario %in% scen,
+                         period %in% plot.period, type == "marginal",
+                         output == "seel", sector %in% c("supply-side"),
+                         value != 0) %>% 
+                  filter(! cost %in% c("CO2 Tax Cost", "Total LCOE"))
+
+df.lcoe.avg.co2 <- df.lcoe.avg %>% 
+  filter(region %in% plot.reg, scenario %in% scen,
+                         period %in% plot.period, type == "average",
+                         output == "seel", sector %in% c("supply-side"),
+                         value != 0) %>% 
+                  filter( cost %in% c("CO2 Cost"))%>% 
+                  mutate( value = value/2)
+
+df.lcoe <- list(df.lcoe.marg.nonco2, df.lcoe.avg.co2) %>%
+  reduce(full_join) %>% 
+  select(period,tech,cost,value)
+
+genshare.data <- file.path(gdx) %>% 
+      read.gdx("p32_shSeEl", factor = FALSE, squeeze = FALSE) %>%
+      filter(all_regi %in% plot.reg) %>% 
+      select(period = ttot, tech = all_te, genshare = value)
+
+df.lcoe.sys <- list(df.lcoe, genshare.data) %>%
+              reduce(full_join) %>% 
+              filter(genshare > 1e-2)  %>% 
+              mutate(sys_cost_components = genshare * value / 100) %>% 
+              select(period,tech,cost,genshare,value,sys_cost_components) %>% 
+              filter(!tech %in% c("fnrs", "h2turb", "h2turbVRE")) %>%
+              revalue.levels(tech = tech.label) %>% 
+              select(period,tech,cost,sys_cost_components)  %>% 
+              order.levels(cost = names(cost.colors)) %>% 
+              dplyr::group_by(period,tech, cost) %>%
+              dplyr::summarise( sys_cost = sum(sys_cost_components) ) %>% 
+              dplyr::ungroup() 
+
+# read in marginals to calculate REMIND prices
+q_balSe <- readGDX(gdx, "q_balSe", field = "m", restore_zeros = F)
+q32_balSe <- readGDX(gdx, "q32_balSe", field = "m", restore_zeros = F)
+qm_budget <- readGDX(gdx, "qm_budget", field = "m", restore_zeros = F)
+
+# convert to USD2015/MWh
+q_balSe <- q_balSe / collapseNames(qm_budget) * tdptwyr2dpgj * 1.2 * 3.66
+q32_balSe <- q32_balSe / collapseNames(qm_budget) * tdptwyr2dpgj * 1.2 * 3.66
+
+df.q32_balSe <- as.quitte(q32_balSe)
+
+df.q_balSe0 <- as.quitte(q_balSe) 
+
+df.q_balSe <- list(df.q32_balSe, df.q_balSe0) %>%
+  reduce(full_join) %>% 
+  filter(region %in% plot.reg, all_enty == "seel")
+
+p.sysLCOE <- ggplot() +
+  geom_col( data = df.lcoe.sys ,
+            aes(period, sys_cost, fill=cost)) +
+  geom_line(data = df.q_balSe %>% filter(period < 2100),
+            aes(period, value), size=1.2) +
+  scale_y_continuous("LCOE and REMIND Price\n(USD2015/MWh)") +
+  scale_x_continuous(breaks = seq(2010,2100,10)) +
+  scale_fill_manual(values = cost.colors) +
+  coord_cartesian(ylim = c(0,160))+
+  theme_bw() +
+  ggtitle(paste0("System LCOE for 1 MWh of generated power: ", plot.reg))+
+  theme(plot.title = element_text(size = 16, face = "bold"))+
+  theme(aspect.ratio = 1) +
+  theme( axis.text.x = element_text(angle = 90),
+         strip.background = element_blank())
+            
+  ggsave(plot = p.sysLCOE, filename = paste0(plot.dir, "sysLCOE_price_", scen, ".png"),
+       width = 7, height = 6)
+
+df.lcoe.sys.te <- list(df.lcoe, genshare.data) %>%
+              reduce(full_join) %>% 
+              filter(genshare > 1e-2)  %>% 
+              mutate(sys_cost_components = genshare * value / 100) %>% 
+              select(period,tech,cost,sys_cost_components) %>% 
+              filter(!tech %in% c("fnrs", "h2turb", "h2turbVRE")) %>%
+              revalue.levels(tech = tech.label) %>% 
+              order.levels(cost = names(cost.colors)) %>% 
+              dplyr::group_by(period,tech) %>%
+              dplyr::summarise( sys_cost = sum(sys_cost_components) ) %>% 
+              dplyr::ungroup() 
+
+p.sysLCOE.te <- ggplot() +
+  geom_col( data = df.lcoe.sys.te,
+            aes(period, sys_cost, fill=tech)) +
+  geom_line(data = df.q_balSe %>% filter(period < 2100),
+            aes(period, value), size=1.2) +
+  scale_y_continuous("LCOE and REMIND Price\n(USD2015/MWh)") +
+  scale_x_continuous(breaks = seq(2010,2100,10)) +
+  scale_fill_manual(values = tech.colors) +
+  coord_cartesian(ylim = c(0,160))+
+  theme_bw() +
+  ggtitle(paste0("System LCOE for 1 MWh of generated power: ", plot.reg))+
+  theme(plot.title = element_text(size = 16, face = "bold"))+
+  theme(aspect.ratio = 1) +
+  theme( axis.text.x = element_text(angle = 90),
+         strip.background = element_blank())
+            
+  ggsave(plot = p.sysLCOE.te, filename = paste0(plot.dir, "sysLCOE_price_", scen, "_te.png"),
+       width = 7, height = 6)
+}
+
+```
+
+
+Check FE marginals
+
+```{r}
+
+reg <- "CHA"
+
+# for (i in c(2:length(scenarios_mapping_2C))){
+
+  i = 2
+  scen = names(scenarios_mapping_2C)[[i]]
+  gdx = paste0(data.dir, "/","fulldata_", scen, ".gdx")
+  
+  # read in marginals to calculate REMIND prices
+  q_balSe <- readGDX(gdx, "q_balSe", field = "m", restore_zeros = F)
+  q32_balSe <- readGDX(gdx, "q32_balSe", field = "m", restore_zeros = F)
+  qm_balFe <- readGDX(gdx, "qm_balFe", field = "m", restore_zeros = F)
+  pm_FEPrice_by_SE_Sector <- readGDX(gdx, "pm_FEPrice_by_SE_Sector", restore_zeros = F)
+  
+  q36_demFeBuild <- readGDX(gdx, "q36_demFeBuild", field = "m", restore_zeros = F)
+  q35_demFeTrans <- readGDX(gdx, "q35_demFeTrans", field = "m", restore_zeros = F)
+  qm_budget <- readGDX(gdx, "qm_budget", field = "m", restore_zeros = F)
+  
+  # convert to USD2015/MWh 
+  q_balSe <- q_balSe / collapseNames(qm_budget) * tdptwyr2dpgj * 1.2 * 3.66
+  q32_balSe <- q32_balSe / collapseNames(qm_budget) * tdptwyr2dpgj * 1.2 * 3.66
+  qm_balFe <- qm_balFe / collapseNames(qm_budget) * tdptwyr2dpgj * 1.2 * 3.66
+  
+  q32_balSe3 <- as.quitte(q32_balSe) %>% 
+                select(region, period, entySe = all_enty,q_balSe= value)
+  
+  q_balSe3 <- as.quitte(q_balSe) %>% 
+                select(region, period, entySe = all_enty,q_balSe= value)
+  
+  qm_balFe.quitte <- as.quitte(qm_balFe) %>% 
+                select(region, period, entyFe= all_enty1, entySe = all_enty, qm_balFe = value, tech = all_te)
+
+  q_balSe.quitte <- list(q32_balSe3, q_balSe3) %>%
+    reduce(full_join)
+    
+  if (!is.null(pm_FEPrice_by_SE_Sector)) {
+    pm_FEPrice_by_SE_Sector <- pm_FEPrice_by_SE_Sector * tdptwyr2dpgj * 1.2 * 3.66
+  }
+    
+  pm_FEPrice_by_SE_Sector.quitte <- as.quitte(pm_FEPrice_by_SE_Sector) %>% 
+              select(region, period, sector, entyFe= all_enty, pm_FEPrice_by_SE_Sector = value)
+                        
+  q36_demFeBuild <- q36_demFeBuild /collapseNames(qm_budget) * tdptwyr2dpgj * 1.2 * 3.66
+  q35_demFeTrans <- q35_demFeTrans /collapseNames(qm_budget) * tdptwyr2dpgj * 1.2 * 3.66
+  
+  # q36_demFeSec.quitte <- as.quitte(q35_demFeTrans)
+  q36_demFeSec.quitte <- as.quitte(q36_demFeBuild) %>% 
+                                     mutate( sector = "build")  %>% 
+                         rbind(as.quitte(q35_demFeTrans) %>% 
+                                     mutate( sector = "trans")) %>% 
+                         filter(all_emiMkt == "ES") %>% 
+                         select(region, period, sector, entyFe=all_enty, fe2ces=value)
+  
+  if (is.null(pm_FEPrice_by_SE_Sector)) {
+      df.prices.check <- qm_balFe.quitte %>%  
+                      left_join(q_balSe.quitte) %>% 
+                      left_join( as.quitte(q36_demFeBuild) %>% 
+                                 mutate( sector = "build") %>% 
+                                 rbind(as.quitte(q35_demFeTrans) %>% 
+                                 mutate( sector = "trans")) %>% 
+                                 dplyr::rename( fe2ces = value, all_enty1 = all_enty)) %>% 
+                      gather( variable, value, q_balSe, qm_balFe, fe2ces) %>% 
+                      mutate(scenario = scen) %>% 
+                      revalue.levels(sector = c("build" = "buildings", "indst" = "industry", "trans" = "transport")) 
+  
+  } else {
+      df.prices.check <- pm_FEPrice_by_SE_Sector.quitte%>% 
+                left_join(qm_balFe.quitte ) %>%
+                left_join(q_balSe.quitte) %>% 
+                left_join(q36_demFeSec.quitte) %>% 
+                gather( variable, value, q_balSe, qm_balFe, pm_FEPrice_by_SE_Sector, fe2ces) %>%
+                # gather( variable, value, q_balSe, pm_FEPrice_by_SE_Sector, fe2ces) %>% 
+                mutate(scenario = scen) %>% 
+                revalue.levels(sector = c("build" = "buildings", "indst" = "industry", "trans" = "transport")) 
+  }
+  
+  source("~/source/remind2/R/reportLCOE.R")
+  df.lcoe.marg2 <- as.quitte(reportLCOE(gdx, output.type = "marginal"))  %>% 
+                    mutate(scenario = scen)
+  
+  df.lcoe.avg2 <- as.quitte(reportLCOE(gdx, output.type = "average"))  %>% 
+                    mutate(scenario = scen)
+  
+  plot.period <- seq(2015,2100,5)
+  plot.reg <- reg
+  
+  plot.tech.li <- c("tdsynhos","tdfoshos","tdbiohos","tdsyndie","tdfosdie","tdbiodie")
+  plot.tech.el <- c("tdels","tdelt")
+  plot.tech <- c(plot.tech.li,plot.tech.el)
+  plot.sector <- c("buildings","transport","industry")
+  # plot.market <- "ES"
+  # plot.name <- "FE_liq"
+  plot.name <- "FE"
+  
+  df.lcoe.marg.nonco2 <- df.lcoe.marg2 %>% 
+                 filter(region %in% plot.reg, scenario %in% scen,
+                           period %in% plot.period, type == "marginal",
+                           tech %in% plot.tech, sector %in% plot.sector,
+                           value != 0) %>%
+                 filter(! cost %in% c("CO2 Tax Cost", "Total LCOE")) 
+  
+  df.lcoe.avg.co2 <- df.lcoe.avg2 %>% 
+                 filter(region %in% plot.reg, scenario %in% scen,
+                           period %in% plot.period, type == "average",
+                           # tech %in% c("tdfosdie"),
+                           value != 0) %>%
+                 filter(cost %in% c("CO2 Cost")) 
+
+  genshare.data <- file.path(gdx) %>% 
+      read.gdx("p32_shSeEl", factor = FALSE, squeeze = FALSE) %>%
+      filter(all_regi %in% plot.reg) %>% 
+      select(period = ttot, tech = all_te, genshare = value)
+
+  df.lcoe.co2 <- list(df.lcoe.avg.co2, genshare.data) %>%
+              reduce(full_join) %>% 
+              filter(genshare > 1e-2)  %>% 
+              mutate(co2 = genshare * value / 100) %>% 
+              filter(!tech %in% c("fnrs", "h2turb", "h2turbVRE")) %>%
+              revalue.levels(tech = tech.label) %>% 
+              order.levels(cost = names(cost.colors)) %>% 
+              dplyr::group_by(period,tech) %>%
+              dplyr::summarise( sys_cost = sum(sys_cost_components) ) %>% 
+              dplyr::ungroup() 
+  
+  df.lcoe.check <- df.lcoe.marg.nonco2 %>% 
+    # remove non-existing combinations of fedie/fehos with sectors
+      filter( ! (output == "fedie" & sector != "transport") &  ! (output == "fehos" & sector == "transport")) %>% 
+      filter( ! (tech == "tdelt" & sector != "transport") & ! (tech == "tdels" & sector == "transport")) %>%   order.levels(sector = c("buildings", "industry","transport"))
+                        
+  df.price.plot <- df.prices.check %>% 
+                 filter(region %in% plot.reg, scenario %in% scen,
+                       period %in% plot.period, tech %in% plot.tech,
+                       sector %in% plot.sector) %>% 
+                 select(period,tech,sector,variable,value) %>% 
+                 order.levels(sector = c("buildings", "industry","transport"))
+  
+  p.marg.check <- ggplot() +
+              geom_col( data = df.lcoe.check, 
+                        aes(period, value, fill = cost)) +
+              geom_line(data = df.price.plot,
+                        aes(period, value, color = variable), size = 0.8, alpha = 0.5) +
+              facet_wrap(tech~sector) +
+              scale_y_continuous("LCOE and REMIND Marginals\n(USD2015/MWh)") +
+              scale_fill_manual(values = cost.colors) +
+              coord_cartesian(ylim = c(-50,230)) +
+              theme_bw() +
+              theme( axis.text.x = element_text(angle = 90),
+                     strip.background = element_blank())
+  
+  ggsave(plot = p.marg.check, filename = paste0(plot.dir, "REMIND_marg_", plot.name, "_", scen, ".png"),
+         width = 17, height = 7)
+
+# }
+
+```
+

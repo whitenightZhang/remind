@@ -20,5 +20,19 @@ loop(t,
   );
 );
 
+p32_usableSe(t,regi,entySe) = sum(pe2se(enty,entySe,te), vm_prodSe.l(t,regi,enty,entySe,te))
+        + sum(se2se(enty,entySe,te), vm_prodSe.l(t,regi,enty,entySe,te))
+        - sum(te, v32_storloss.l(t,regi,te))
+;
+
+p32_usableSeTe(t,regi,entySe,te) = sum(pe2se(enty,entySe,te), vm_prodSe.l(t,regi,enty,entySe,te) )
+        + sum(se2se(enty,entySe,te), vm_prodSe.l(t,regi,enty,entySe,te) )
+        - v32_storloss.l(t,regi,te)
+;
+
+p32_shSeEl(t,regi,te) = p32_usableSeTe(t,regi,"seel",te) / p32_usableSe(t,regi,"seel") * 100
+;
+
+
 *** EOF ./modules/32_power/IntC/postsolve.gms
 

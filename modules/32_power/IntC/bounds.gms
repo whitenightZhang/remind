@@ -13,6 +13,31 @@
 *** Fix capacity factors to the standard value from data
 vm_capFac.fx(t,regi,te) = pm_cf(t,regi,te);
 
+$IFTHEN.coalRef not "%cm_input_coalRef%" == "off"
+execute_loadpoint "input_coalRef.gdx" pm_prodSe_fixrun = vm_prodSe.l;
+execute_loadpoint "input_coalRef.gdx" pm_capFac_fixrun = vm_capFac.l;
+vm_prodSe.fx(t,"CHA","pecoal","seel","pc")$(t.val ge cm_startyear) = pm_prodSe_fixrun(t,"CHA","pecoal","seel","pc");
+vm_prodSe.fx(t,"CHA","pecoal","seel","coalchp")$(t.val ge cm_startyear) = pm_prodSe_fixrun(t,"CHA","pecoal","seel","coalchp");
+vm_prodSe.fx(t,"CHA","pecoal","seel","igcc")$(t.val ge cm_startyear) = pm_prodSe_fixrun(t,"CHA","pecoal","seel","igcc");
+vm_prodSe.fx(t,"CHA","pecoal","seel","igccc")$(t.val ge cm_startyear) = pm_prodSe_fixrun(t,"CHA","pecoal","seel","igccc");
+vm_capFac.fx(t,"CHA","pc")$(t.val ge cm_startyear) = pm_capFac_fixrun(t,"CHA","pc");
+vm_capFac.fx(t,"CHA","coalchp")$(t.val ge cm_startyear) = pm_capFac_fixrun(t,"CHA","coalchp");
+vm_capFac.fx(t,"CHA","igcc")$(t.val ge cm_startyear) = pm_capFac_fixrun(t,"CHA","igcc");
+vm_capFac.fx(t,"CHA","igccc")$(t.val ge cm_startyear) = pm_capFac_fixrun(t,"CHA","igccc");
+$ENDIF.coalRef
+
+*** $IFTHEN.coalRef not "%cm_input_coalRef%" == "off"
+*** execute_loadpoint "input_coalRef.gdx" pm_prodSe_fixrun = vm_prodSe.l;
+*** vm_prodSe.up(t,"CHA","pecoal","seel","pc")$(t.val ge cm_startyear) = pm_prodSe_fixrun(t,"CHA","pecoal","seel","pc") * 1.05;
+*** vm_prodSe.up(t,"CHA","pecoal","seel","coalchp")$(t.val ge cm_startyear) = pm_prodSe_fixrun(t,"CHA","pecoal","seel","coalchp") * 1.05;
+*** vm_prodSe.up(t,"CHA","pecoal","seel","igcc")$(t.val ge cm_startyear) = pm_prodSe_fixrun(t,"CHA","pecoal","seel","igcc") * 1.05;
+
+*** vm_prodSe.lo(t,"CHA","pecoal","seel","pc")$(t.val ge cm_startyear) = pm_prodSe_fixrun(t,"CHA","pecoal","seel","pc") * 0.95;
+*** vm_prodSe.lo(t,"CHA","pecoal","seel","coalchp")$(t.val ge cm_startyear) = pm_prodSe_fixrun(t,"CHA","pecoal","seel","coalchp") * 0.95;
+*** vm_prodSe.lo(t,"CHA","pecoal","seel","igcc")$(t.val ge cm_startyear) = pm_prodSe_fixrun(t,"CHA","pecoal","seel","igcc") * 0.95
+*** $ENDIF.coalRef
+
+
 $IFTHEN.dispatchSetyDown not "%cm_dispatchSetyDown%" == "off"
   loop(pe2se(enty,enty2,te),
     vm_capFac.lo(t,regi,te) = ( 1 - %cm_dispatchSetyDown% / 100 ) * pm_cf(t,regi,te);
