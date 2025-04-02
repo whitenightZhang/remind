@@ -580,8 +580,8 @@ $offdelim
   /
 ;
 
-f37_steel_secondary_max_share("2020","CHA","gdp_SSP2EU") = 0.16;
-f37_steel_secondary_max_share("2025","CHA","gdp_SSP2EU") = 0.38;
+f37_steel_secondary_max_share("2020","CHA","SSP2") = 0.16;
+f37_steel_secondary_max_share("2025","CHA","SSP2") = 0.38;
 
 p37_steel_secondary_max_share(t,regi)
   = f37_steel_secondary_max_share(t,regi,"%cm_GDPpopScen%");

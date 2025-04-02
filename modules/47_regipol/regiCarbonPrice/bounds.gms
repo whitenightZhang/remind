@@ -293,7 +293,7 @@ loop(regi$(sameAs(regi,"CHA")),
   vm_deltaCap.up("2030",regi,"spv","1")= 1*vm_capCum.l("2025",regi,"spv");
   );
 $endif.chaPOpolicy
-$offtext
+***$offtext
 
 $endif.chaPOpolicyMode
 
