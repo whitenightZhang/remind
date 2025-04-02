@@ -21,9 +21,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - add CES parameters for SSP3 with imperfect capital markets [[#1995](https://github.com/remindmodel/remind/pull/1995)] 
 
 ### changed
+- **config** updated ScenarioMIP config
+    [[#1972](https://github.com/remindmodel/remind/pull/1972)]
 - **scripts** for MAgPIE coupled runs, if the coupled config contains a `path_gdx_ref` column, it needs a `path_gdx_refpolicycost` column as well.
     [[#1940](https://github.com/remindmodel/remind/pull/1940)]
-  **core** merge cm_GDPscen and cm_POPscen into cm_GDPpopScen [[#1973](https://github.com/remindmodel/remind/pull/1973)]
+- **scripts** make the selection of variables and equations that are fixed on reference run automatic
+    [[#2033](https://github.com/remindmodel/remind/pull/2033)]
+-_**scripts** You can define timesteps in xlsx_IIASA export script. Defaults to REMIND standard. If you want interpolation between timesteps,
+    you need to adjust it. [[#2056](https://github.com/remindmodel/remind/pull/2056)]
+- **core** merge cm_GDPscen and cm_POPscen into cm_GDPpopScen [[#1973](https://github.com/remindmodel/remind/pull/1973)]
+- **45_carbonprice** realization 'none' only sets carbon price to 0 for t >= cm_startyear
+    [[#2056](https://github.com/remindmodel/remind/pull/2056)]
 
 ### added
 -
