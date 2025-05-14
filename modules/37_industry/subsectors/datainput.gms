@@ -819,9 +819,9 @@ p37_selfCaptureRate("meSySol_cc")  = 0.9;
 p37_selfCaptureRate("meSyNg_cc") = 0.95;
 p37_selfCaptureRate("meSyLiq_cc")  = 0.95;
 
-p37_captureRate("amSyCoal_cc")  = 0.95;
-p37_captureRate("amSyNG_cc") = 0.95;
-p37_captureRate("amSyLiq_cc") = 0.95;
+p37_captureRate("amSyCoal_cc")  = 0.95 * 0.66;
+p37_captureRate("amSyNG_cc") = 0.95 * 0.28;
+p37_captureRate("amSyLiq_cc") = 0.95 * 0.5;
 p37_selfCaptureRate("amSyCoal_cc")  = 0.95;
 p37_selfCaptureRate("amSyNG_cc") = 0.95;
 p37_selfCaptureRate("amSyLiq_cc") = 0.95;
@@ -840,16 +840,16 @@ p37_priceMat(ttot,all_regi,all_enty) = 0.;
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
 !!Execute_Loadpoint "input" pm_FEPrice = pm_FEPrice;
 
-!!loop(t$(t.val > 2020),
-!!  loop(all_regi,
-!!   p37_priceMat(t,all_regi,"naphtha") = -0.4 * pm_FEPrice(t,all_regi,"fehos","indst","ETS");
-    !!p37_priceMat(t,all_regi,"co2f") = 10 * 0.3048 * (t.val-2024) ** (-0.623) ; !! Mahdi Fasihi 2024
-!!  );
-!!);
+loop(t$(t.val > 2020),
+  loop(all_regi,
+   !!p37_priceMat(t,all_regi,"naphtha") = -0.4 * pm_FEPrice(t,all_regi,"fehos","indst","ETS");
+   p37_priceMat(t,all_regi,"co2f") = 3 * 44/12 * 0.3048 * (t.val-2024) ** (-0.623) ; !! Mahdi Fasihi 2024
+  );
+);
 !! Source: Geetanjali Yadav 2023 Table S12 → 0.6 $/kg
 !! Source: Taylor Uekert 2023 Table Table S23 → 0.2-0.4 $/kg
 !! Source: Shaik Afzal 2023 Table Table S6 → 0.4-0.8 $/kg
-p37_priceMat(t,all_regi,"plasticWaste") = 0.3; 
+p37_priceMat(t,all_regi,"plasticWaste") = 0.1; 
 
 $endif.cm_subsec_model_chemicals
 

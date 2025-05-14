@@ -21,11 +21,11 @@ q39_emiCCU(t,regi,te)$(te_ccu39(te) OR teCUPrc(te))..
     p39_co2_dem(t,regi,enty,enty2,te)
   * vm_prodSe(t,regi,enty,enty2,te)
   )
-  +
-  sum(tePrc2matIn(tePrc,opmoPrc,mat)$(sameAs(mat,"co2f")),
-    p37_specMatDem(mat,tePrc,opmoPrc)
-  * vm_outflowPrc(t,regi,tePrc,opmoPrc)
-  )
+  !!+
+  !!sum(tePrc2matIn(tePrc,opmoPrc,mat)$(sameAs(mat,"co2f")),
+  !!  p37_specMatDem(mat,tePrc,opmoPrc)
+  !!* vm_outflowPrc(t,regi,tePrc,opmoPrc)
+  !!)
 
 ;
 
