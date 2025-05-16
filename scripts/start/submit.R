@@ -26,6 +26,7 @@ submit <- function(cfg, restart = FALSE, stopOnFolderCreateError = TRUE) {
     # Create output folder
     if (!file.exists(cfg$results_folder)) {
       message("   Creating results folder ", cfg$results_folder)
+      writeLines(cfg$results_folder, "current_output_folder.txt")
       dir.create(cfg$results_folder, recursive = TRUE, showWarnings = FALSE)
     } else if (!cfg$force_replace) {
       couldnotdelete <- paste0("Results folder ",cfg$results_folder," already exists")

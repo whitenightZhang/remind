@@ -5,6 +5,11 @@
 # |  AGPL-3.0, you are granted additional permissions described in the
 # |  REMIND License Exception, version 1.0 (see LICENSE file).
 # |  Contact: remind@pik-potsdam.de
+if (file.exists("renv/activate.R")) {
+  message("Activating renv…")
+  source("renv/activate.R")
+}
+
 library(gms)
 library(dplyr, warn.conflicts = FALSE)
 library(lucode2)
