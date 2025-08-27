@@ -479,8 +479,23 @@ q37_restrictMatShareChange(t,regi,tePrc,opmoPrc,mat)$(t.val gt 2020
                                                          AND tePrcStiffShare(tePrc,opmoPrc,mat)) ..
   vm_outflowPrc(t,regi,tePrc,opmoPrc) 
 =e=
-(p37_teMatShareHist(regi,tePrc,opmoPrc,mat)+ v37_matShareChange(t,regi,tePrc,opmoPrc,mat))
-  * v37_chemflow(t,regi,mat) !! Try to use different opmoPrc 
+ (
+    !! hvc
+    (p37_teMatShareHist(regi,tePrc,opmoPrc,mat)
+      / (1 - p37_teMatShareHist(regi,"mtoMta","standard",mat))
+    )$(sameas(tePrc,"stCrNg") OR sameas(tePrc,"stCrLiq"))
+    +
+    !! methanol
+    (p37_teMatShareHist(regi,tePrc,opmoPrc,mat)
+      / (1 - p37_teMatShareHist(regi,"meSySol","standard",mat))
+    )$(sameas(tePrc,"meSyNg") OR sameas(tePrc,"meSyLiq"))
+    +
+    !! ammonia
+    p37_teMatShareHist(regi,tePrc,opmoPrc,mat)$(sameas(mat,"ammonia"))
+    +
+    v37_matShareChange(t,regi,tePrc,opmoPrc,mat)
+  )
+  * v37_chemflow(t,regi,mat)
 ;
 ***------------------------------------------------------
 *' Hand-over to CES

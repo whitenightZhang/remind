@@ -691,8 +691,8 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
 p37_specMatDem("ammonia","fertProd","standard")        = 17/14; !!Here the units of urea are based on nitrogen
 p37_specMatDem("ammoniaH2","fertProdH2","standard")        = 17/14;
 
-p37_specMatDem("methanol","mtoMta","standard")        = 2.624; !!Dutta2019 Table 4
-p37_specMatDem("methanolH2","mtoMtaH2","standard")        = 2.624; !!Dutta2019 Table 4
+p37_specMatDem("methanol","mtoMta","standard")        = 2.62; !!Dutta2019 Table 4
+p37_specMatDem("methanolH2","mtoMtaH2","standard")        = 2.62; !!Dutta2019 Table 4
 p37_specMatDem("ammonia","amToFinal","standard")        = 1;
 p37_specMatDem("ammoniaH2","amToFinal","greenh2")        = 1;
 p37_specMatDem("methanol","meToFinal","standard")        = 1;
