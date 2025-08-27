@@ -788,9 +788,9 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
 
    stCrNg  . standard . hvc
    stCrLiq . standard . hvc
-   !!mtoMta  . standard . hvc
+   mtoMta  . standard . hvc
 
-   !!meSySol . standard . methanol
+   meSySol . standard . methanol
    meSyNg  . standard . methanol
    meSyLiq . standard . methanol
 

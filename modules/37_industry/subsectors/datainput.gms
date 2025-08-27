@@ -1013,6 +1013,12 @@ if (cm_startyear gt 2005,
   Execute_Loadpoint "input_ref" p37_ue_share = p37_ue_share;
 );
 
+loop((t,regi,ppfUePrc(in)),
+  if(abs(sum(mat,p37_ue_share(t,regi,mat,in))-1.) gt 0.01,
+    display p37_ue_share;
+    abort "p37_ue_share must add to one for each ue";
+  );
+);
 
 *** --------------------------------
 p37_teMatShareHist(all_regi,tePrc,opmoPrc,mat) = 0.;
