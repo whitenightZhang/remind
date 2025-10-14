@@ -172,6 +172,7 @@ $endif.fixedUE_scenario
 
 !! Fix to avoid reoccurring random infeasibilities. May need to be excluded if e.g. synfuels (or something else) are set to zero.
 vm_demFeSector_afterTax.lo(t,regi,entySe,"fesos","indst",emiMkt)$(NOT sameAs(emiMkt, "other")) = 1e-16;
+!! vm_demFeSector_afterTax.lo(t,regi,entySe,"fegas","indst",emiMkt)$(NOT sameAs(emiMkt, "other")) = 1e-16;
 
 v37_matShareChange.lo(t,regi,tePrc,opmoPrc,mat)$(tePrcStiffShare(tePrc,opmoPrc,mat)) = -cm_maxIndPrcShareChange;
 v37_matShareChange.up(t,regi,tePrc,opmoPrc,mat)$(tePrcStiffShare(tePrc,opmoPrc,mat)) =  cm_maxIndPrcShareChange;

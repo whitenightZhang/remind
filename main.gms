@@ -1973,6 +1973,7 @@ $setGLobal cm_debug_preloop  off    !! def = off  !! regexp = off|on
 *' cm_APssp "air pollution SSP"
 *' (SSP1-5): SSP selection for emission factors based on GAINS2025 data
 *' (FROMGDPSSP): Shortcut to copy SSP from all_GDPpopScen
+<<<<<<< HEAD
 *' (SSP1-5): SSP-specific emission factors GAINS runs from the 2025 ScenarioMIP effort
 *' (GAINSlegacy): emission factors from legacy GAINS runs
 $setGlobal cm_APssp  FROMGDPSSP          !! def = FROMGDPSSP !! regexp = SSP1|SSP2|SSP3|SSP4|SSP5|FROMGDPSSP|GAINSlegacy
@@ -1986,6 +1987,16 @@ $setGlobal cm_APssp  FROMGDPSSP          !! def = FROMGDPSSP !! regexp = SSP1|SS
 *' (SMIPbySSP): ScenarioMIP defaults, varies with SSP narratives
 *' (SMIPVLLO): ScenarioMIP special trajectories for VLLO, varies slightly between SSP1 and SSP2
 $setGlobal cm_APscen  SMIPbySSP          !! def = SMIPbySSP !! regexp = SSP2|SSP5|CLE|SLE|VLE|MFR|SMIPbySSP|SMIPVLLO
+=======
+$setGlobal cm_APssp  FROMGDPSSP          !! def = FROMGDPSSP !! regexp = SSP1|SSP2|SSP3|SSP4|SSP5|FROMGDPSSP
+*' cm_APscen "air pollution scenario"
+*' (CLE): Current Legislation Emissions (differentiated by SSP, available for SSP1-5)
+*' (SLE): Stronger Legislation Emissions (differentiated by SSP, available for SSP1-5)
+*' (MTFR):  Maximum Technically Feasible Reduction (not differentiated by SSP)
+*' (SMIPbySSP): ScenarioMIP default scenario (differentiated by SSP, available for SSP1, SSP2, SSP3 and SSP5)
+*' (SMIPVLLO): ScenarioMIP VLLO scenario (not differentiated by SSP)
+$setGlobal cm_APscen  SMIPbySSP          !! def = SMIPbySSP !! regexp = CLE|SLE|MTFR|SMIPbySSP|SMIPVLLO 
+>>>>>>> leonie/process_based_feedstocks
 $setglobal cm_CES_configuration  indu_subsectors-buil_simple-tran_edge_esm-GDPpop_SSP2-En_SSP2-Kap_debt_limit-Reg_62eff8f7   !! this will be changed by start_run()
 $setglobal c_CES_calibration_iterations  10     !!  def  =  10
 $setglobal c_CES_calibration_industry_FE_target  1
@@ -2008,7 +2019,11 @@ $setGlobal cm_chaCoalBounds off    !! def = off
 *' *  (on):  also non-optimal regions are solved again, up to cm_solver_try_max
 $setglobal cm_repeatNonOpt off      !! def = off  !! regexp = off|on
 
+<<<<<<< HEAD
 $setglobal cm_PlasticMFA  off    !! def = off  !! regexp = ^(off|on)$
+=======
+$setglobal cm_PlasticMFA off      !! def = off  !! regexp = ^(off|on)$
+>>>>>>> leonie/process_based_feedstocks
 *' @stop
 
 *** cm_chaCoalPOSpeed

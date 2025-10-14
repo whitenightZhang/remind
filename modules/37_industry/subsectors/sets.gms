@@ -474,9 +474,11 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     ammoFinal     "Ammonia; final product"
     !! REMINDER: once we co2f from the CCU module, make sure that it isn't subtracted twice (once by taking it from CCU, once by subtracting feedstock carbon)
     co2f
+<<<<<<< HEAD
     co2fdummy 
+=======
+>>>>>>> leonie/process_based_feedstocks
 
-    naphtha       "Naphtha"
     plasticWaste  "Plastic waste, mixed"
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
@@ -501,7 +503,6 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     co2f
     co2fdummy
 
-    naphtha
     plasticWaste
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"

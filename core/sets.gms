@@ -171,8 +171,12 @@ all_te          "all energy technologies, including from modules"
     biodiesel       "oil biomass to biodiesel"
     biopyronly      "biomass pyrolysis to biochar, no energy co-product (established industrial)"
     biopyrhe        "biomass pyrolysis to biochar plus heat (established industrial)"
+<<<<<<< HEAD
     biopyrel        "biomass pyrolysis to biochar plus power (established industrial)"
     biopyrchp       "biomass pyrolysis to biochar plus heat and power (established industrial)"
+=======
+    biopyrchp       "biomass pyrolysis to biochar plus heat and power (established industrial)"   
+>>>>>>> leonie/process_based_feedstocks
     biopyrliq       "biomass pyrolysis to biochar plus liquids (combined with Fischer-Tropsch plant, advanced industrial)"
     biocharuse      "use of biochar, e.g. for soil or for building materials"
     geohdr          "geothermal electric hot dry rock"
@@ -483,7 +487,6 @@ all_enty             "all types of quantities"
     ammoniaH2
     methFinal
     ammoFinal
-    naphtha
     plasticWaste
 
 *** steel
@@ -1341,39 +1344,39 @@ te(all_te)              "energy technologies"
     termM_lng       "Import terminals for LNG (regasification)"
     vess_lng        "Vessels transporting LNG"
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
-    chemOld
-    chemElec
-    chemH2
+    chemOld         "process to produce otherChem with historic FE demand"
+    chemElec        "process to produce otherChem with higher share of feels and improved efficiency"
+    chemH2          "process to produce otherChem with higher share of feh2s"
 
-    stCrNg
-    stCrLiq
-    stCrChemRe
+    stCrNg          "ethane/propane steam cracking"
+    stCrLiq         "naphtha steam cracking"
+    stCrChemRe      "pyrolysis (chemical recycling) of plastic waste"
 
-    mechRe
+    mechRe          "mechanical recycling of plastic waste"
+    
+    meSySol         "methanol synthesis from coal/biomass"
+    meSyNg          "methanol synthesis from NG"
+    meSyLiq         "methanol synthesis from oil"
+    meSySol_cc      "CC for methanol synthesis from coal/biomass"
+    meSyNg_cc       "CC for methanol synthesis from NG"
+    meSyLiq_cc      "CC for methanol synthesis from oil"
+    meSyH2          "methanol synthesis from hydrogen"
+    meSyChemRe      "gasification (chemical recycling) of plastic waste"
 
-    meSySol
-    meSyNg
-    meSyLiq
-    meSySol_cc
-    meSyNg_cc
-    meSyLiq_cc
-    meSyH2
-    meSyChemRe
+    amSyCoal        "ammonia synthesis from coal"
+    amSyNG          "ammonia synthesis from NG"
+    amSyLiq         "ammonia synthesis from oil"
+    amSyCoal_cc     "CC for ammonia synthesis from coal"
+    amSyNG_cc       "CC for ammonia synthesis from NG"
+    amSyLiq_cc      "CC for ammonia synthesis from oil"
+    amSyH2          "Ammonia synthesis from hydrogen"
 
-    amSyCoal
-    amSyNG
-    amSyLiq
-    amSyCoal_cc
-    amSyNG_cc
-    amSyLiq_cc
-    amSyH2
-
-    mtoMta
-    mtoMtaH2
-    fertProd
-    fertProdH2
-    amToFinal
-    meToFinal
+    mtoMta          "Methanol to olefins/methanol to aromatics (production of HVC from methanol from fossil feedstocks)"
+    mtoMtaH2        "mtoMta from green methanol"
+    fertProd        "Fertilizer production from ammonia from fossil feedstocks"
+    fertProdH2      "Fertilizer production from green ammonia"
+    amToFinal       "dummy process to convert methanol or methanolH2 to methFinal"
+    meToFinal       "dummy process to convert ammonia or ammoniaH2 to ammoFinal"
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     idr             "Iron direct reduction"
