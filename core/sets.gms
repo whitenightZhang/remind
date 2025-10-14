@@ -171,12 +171,8 @@ all_te          "all energy technologies, including from modules"
     biodiesel       "oil biomass to biodiesel"
     biopyronly      "biomass pyrolysis to biochar, no energy co-product (established industrial)"
     biopyrhe        "biomass pyrolysis to biochar plus heat (established industrial)"
-<<<<<<< HEAD
     biopyrel        "biomass pyrolysis to biochar plus power (established industrial)"
     biopyrchp       "biomass pyrolysis to biochar plus heat and power (established industrial)"
-=======
-    biopyrchp       "biomass pyrolysis to biochar plus heat and power (established industrial)"   
->>>>>>> leonie/process_based_feedstocks
     biopyrliq       "biomass pyrolysis to biochar plus liquids (combined with Fischer-Tropsch plant, advanced industrial)"
     biocharuse      "use of biochar, e.g. for soil or for building materials"
     geohdr          "geothermal electric hot dry rock"
