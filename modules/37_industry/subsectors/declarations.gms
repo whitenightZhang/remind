@@ -68,7 +68,7 @@ Parameters
   o37_demFeIndRoute(ttot,all_regi,all_enty,all_te,route,secInd37)        "FE demand by FE type, process route and tech"
   o37_specificEmi(ttot,all_regi,all_te,opmoPrc)                          "Specific emissions of a technology; Needed as auxiliary for relative outflow calculation of CC tech"
   !! process-based feedstock implementation
-  o37_carbonaceousSeFeShare(tall,all_regi,all_enty,all_enty)             "Share of SE/FE combinations among all carbonaceous fuels input to the chemicals sector (vm_demFeNonEnergySector)"
+  o37_carbonaceousSeFeShare(tall,all_regi,all_enty,all_enty,all_emiMkt)  "Share of SE/FE combinations among all carbonaceous fuels input to the chemicals sector (vm_demFeNonEnergySector)"
   o37_incinerationEmi(tall,all_regi,all_enty,all_enty,all_emiMkt)        "Emissions from incineration of plastic waste, only carbon that is not captured [GtC]"
   o37_incinerationCCS(tall,all_regi,all_enty,all_enty,all_emiMkt)        "CCS from incineration of plastic waste [GtC]"
   o37_feedstocksCarbon(tall,all_regi,all_enty,all_enty,all_emiMkt)       "Carbon flow: carbon contained in chemical feedstocks [GtC]"

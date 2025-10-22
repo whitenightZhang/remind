@@ -246,28 +246,29 @@ loop((entyFe,route,tePrc,opmoPrc,secInd37)$(    tePrc2route(tePrc,opmoPrc,route)
 *** determine share of SE/FE combinations among all carbonaceous fuels input to the chemicals sector
 *** in order to get entySE and entyFE dimensions for feedstock variables for reporting
 *** ---------------------------------------------------------------------------
-o37_carbonaceousSeFeShare(ttot,regi,entySe,entyFe)$( 
+o37_carbonaceousSeFeShare(ttot,regi,sefe(entySe,entyFe), emiMkt)$( 
                           ttot.val ge 2005 
-                      AND sum((entySe2,entyFe2), vm_demFeNonEnergySector.l(ttot,regi,entySe2,entyFe2,"indst","ETS")) gt 0)
-  = vm_demFeNonEnergySector.l(ttot,regi,entySe,entyFe,"indst","ETS")/
-    sum((entySe2,entyFe2),
-        vm_demFeNonEnergySector.l(ttot,regi,entySe2,entyFe2,"indst","ETS")
+                      AND entyFE2sector2emiMkt_NonEn(entyFe,"indst",emiMkt))
+  = vm_demFeNonEnergySector.l(ttot,regi,entySe,entyFe,"indst",emiMkt)/
+    max(
+      sum((entySe2,entyFe2), vm_demFeNonEnergySector.l(ttot,regi,entySe2,entyFe2,"indst",emiMkt)),
+      sm_eps
     );
 o37_incinerationEmi(t,regi,entySe,entyFe,emiMkt)
-  = o37_carbonaceousSeFeShare(t,regi,entySe,entyFe)
+  = o37_carbonaceousSeFeShare(t,regi,entySe,entyFe,emiMkt)
     * v37_incinerationEmi.l(t,regi,emiMkt);
-o37_incinerationCCS(t,regi,entySe,entyFe,emiMkt)$(sameas(emiMkt,"ETS"))
-  = o37_carbonaceousSeFeShare(t,regi,entySe,entyFe)
+o37_incinerationCCS(t,regi,entySe,entyFe,emiMkt)
+  = o37_carbonaceousSeFeShare(t,regi,entySe,entyFe,emiMkt)
     * vm_incinerationCCS.l(t,regi);
-o37_feedstocksCarbon(t,regi,entySe,entyFe,emiMkt)$(sameas(emiMkt,"ETS"))
-  = o37_carbonaceousSeFeShare(t,regi,entySe,entyFe)
+o37_feedstocksCarbon(t,regi,entySe,entyFe,emiMkt)
+  = o37_carbonaceousSeFeShare(t,regi,entySe,entyFe,emiMkt)
     * v37_feedstocksCarbon.l(t,regi);
-o37_plasticsCarbon(t,regi,entySe,entyFe,emiMkt)$(sameas(emiMkt,"ETS"))
-  = o37_carbonaceousSeFeShare(t,regi,entySe,entyFe)
+o37_plasticsCarbon(t,regi,entySe,entyFe,emiMkt)
+  = o37_carbonaceousSeFeShare(t,regi,entySe,entyFe,emiMkt)
     * v37_plasticsCarbon.l(t,regi);
 o37_plasticWaste(ttot,regi,entySe,entyFe,emiMkt)$( 
-                    ttot.val ge 2005 AND sameas(emiMkt,"ETS"))
-  = o37_carbonaceousSeFeShare(ttot,regi,entySe,entyFe)
+                    ttot.val ge 2005)
+  = o37_carbonaceousSeFeShare(ttot,regi,entySe,entyFe,emiMkt)
     * v37_plasticWaste.l(ttot,regi);
 
 *** EOF ./modules/37_industry/subsectors/postsolve.gms
