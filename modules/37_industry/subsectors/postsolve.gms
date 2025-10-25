@@ -254,20 +254,19 @@ o37_carbonaceousSeFeShare(ttot,regi,sefe(entySe,entyFe), emiMkt)$(
       sum((entySe2,entyFe2), vm_demFeNonEnergySector.l(ttot,regi,entySe2,entyFe2,"indst",emiMkt)),
       sm_eps
     );
-o37_incinerationEmi(t,regi,entySe,entyFe,emiMkt)
-  = o37_carbonaceousSeFeShare(t,regi,entySe,entyFe,emiMkt)
-    * v37_incinerationEmi.l(t,regi,emiMkt);
-o37_incinerationCCS(t,regi,entySe,entyFe,emiMkt)
-  = o37_carbonaceousSeFeShare(t,regi,entySe,entyFe,emiMkt)
-    * vm_incinerationCCS.l(t,regi);
-o37_feedstocksCarbon(t,regi,entySe,entyFe,emiMkt)
-  = o37_carbonaceousSeFeShare(t,regi,entySe,entyFe,emiMkt)
-    * v37_feedstocksCarbon.l(t,regi);
-o37_plasticsCarbon(t,regi,entySe,entyFe,emiMkt)
-  = o37_carbonaceousSeFeShare(t,regi,entySe,entyFe,emiMkt)
-    * v37_plasticsCarbon.l(t,regi);
-o37_plasticWaste(ttot,regi,entySe,entyFe,emiMkt)$( 
-                    ttot.val ge 2005)
+o37_incinerationEmi(ttot,regi,entySe,entyFe,emiMkt)$(ttot.val ge 2005)
+  = o37_carbonaceousSeFeShare(ttot,regi,entySe,entyFe,emiMkt)
+    * v37_incinerationEmi.l(ttot,regi,emiMkt);
+o37_incinerationCCS(ttot,regi,entySe,entyFe,emiMkt)$(ttot.val ge 2005)
+  = o37_carbonaceousSeFeShare(ttot,regi,entySe,entyFe,emiMkt)
+    * vm_incinerationCCS.l(ttot,regi);
+o37_feedstocksCarbon(ttot,regi,entySe,entyFe,emiMkt)$(ttot.val ge 2005)
+  = o37_carbonaceousSeFeShare(ttot,regi,entySe,entyFe,emiMkt)
+    * v37_feedstocksCarbon.l(ttot,regi);
+o37_plasticsCarbon(ttot,regi,entySe,entyFe,emiMkt)$(ttot.val ge 2005)
+  = o37_carbonaceousSeFeShare(ttot,regi,entySe,entyFe,emiMkt)
+    * v37_plasticsCarbon.l(ttot,regi);
+o37_plasticWaste(ttot,regi,entySe,entyFe,emiMkt)$(ttot.val ge 2005)
   = o37_carbonaceousSeFeShare(ttot,regi,entySe,entyFe,emiMkt)
     * v37_plasticWaste.l(ttot,regi);
 
