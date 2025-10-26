@@ -172,21 +172,13 @@ $ifthen.c_techAssumptScen "%c_techAssumptScen%" == "SSP1"
     fm_dataglob("learn",teVRE) =         1.1 * fm_dataglob("learn",teVRE);
     fm_dataglob("floorcost","spv") =     0.1 * fm_dataglob("floorcost","spv");
     fm_dataglob("floorcost","csp") =     0.8 * fm_dataglob("floorcost","csp");
-<<<<<<< HEAD
-<<<<<<< HEAD
 *** because of the interaction of learn rates with floor costs, it is not possible to simply apply multiplicative factors. These 
-=======
-*** RP: because of the interaction of learn rates with floor costs, it is not possible to simply apply multiplicative factors. These
->>>>>>> jakob/process_based_feedstocks
-=======
-*** because of the interaction of learn rates with floor costs, it is not possible to simply apply multiplicative factors. These 
->>>>>>> leonie/process_based_feedstocks
 *** values need to be set by hand!
     fm_dataglob("learn","windon")     =  0.17;  !! these values make 2100 wind onshore costs ~0.8 times those seen in SSP2 at the same cumCap
     fm_dataglob("floorcost","windon") =  200;
     fm_dataglob("learn","windoff")    =  0.16; !! these values make 2100 wind offshore costs ~0.8 times those seen in SSP2 at the same cumCap
-    fm_dataglob("floorcost","windoff") = 400;
-    fm_dataglob("inco0",teStor) =        0.7 * fm_dataglob("inco0",teStor);
+    fm_dataglob("floorcost","windoff") = 400; 
+    fm_dataglob("inco0",teStor) =        0.7 * fm_dataglob("inco0",teStor); 
     fm_dataglob("floorcost",teStor) =    0.7 * fm_dataglob("floorcost",teStor);
 
 
@@ -207,15 +199,15 @@ $elseif.c_techAssumptScen "%c_techAssumptScen%" == "SSP3"
     fm_dataglob("learn","spv") =         0.8 * fm_dataglob("learn","spv");
     fm_dataglob("floorcost","spv") =     8   * fm_dataglob("floorcost","spv");
     fm_dataglob("floorcost","csp") =     1.6 * fm_dataglob("floorcost","csp");
-*** RP: because of the interaction of learn rates with floor costs, it is not possible to simply apply multiplicative factors. These
+*** RP: because of the interaction of learn rates with floor costs, it is not possible to simply apply multiplicative factors. These 
 *** values need to be set by hand!
     fm_dataglob("learn","windon")     =  0.17;  !! these values make 2100 wind onshore costs ~2 times those seen in SSP2 at the same cumCap
     fm_dataglob("floorcost","windon") =  1500;
     fm_dataglob("learn","windoff")    =  0.16; !! these values make 2100 wind offshore costs ~2 times those seen in SSP2 at the same cumCap
-    fm_dataglob("floorcost","windoff") = 2000;
+    fm_dataglob("floorcost","windoff") = 2000; 
 
-    fm_dataglob("inco0",teStor) =        2   * fm_dataglob("inco0",teStor);
-    fm_dataglob("floorcost",teStor) =    2   * fm_dataglob("floorcost",teStor);
+    fm_dataglob("inco0",teStor) =        2   * fm_dataglob("inco0",teStor); 
+    fm_dataglob("floorcost",teStor) =    2   * fm_dataglob("floorcost",teStor); 
 
 
 $elseif.c_techAssumptScen "%c_techAssumptScen%" == "SSP5"
@@ -229,22 +221,14 @@ $elseif.c_techAssumptScen "%c_techAssumptScen%" == "SSP5"
     fm_dataglob("learn",teVRE) =         0.8 * fm_dataglob("learn",teVRE);
     fm_dataglob("floorcost","spv") =     3   * fm_dataglob("floorcost","spv");
     fm_dataglob("floorcost","csp") =     1.3 * fm_dataglob("floorcost","csp");
-<<<<<<< HEAD
-<<<<<<< HEAD
 *** because of the interaction of learn rates with floor costs, it is not possible to simply apply multiplicative factors. These 
-=======
-*** RP: because of the interaction of learn rates with floor costs, it is not possible to simply apply multiplicative factors. These
->>>>>>> jakob/process_based_feedstocks
-=======
-*** because of the interaction of learn rates with floor costs, it is not possible to simply apply multiplicative factors. These 
->>>>>>> leonie/process_based_feedstocks
 *** values need to be set by hand!
     fm_dataglob("learn","windon")     =  0.17;  !! these values make 2100 wind onshore costs ~1.5 times those seen in SSP2 at the same cumCap
     fm_dataglob("floorcost","windon") =  1000;
     fm_dataglob("learn","windoff")    =  0.16; !! these values make 2100 wind offshore costs ~1.5 times those seen in SSP2 at the same cumCap
-    fm_dataglob("floorcost","windoff") = 1400;
-    fm_dataglob("inco0",teStor) =        2   * fm_dataglob("inco0",teStor);
-    fm_dataglob("floorcost",teStor) =    2   * fm_dataglob("floorcost",teStor);
+    fm_dataglob("floorcost","windoff") = 1400; 
+    fm_dataglob("inco0",teStor) =        2   * fm_dataglob("inco0",teStor); 
+    fm_dataglob("floorcost",teStor) =    2   * fm_dataglob("floorcost",teStor); 
 
 
 $endif.c_techAssumptScen
@@ -255,7 +239,7 @@ $endif.c_techAssumptScen
 *** Other technological assumptions (VRE, CCS...)
 ***---------------------------------------------------------------------------
 *** cm_ccsinjeCost cost scenarios
-*** Warning: it applies absolute values; only use it in combination with default c_techAssumptScen SSP2.
+*** Warning: it applies absolute values; only use it in combination with default c_techAssumptScen SSP2. 
 *** low estimate: ccsinje cost prior to 03/2024; i.e. ~11 USD/tCO2 in 2025, decreasing to ~7.5USD/tCO2 as of 2035
 $if "%cm_ccsinjeCost%" == "low" fm_dataglob("tech_stat","ccsinje") = 2;
 $if "%cm_ccsinjeCost%" == "low" fm_dataglob("inco0","ccsinje") = 220;
@@ -271,7 +255,7 @@ if (cm_VRE_supply_assumptions > 0,
     if (cm_VRE_supply_assumptions eq 3, p_VRE_assumption_factor = 1.3); !! very pessimistic assumptions
     fm_dataglob("learn",teVRE) =  1 / p_VRE_assumption_factor * fm_dataglob("learn",teVRE);
     fm_dataglob("learn",teStor) = 1 / p_VRE_assumption_factor * fm_dataglob("learn",teStor);
-    fm_dataglob("inco0",teStor) =     p_VRE_assumption_factor * fm_dataglob("inco0",teStor);
+    fm_dataglob("inco0",teStor) =     p_VRE_assumption_factor * fm_dataglob("inco0",teStor); 
     fm_dataglob("floorcost",teStor) = p_VRE_assumption_factor * fm_dataglob("floorcost",teStor);
 );
 
@@ -303,7 +287,7 @@ fm_dataglob("inco0", "oae_ng") = fm_dataglob("inco0", "oae_ng") / (cm_33_OAE_eff
 fm_dataglob("inco0", "oae_el") = fm_dataglob("inco0", "oae_el") / (cm_33_OAE_eff / sm_c_2_co2);
 
 *** convert inco0, floorcost and omv to REMIND units by applying a factor 0.001
-***   category          energy technology   ccs technology    process-based industry
+***   category          energy technology   ccs technology    process-based industry 
 ***   input data unit   $/kW                $/(tC/a)          $/(t/a)
 ***   REMIND unit       T$/TW               T$/(GtC/a)        T$/(Gt/a)
 fm_dataglob("inco0",te)        = s_DpKW_2_TDpTW   * fm_dataglob("inco0",te);
@@ -766,7 +750,7 @@ pm_cf(ttot,regi,"stCrChemRe") = 0.8;
 
 pm_cf(ttot,regi,"mechRe") = 0.8;
 
-pm_cf(ttot,regi,"meSySol") = 0.8;
+pm_cf(ttot,regi,"meSySol") = 0.8; 
 pm_cf(ttot,regi,"meSyNg") = 0.8;
 pm_cf(ttot,regi,"meSyLiq") = 0.8;
 pm_cf(ttot,regi,"meSySol_cc") = 0.8;
@@ -775,7 +759,7 @@ pm_cf(ttot,regi,"meSyLiq_cc") = 0.8;
 pm_cf(ttot,regi,"meSyH2") = 0.8;
 pm_cf(ttot,regi,"meSyChemRe") = 0.8;
 
-pm_cf(ttot,regi,"amSyCoal") = 0.8;
+pm_cf(ttot,regi,"amSyCoal") = 0.8; 
 pm_cf(ttot,regi,"amSyNG") = 0.8;
 pm_cf(ttot,regi,"amSyLiq") = 0.8;
 pm_cf(ttot,regi,"amSyCoal_cc") = 0.8;
@@ -857,57 +841,6 @@ $endif.Base_techpol
 $endif.Base_Cprice
 
 display pm_regiEarlyRetiRate;
-
-*CG* CHA-specific pc rate
-*$ontext
-$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "plateau30"
-*** Allow first slow then fast phase-out cap
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2035) = 0.02;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.03;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2045) = 0.05;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2050) = 0.07;
-$endif.chaPOpolicy
-
-$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "plateau25"
-*** Allow first slow then fast phase-out cap
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0.02;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2035) = 0.04;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.05;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2045) = 0.07;
-$endif.chaPOpolicy
-
-$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "fast"
-*** Allow first slow then fast phase-out cap
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0.1;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0.05;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2035) = 0.07;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.09;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2045) = 0.09;
-$endif.chaPOpolicy
-
-$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "medium"
-*** Allow first slow then fast phase-out cap
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0.02;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2035) = 0.035;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.06;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2045) = 0.09;
-$endif.chaPOpolicy
-
-$ifthen.chaPOpolicy "%cm_chaCoalPOSpeed%" == "slow"
-*** Allow first slow then fast phase-out cap
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val le 2025) = 0.005;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2030) = 0.01;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2035) = 0.02;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2040) = 0.035;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val eq 2045) = 0.05;
-pm_regiEarlyRetiRate(t,"CHA","pc")$(t.val ge 2050) = 0.06;
-$endif.chaPOpolicy
-
-*$offtext
 
 ***---------------------------------------------------------------------------
 *** Calculate lifetime parameters (omeg and opTimeYr2te)
@@ -1318,7 +1251,7 @@ loop(ttot$(ttot.val ge 2005),
   p_adj_seed_te(ttot,regi,"coaltr")     = 4.00;
   p_adj_seed_te(ttot,regi,"coalftrec")  = 0.25;
   p_adj_seed_te(ttot,regi,"coalftcrec") = 0.25;
-*** renewables and nuclear
+*** renewables and nuclear  
   p_adj_seed_te(ttot,regi,"geohdr")     = 0.1;
   p_adj_seed_te(ttot,regi,"hydro")      = 0.25;
   p_adj_seed_te(ttot,regi,"windoff")    = 0.5;
@@ -1340,17 +1273,17 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
   !! Seeds have little/no effect on tech with large exisitng cap in a region
   !!p_adj_seed_te(ttot,regi,"chemElec")        = 0.50;
   !!p_adj_seed_te(ttot,regi,"chemH2")          = 0.50;
-  p_adj_seed_te(ttot,regi,"meSySol")         = 0.0001;
+  p_adj_seed_te(ttot,regi,"meSySol")         = 0.0001;  
   p_adj_seed_te(ttot,regi,"meSyNg")          = 0.0001;
   p_adj_seed_te(ttot,regi,"meSyLiq")         = 0.0001;
-  p_adj_seed_te(ttot,regi,"meSySol_cc")       = 0.0001;
+  p_adj_seed_te(ttot,regi,"meSySol_cc")       = 0.0001; 
   p_adj_seed_te(ttot,regi,"meSyNg_cc")        = 0.0001;
   p_adj_seed_te(ttot,regi,"meSyLiq_cc")       = 0.0001;
   p_adj_seed_te(ttot,regi,"meSyH2")          = 0.25;
-  p_adj_seed_te(ttot,regi,"amSyCoal")        = 0.0001;
+  p_adj_seed_te(ttot,regi,"amSyCoal")        = 0.0001; 
   p_adj_seed_te(ttot,regi,"amSyNG")          = 0.0001;
   p_adj_seed_te(ttot,regi,"amSyLiq")         = 0.0001;
-  p_adj_seed_te(ttot,regi,"amSyCoal_cc")      = 0.0001;
+  p_adj_seed_te(ttot,regi,"amSyCoal_cc")      = 0.0001; 
   p_adj_seed_te(ttot,regi,"amSyNG_cc")        = 0.0001;
   p_adj_seed_te(ttot,regi,"amSyLiq_cc")       = 0.0001;
   p_adj_seed_te(ttot,regi,"amSyH2")          = 2.0;
@@ -1420,17 +1353,17 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
   !! default = 0.25
   !!p_adj_coeff(ttot,regi,"chemElec")        = 0.25;
   !!p_adj_coeff(ttot,regi,"chemH2")          = 1.0;
-  p_adj_coeff(ttot,regi,"meSySol")         = 3.0;
+  p_adj_coeff(ttot,regi,"meSySol")         = 3.0; 
   p_adj_coeff(ttot,regi,"meSyNg")          = 3.0;
   p_adj_coeff(ttot,regi,"meSyLiq")         = 3.0;
-  p_adj_coeff(ttot,regi,"meSySol_cc")       = 3.0;
+  p_adj_coeff(ttot,regi,"meSySol_cc")       = 3.0;  
   p_adj_coeff(ttot,regi,"meSyNg_cc")        = 3.0;
   p_adj_coeff(ttot,regi,"meSyLiq_cc")       = 3.0;
   p_adj_coeff(ttot,regi,"meSyH2")          = 0.8;
-  p_adj_coeff(ttot,regi,"amSyCoal")        = 3.0;
+  p_adj_coeff(ttot,regi,"amSyCoal")        = 3.0;  
   p_adj_coeff(ttot,regi,"amSyNG")          = 3.0;
   p_adj_coeff(ttot,regi,"amSyLiq")         = 3.0;
-  p_adj_coeff(ttot,regi,"amSyCoal_cc")      = 3.0;
+  p_adj_coeff(ttot,regi,"amSyCoal_cc")      = 3.0; 
   p_adj_coeff(ttot,regi,"amSyNG_cc")        = 3.0;
   p_adj_coeff(ttot,regi,"amSyLiq_cc")       = 3.0;
   p_adj_coeff(ttot,regi,"amSyH2")          = 0.1;
@@ -1578,7 +1511,7 @@ $if %cm_MAgPIE_coupling% == "off"  pm_macSwitch(ttot,regi,"n2ofertsom") = 0;
 pm_macSwitch(ttot,regi,emiMacSector)$(ttot.val le 2025) = 0;
 
 * GA: Use long term (2050) pm_macSwitch to set p_macCostSwitch, as some MACCs
-* are turned off in the short term
+* are turned off in the short term 
 p_macCostSwitch(enty)=pm_macSwitch("2050","USA",enty);
 pm_macSwitch(ttot,regi,"co2cement_process") =0 ;
 p_macCostSwitch("co2cement_process") =0 ;
@@ -1691,7 +1624,7 @@ pm_emifac(ttot,regi,"seliqfos","fedie","tdfosdie","co2") = p_ef_dem(regi,"fedie"
 pm_emifac(ttot,regi,"segafos","fegat","tdfosgat","co2") = p_ef_dem(regi,"fegas") / (sm_c_2_co2*1000*sm_EJ_2_TWa); !! GtC/TWa
 
 $ifthen.altFeEmiFac not "%cm_altFeEmiFac%" == "off"
-*** Changing refineries emission factors in regions that belong to cm_altFeEmiFac to avoid negative emissions on pe2se
+*** Changing refineries emission factors in regions that belong to cm_altFeEmiFac to avoid negative emissions on pe2se 
 *** (changing from 18.4 to 20 zeta joule = 20/31.7098 = 0.630719841 Twa = 0.630719841 * 3.66666666666666 * 1000 * 0.03171  GtC/TWa = 73.33 GtC/TWa)
 loop(ext_regi$altFeEmiFac_regi(ext_regi),
   pm_emifac(ttot,regi,"peoil","seliqfos","refliq","co2")$(regi_group(ext_regi,regi)) = 0.630719841;

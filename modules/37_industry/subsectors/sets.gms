@@ -455,8 +455,8 @@ $endif.cm_subsec_model_chemicals
 teCUPrc(all_te)   "Technologies using CO2 as a feedstock"
   /
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
-  meSyH2
-  fertProdH2
+    meSyH2
+    fertProdH2
 $endif.cm_subsec_model_chemicals
   /
 
@@ -474,7 +474,6 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     ammoFinal     "Ammonia; final product"
     !! REMINDER: once we co2f from the CCU module, make sure that it isn't subtracted twice (once by taking it from CCU, once by subtracting feedstock carbon)
     co2f
-    co2fdummy
     plasticWaste  "Plastic waste used for chemical recycling (pyrolysis or gasification) or mechanical recycling"
 $endif.cm_subsec_model_chemicals
 
@@ -498,7 +497,6 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     ammonia
     ammoniaH2
     co2f
-    co2fdummy
 
     plasticWaste
 $endif.cm_subsec_model_chemicals
@@ -716,8 +714,8 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     amToFinal . standard  . ammonia
     amToFinal . greenh2  . ammoniaH2
 
-    meSyH2 . standard  . co2fdummy
-    fertProdH2 . standard  . co2fdummy
+    meSyH2 . standard  . co2f
+    fertProdH2 . standard  . co2f
 
     mechRe . standard  . plasticWaste
     stCrChemRe . standard  . plasticWaste

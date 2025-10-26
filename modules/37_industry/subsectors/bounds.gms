@@ -200,4 +200,6 @@ loop((t,regi,tePrc)$(t.val ge 2010 AND t.val le 2020),
         vm_deltaCap.lo(t,regi,tePrc,"1") = 1e-8;
     );
 );
+
+vm_outflowPrc.lo("2030","SSA","meSySol","standard") = 1e-7; !! to avoid infeasibility due to stiff shares
 *** EOF ./modules/37_industry/subsectors/bounds.gms
