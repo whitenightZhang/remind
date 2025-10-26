@@ -751,9 +751,11 @@ pm_cf(ttot,regi,"stCrChemRe") = 0.8;
 pm_cf(ttot,regi,"mechRe") = 0.8;
 
 pm_cf(ttot,regi,"meSySol") = 0.8; 
+pm_cf(ttot,regi,"meSyBio") = 0.8; 
 pm_cf(ttot,regi,"meSyNg") = 0.8;
 pm_cf(ttot,regi,"meSyLiq") = 0.8;
 pm_cf(ttot,regi,"meSySol_cc") = 0.8;
+pm_cf(ttot,regi,"meSyBio_cc") = 0.8; 
 pm_cf(ttot,regi,"meSyNg_cc") = 0.8;
 pm_cf(ttot,regi,"meSyLiq_cc") = 0.8;
 pm_cf(ttot,regi,"meSyH2") = 0.8;
@@ -1274,9 +1276,11 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
   !!p_adj_seed_te(ttot,regi,"chemElec")        = 0.50;
   !!p_adj_seed_te(ttot,regi,"chemH2")          = 0.50;
   p_adj_seed_te(ttot,regi,"meSySol")         = 0.0001;  
+  p_adj_seed_te(ttot,regi,"meSyBio")         = 0.0001;  
   p_adj_seed_te(ttot,regi,"meSyNg")          = 0.0001;
   p_adj_seed_te(ttot,regi,"meSyLiq")         = 0.0001;
   p_adj_seed_te(ttot,regi,"meSySol_cc")       = 0.0001; 
+  p_adj_seed_te(ttot,regi,"meSyBio_cc")       = 0.0001; 
   p_adj_seed_te(ttot,regi,"meSyNg_cc")        = 0.0001;
   p_adj_seed_te(ttot,regi,"meSyLiq_cc")       = 0.0001;
   p_adj_seed_te(ttot,regi,"meSyH2")          = 0.25;
@@ -1354,9 +1358,11 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
   !!p_adj_coeff(ttot,regi,"chemElec")        = 0.25;
   !!p_adj_coeff(ttot,regi,"chemH2")          = 1.0;
   p_adj_coeff(ttot,regi,"meSySol")         = 3.0; 
+  p_adj_coeff(ttot,regi,"meSyBio")         = 3.0; 
   p_adj_coeff(ttot,regi,"meSyNg")          = 3.0;
   p_adj_coeff(ttot,regi,"meSyLiq")         = 3.0;
   p_adj_coeff(ttot,regi,"meSySol_cc")       = 3.0;  
+  p_adj_coeff(ttot,regi,"meSyBio_cc")       = 3.0;  
   p_adj_coeff(ttot,regi,"meSyNg_cc")        = 3.0;
   p_adj_coeff(ttot,regi,"meSyLiq_cc")       = 3.0;
   p_adj_coeff(ttot,regi,"meSyH2")          = 0.8;

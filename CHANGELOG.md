@@ -10,13 +10,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### input data/calibration
 
 ### changed
--
+- **45_carbonprice** Use ScenarioMIP settings as new default for regional carbon price differentiation in 45_carbonprice/functionalForm 
+    [[#2229](https://github.com/remindmodel/remind/pull/2229)]
 
 ### added
--
+- **40_techpol** implement renewable energy share targets for NPi2025 realization based on NewClimate policy protocol
+    [[#2226](https://github.com/remindmodel/remind/pull/2226)]
 
 ### removed
--
+- **21_tax** remove input files with upper bounds on subsidies for final energy, as it is directly applied as part of input data generation
+    [#2207](https://github.com/remindmodel/remind/pull/2207)
+- **core** remove no longer used technolgies (pcc, pco, apCarPeT) 
+    [#2228](https://github.com/remindmodel/remind/pull/2228)    
 
 ### fixed
 -

@@ -574,7 +574,7 @@ parameter
 parameter
   cm_taxCO2_regiDiff "switch for choosing the regional carbon price differentiation scheme in 45_carbonprice/functionalForm"
 ;
-  cm_taxCO2_regiDiff = 1; !! def = 1 !! regexp = 0|1|2|3|5|6|7|8|10
+  cm_taxCO2_regiDiff = 6; !! def = 6 !! regexp = 0|1|2|3|5|6|7|8|10
 *' Switch can either be set to a specific scenario (e.g. "ScenarioMIP2070") or to "manual". If specific scenario is chosen, settings can be adjusted via cm_taxCO2_regiDiff_convergence and cm_taxCO2_regiDiff_startyearValue. If set to manual, settings must be provided via cm_taxCO2_regiDiff_convergence and cm_taxCO2_regiDiff_startyearValue. 
 *' * (0): none             - No regional differentiation, i.e. globally uniform carbon pricing
 *' * (1): initialSpread10  - Maximal initial spread of carbon prices in 2030 between OECD regions and poorest region is equal to 10. Initial spread for each region determined based on GDP per capita (PPP) in 2030. By default, carbon prices converge using quadratic phase-in until 2050. Convergence scheme can be adjusted with cm_taxCO2_regiDiff_convergence.
@@ -1282,6 +1282,12 @@ parameter
   c_CO2FeedstockPrice			"switch that turns on overwriting of EDGE-T results for 2005 and 2010 by NAs when set to 1"
 ;
   c_CO2FeedstockPrice = 1;   !! def = 1
+*'
+parameter
+  cm_RenShareTargets         "switch that turn on renewable share targets in the NPi2025 realization of the techpol module"
+;
+*' Note that the switch is only active in the NPi2025 realization of the 40_techpol module.
+  cm_RenShareTargets = 1;      !! def = 1 renewable share targets are on !! regexp = 1|0
 *'
 parameter
   cm_APsource                "data source for air pollution baseyear (2020) emissions"

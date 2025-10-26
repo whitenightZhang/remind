@@ -769,6 +769,13 @@ p37_specFeDemTarget("fesos","meSySol","greenh2")  = 4.6 / (sm_TWa_2_MWh/sm_giga_
 p37_specFeDemTarget("feh2s","meSySol","greenh2")  = 3.3 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: Dongliang, Wang, et al Energy 2021 Table 9
 p37_specFeDemTarget("feels","meSySol","greenh2")  = 0.14 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: Dongliang, Wang, et al Energy 2021 Table 9
 
+p37_specFeDemTarget("fesos","meSyBio","standard")  = 10.3 / (sm_TWa_2_MWh/sm_giga_2_non);  !! Source: Dongliang, Wang, et al Energy 2021 Table 9
+p37_specFeDemTarget("feels","meSyBio","standard")  = 0.14 / (sm_TWa_2_MWh/sm_giga_2_non);  !! Source: Dongliang, Wang, et al Energy 2021 Table 9
+
+p37_specFeDemTarget("fesos","meSyBio","greenh2")  = 4.6 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: Dongliang, Wang, et al Energy 2021 Table 9
+p37_specFeDemTarget("feh2s","meSyBio","greenh2")  = 3.3 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: Dongliang, Wang, et al Energy 2021 Table 9
+p37_specFeDemTarget("feels","meSyBio","greenh2")  = 0.14 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: Dongliang, Wang, et al Energy 2021 Table 9
+
 p37_specFeDemTarget("fegas","meSyNg","standard")    = 8.8 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019. PAGE | 5
 p37_specFeDemTarget("feels","meSyNg","standard")    = 0.083 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019. PAGE | 5
 
@@ -777,6 +784,9 @@ p37_specFeDemTarget("feels","meSyLiq","standard")  = 0.56 / (sm_TWa_2_MWh/sm_gig
 
 p37_specFeDemTarget("fesos","meSySol_cc","standard")  = 2.8 / (sm_TWa_2_MWh/sm_giga_2_non); !! TODO：Source: IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019. PAGE | 5  Mwh/tC
 p37_specFeDemTarget("feels","meSySol_cc","standard")    = 0.065 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019. PAGE | 5  Mwh/tC
+
+p37_specFeDemTarget("fesos","meSyBio_cc","standard")  = 2.8 / (sm_TWa_2_MWh/sm_giga_2_non); !! TODO：Source: IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019. PAGE | 5  Mwh/tC
+p37_specFeDemTarget("feels","meSyBio_cc","standard")    = 0.065 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019. PAGE | 5  Mwh/tC
 
 p37_specFeDemTarget("feels","meSyNg_cc","standard")  = 0.54 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019. PAGE | 5   Mwh/tC
 
