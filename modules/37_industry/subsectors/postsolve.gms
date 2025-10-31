@@ -12,6 +12,12 @@ pm_FEPrice(ttot,regi,entyFe,"indst",emiMkt)$( abs(qm_budget.m(ttot,regi)) gt sm_
   = q37_demFeIndst.m(ttot,regi,entyFe,emiMkt)
   / qm_budget.m(ttot,regi);
 
+*** calculation of CCU Prices (useful for internal use and reporting
+*** purposes)
+pm_CCUPrice(ttot,regi,te)$( abs(qm_budget.m(ttot,regi)) gt sm_eps )
+  = q39_emiCCU.m(ttot,regi,te)
+  / qm_budget.m(ttot,regi);
+
 *** calculate reporting parameters for FE per subsector and SE origin to make R
 *** reporting easier
 

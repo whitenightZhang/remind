@@ -769,12 +769,12 @@ p37_specFeDemTarget("fesos","meSySol","greenh2")  = 4.6 / (sm_TWa_2_MWh/sm_giga_
 p37_specFeDemTarget("feh2s","meSySol","greenh2")  = 3.3 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: Dongliang, Wang, et al Energy 2021 Table 9
 p37_specFeDemTarget("feels","meSySol","greenh2")  = 0.14 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: Dongliang, Wang, et al Energy 2021 Table 9
 
-p37_specFeDemTarget("fesos","meSyBio","standard")  = 10.3 / (sm_TWa_2_MWh/sm_giga_2_non);  !! Source: Dongliang, Wang, et al Energy 2021 Table 9
-p37_specFeDemTarget("feels","meSyBio","standard")  = 0.14 / (sm_TWa_2_MWh/sm_giga_2_non);  !! Source: Dongliang, Wang, et al Energy 2021 Table 9
+p37_specFeDemTarget("fesos","meSyBio","standard")  = 8.44 / (sm_TWa_2_MWh/sm_giga_2_non);  !! Source: Poluzzi, Alessandro, et al. "Flexible power and biomass-to-methanol plants with different gasification technologies." Frontiers in Energy Research 9 (2022): 795673.
+p37_specFeDemTarget("feels","meSyBio","standard")  = 0.34 / (sm_TWa_2_MWh/sm_giga_2_non);  !! Source: Poluzzi, Alessandro, et al. "Flexible power and biomass-to-methanol plants with different gasification technologies." Frontiers in Energy Research 9 (2022): 795673.
 
-p37_specFeDemTarget("fesos","meSyBio","greenh2")  = 4.6 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: Dongliang, Wang, et al Energy 2021 Table 9
-p37_specFeDemTarget("feh2s","meSyBio","greenh2")  = 3.3 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: Dongliang, Wang, et al Energy 2021 Table 9
-p37_specFeDemTarget("feels","meSyBio","greenh2")  = 0.14 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: Dongliang, Wang, et al Energy 2021 Table 9
+p37_specFeDemTarget("fesos","meSyBio","greenh2")  = 3.97 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: Poluzzi, Alessandro, et al. "Flexible power and biomass-to-methanol plants with different gasification technologies." Frontiers in Energy Research 9 (2022): 795673.
+p37_specFeDemTarget("feh2s","meSyBio","greenh2")  = 3.56 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: Poluzzi, Alessandro, et al. "Flexible power and biomass-to-methanol plants with different gasification technologies." Frontiers in Energy Research 9 (2022): 795673.
+p37_specFeDemTarget("feels","meSyBio","greenh2")  = 0.34 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: Poluzzi, Alessandro, et al. "Flexible power and biomass-to-methanol plants with different gasification technologies." Frontiers in Energy Research 9 (2022): 795673.
 
 p37_specFeDemTarget("fegas","meSyNg","standard")    = 8.8 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019. PAGE | 5
 p37_specFeDemTarget("feels","meSyNg","standard")    = 0.083 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: IEA, The Future of Hydrogen. Seizing today’s opportunities, Assumptions Annex, Paris, 2019. PAGE | 5
@@ -876,9 +876,11 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
 !! ==> feedstock share is 0.375/1.29 = 0.29 ==> energy share is 0.71
 
 p37_captureRate("meSySol_cc")  = 0.95 * 0.71; 
+p37_captureRate("meSyBio_cc")  = 0.95 * 0.71; 
 p37_captureRate("meSyNg_cc") = 0.95 * 0.22; 
 p37_captureRate("meSyLiq_cc")  = 0.95 * 0.5;
 p37_selfCaptureRate("meSySol_cc")  = 0.95;
+p37_selfCaptureRate("meSyBio_cc")  = 0.95;
 p37_selfCaptureRate("meSyNg_cc") = 0.95;
 p37_selfCaptureRate("meSyLiq_cc")  = 0.95;
 
@@ -975,7 +977,6 @@ $offdelim
 ;
 !! constant before and after IEA report temporal scope
 p37_mat2ue(t,regi,mat,in)$(t.val lt 2020) = p37_mat2ue("2020",regi,mat,in);
-p37_mat2ue(t,regi,mat,in)$(t.val gt 2050) = p37_mat2ue("2050",regi,mat,in);
 
 !! ue_chemicals is measured in value_added (trn$2017), whilst material is measured in Gt
 !! So this is the price of material in trn$2017/Gt = $2017/kg

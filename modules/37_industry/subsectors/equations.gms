@@ -518,6 +518,18 @@ q37_restrictMatShareChange(t,regi,tePrc,opmoPrc,mat)$(t.val gt 2020
   * v37_chemflow(t,regi,mat) !! Try to use different opmoPrc
 ;
 
+q37_limitMeSySolFeDemIndst(t,regi) ..
+  sum(opmoPrc,vm_outflowPrc(t,regi,"meSySol",opmoPrc) * pm_specFeDem(t,regi,"fesos","meSySol",opmoPrc) )
+  + sum(opmoPrc,vm_outflowPrc(t,regi,"amSyCoal",opmoPrc) * pm_specFeDem(t,regi,"fesos","amSyCoal",opmoPrc) )
+=l=
+  vm_demFeSector_afterTax(t,regi,"sesofos","fesos","indst","ETS")
+;
+
+q37_limitMeSyBioFeDemIndst(t,regi) ..
+  sum(opmoPrc,vm_outflowPrc(t,regi,"meSyBio",opmoPrc) * pm_specFeDem(t,regi,"fesos","meSyBio",opmoPrc) )
+=l=
+  vm_demFeSector_afterTax(t,regi,"sesobio","fesos","indst","ETS")
+;
 ***------------------------------------------------------
 *' Hand-over to CES
 ***------------------------------------------------------

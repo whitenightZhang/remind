@@ -174,6 +174,8 @@ $endif.no_calibration
   q37_mat2ue(tall,all_regi,mat,all_in)                                              "Connect materials production to ue ces tree nodes"
   q37_restrictMatShareChange(tall,all_regi,all_te,opmoPrc,all_enty)                 "Low Constraining the share of chemical fossil fuel technologies based on historical data"
   q37_chemFlow(tall,all_regi,all_enty)                                              "Restrict future share of processes where several historical processes exist for same material, e.g. Coal-MeOH-HVC vs steam cracker"
+  q37_limitMeSySolFeDemIndst(ttot,all_regi)                                         "limit industry solid fuel demand to not exceed baseline levels"
+  q37_limitMeSyBioFeDemIndst(ttot,all_regi)                                         "limit industry biofuel demand to not exceed baseline levels"
 
   q37_limitCapMat(tall,all_regi,all_te)                                             "Material-flow conversion is limited by capacities"
   q37_limitCapMatHist(tall,all_regi,all_te)                                         "Material-flow conversion is limited by capacities"

@@ -2011,6 +2011,12 @@ $setglobal cm_repeatNonOpt off      !! def = off  !! regexp = off|on
 
 $setglobal cm_PlasticMFA off      !! def = off  !! regexp = ^(off|on)$
 
+$setglobal cm_DacCost mid      !! def = mid  !! regexp = low|mid|high
+*** switch to choose DAC cost assumptions
+*** (low): 50 $/tCO2
+*** (mid): 100 $/tCO2
+*** (high): 200 $/tCO2
+
 *** "switch to turn on the coal power plant cost change for CHA"
 *** switch to turn on costs used in domestic models: 
 * (off) old values: 800/kW from 2015 till 2040

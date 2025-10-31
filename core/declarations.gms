@@ -322,6 +322,8 @@ pm_FEPrice_iter(iteration,ttot,all_regi,all_enty,sector,emiMkt) "parameter to ca
 pm_SEPrice(ttot,all_regi,all_enty)                   "parameter to capture all SE prices [tr$2005/TWa]"
 pm_PEPrice(ttot,all_regi,all_enty)                   "parameter to capture all PE prices [tr$2005/TWa]"
 
+pm_CCUPrice(ttot,all_regi,all_te) "parameter to capture CCU prices [tr$2005/GtC]"
+
 p_FEPrice_by_SE_Sector_EmiMkt(ttot,all_regi,entySe,all_enty,sector,emiMkt) "parameter to save FE price per SE, sector and emission market [tr$2005/TWa]"
 p_FEPrice_by_Sector_EmiMkt(ttot,all_regi,all_enty,sector,emiMkt) "parameter to save FE marginal price per sector and emission market [tr$2005/TWa]"
 pm_FEPrice_by_SE_Sector(ttot,all_regi,entySe,all_enty,sector) "parameter to save FE marginal price per SE and sector [tr$2005/TWa]"

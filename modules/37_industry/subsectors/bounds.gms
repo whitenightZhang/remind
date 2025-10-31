@@ -195,11 +195,26 @@ v37_matFlow.up(t,regi,"plasticWaste") = p37_plastcWaste(t,regi);
 $endif.PlasticMFA
 
 !!!Hot fixes to avoid infeasibilities in the short-term due to new processes with stiff shares
-loop((t,regi,tePrc)$(t.val ge 2010 AND t.val le 2020),
-    if(sum((opmoPrc,mat), tePrcStiffShare(tePrc,opmoPrc,mat)) AND pm_outflowPrcHist("2005",regi,tePrc,"standard") gt 0,
-        vm_deltaCap.lo(t,regi,tePrc,"1") = 1e-8;
-    );
+loop((t,regi,tePrc)$(t.val ge 2025),
+  vm_cap.lo(t,regi,tePrc,rlf) = 0;
+  vm_capEarlyReti.up(t,regi,tePrc) = 1;
+  vm_deltaCap.lo(t,regi,tePrc,rlf) = 0;
 );
 
-vm_outflowPrc.lo("2030","SSA","meSySol","standard") = 1e-7; !! to avoid infeasibility due to stiff shares
+loop((t,regi,tePrc)$(t.val ge 2025
+                     AND sum((opmoPrc,mat), tePrcStiffShare(tePrc,opmoPrc,mat))
+                     AND (pm_outflowPrcHist("2005",regi,tePrc,"standard") gt 0)),
+    vm_deltaCap.lo(t,regi,tePrc,"1") = 1e-8;
+    vm_outflowPrc.lo(t,regi,tePrc,"standard") = 1e-7;
+);
+
+!! Hotfix 
+loop((t,regi)$(t.val ge 2030 AND NOT sameas(regi,"JPN")),
+  vm_outflowPrc.lo(t,regi,"meSySol","standard") = 1e-7; !! to avoid infeasibility due to stiff shares
+  vm_outflowPrc.lo(t,regi,"meSyBio","standard") = 1e-7; !! to avoid infeasibility due to stiff shares
+);
+
+loop(t$(t.val ge 2030),
+  vm_deltaCap.up(t,regi,"meSySol","1") = 1e-6;
+);
 *** EOF ./modules/37_industry/subsectors/bounds.gms

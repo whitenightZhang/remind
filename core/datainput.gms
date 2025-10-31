@@ -233,6 +233,17 @@ $elseif.c_techAssumptScen "%c_techAssumptScen%" == "SSP5"
 
 $endif.c_techAssumptScen
 
+$ifthen.cm_DacCost "%cm_DacCost%" == "low"
+*** low Dac cost scenario
+    fm_dataglob("floorcost","dac") = 2400;
+    fm_dataglob("learn","dac") = 0.3;
+
+$elseif.cm_DacCost "%cm_DacCost%" == "high"
+*** high Dac cost scenario
+    fm_dataglob("floorcost","dac") = 7200;
+    fm_dataglob("learn","dac") = 0.075;
+
+$endif.cm_DacCost
 
 
 ***---------------------------------------------------------------------------
@@ -1384,6 +1395,16 @@ $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
   p_adj_coeff(ttot,regi,"bfcc")         = 1.0;
   p_adj_coeff(ttot,regi,"idrcc")        = 1.0;
 $endif.cm_subsec_model_steel
+
+$ifthen.cm_DacCost "%cm_DacCost%" == "high"
+  p_adj_seed_te(ttot,regi,'dac')        = 0.1;
+  p_adj_coeff(ttot,regi,'dac')          = 2.0;
+
+$elseIf.cm_DacCost "%cm_DacCost%" == "low"
+  p_adj_seed_te(ttot,regi,'dac')        = 0.5;
+  p_adj_coeff(ttot,regi,'dac')          = 0.4;
+$endif.cm_DacCost
+
 );
 
 ***Rescaling adj seed and coeff if adj cost multiplier switches are on
