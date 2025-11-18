@@ -527,5 +527,7 @@ v_changeProdStartyearSlack.lo(t,regi,te) $ ( (t.val > 2005) and (t.val = cm_star
 *** CB 20120319: avoid negative adjustment costs in 2005 (they would allow the model to artificially save money)
 v_adjFactor.fx("2005",regi,te) = 0;
 
+v_capSlack.lo(t,regi,te,rlf) = -1e-6;
+v_capSlack.up(t,regi,te,rlf) =  1e-6;
 
 *** EOF ./core/bounds.gms

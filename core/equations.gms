@@ -314,6 +314,7 @@ q_cap(ttot,regi,te2rlf(te,rlf))$(ttot.val ge cm_startyear)..
     * pm_omeg(regi,opTimeYr+1,te)
     * vm_deltaCap(ttot - (pm_tsu2opTimeYr(ttot,opTimeYr) - 1),regi,te,rlf)
   )
+  + v_capSlack(ttot,regi,te,rlf)
 ;
 
 q_capDistr(t,regi,teReNoBio(te))..

@@ -375,6 +375,7 @@ Positive variables
 vm_cap(tall,all_regi,all_te,rlf)                     "net total capacities [TW] for energy conversion technologies, [GtC] for CCS chain in ccs2te (pipelines/injection)"
 v_capDistr(tall,all_regi,all_te,rlf)                 "net capacities, distributed to the different grades for renewables [TW]"
 vm_capTotal(ttot,all_regi,all_enty,all_enty)         "total capacity of pe2se conversion technologies without technology differentation [TW]"
+v_capSlack(ttot,all_regi,all_te,rlf)            "slack variable to allow capacity to exceed maximum capacity constraints [TW] for energy conversion technologies, [GtC] for CCS chain in ccs2te (pipelines/injection)"
 vm_deltaCap(tall,all_regi,all_te,rlf)                "capacity additions [TW/yr] for energy conversion technologies, [GtC/yr^2] for CCS chain in ccs2te (pipelines/injection)"
 vm_capCum(tall,all_regi,all_te)                      "cumulated capactiy of learning technologies [TW]"
 vm_capEarlyReti(tall,all_regi,all_te)                "fraction of early retired capacity from total standing capacity, can only be increased for technologies for which early retirement is switched on [share]"
