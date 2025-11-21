@@ -594,6 +594,7 @@ all_esty "energy services"
     esdie_pass_lo
     eselt_pass_sm
     esdie_frgt_lo
+    esh2t_frgt_lo
     esdie_frgt_sm
     eselt_frgt_sm
     esh2t_pass_sm
@@ -790,6 +791,8 @@ all_teEs                 "energy service technologies"
     te_esh2t_frgt_sm "short-to-medium distance freight transport CES node"
     te_esgat_frgt_sm "short-to-medium distance freight transport CES node"
     te_esdie_frgt_lo "long distance freight transport CES node"
+    te_esh2t_frgt_lo "long distance freight transport CES node"
+
 
 *** Buildings module
     te_ueshheb  "buildings space heating district heat"

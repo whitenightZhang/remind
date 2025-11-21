@@ -20,7 +20,8 @@ teEs_dyn35(all_teEs)  "technologies - transport module additions"
     te_eselt_frgt_sm "short-to-medium distance freight transport CES node"
     te_esh2t_frgt_sm "short-to-medium distance freight transport CES node"
     te_esgat_frgt_sm "short-to-medium distance freight transport CES node"
-    te_esdie_frgt_lo "long distance freight transport CES node"    
+    te_esdie_frgt_lo "long distance freight transport CES node"
+    te_esh2t_frgt_lo "long distance freight transport CES node"   
 /    
     
 in_dyn35(all_in)          "all inputs and outputs of the CES function - transport module additions"
@@ -43,6 +44,7 @@ esty_dyn35(all_esty)            "Energy service types"
     esh2t_pass_sm
     esgat_pass_sm
     esdie_frgt_lo
+    esh2t_frgt_lo
     esdie_frgt_sm
     esh2t_frgt_sm
     eselt_frgt_sm
@@ -66,6 +68,7 @@ es2ppfen_dyn35(all_esty,all_in)      "matching ES to ppfEn in MACRO"
     esh2t_pass_sm.entrp_pass_sm
     esgat_pass_sm.entrp_pass_sm
     esdie_frgt_lo.entrp_frgt_lo
+    esh2t_frgt_lo.entrp_frgt_lo
     esdie_frgt_sm.entrp_frgt_sm
     esh2t_frgt_sm.entrp_frgt_sm
     eselt_frgt_sm.entrp_frgt_sm
@@ -81,6 +84,7 @@ fe2es_dyn35(all_enty,all_esty,all_teEs)    "map FE carriers to ES via appliances
     feelt.eselt_pass_sm.te_eselt_pass_sm
     fedie.esdie_pass_lo.te_esdie_pass_lo
     fedie.esdie_frgt_lo.te_esdie_frgt_lo
+    feh2t.esh2t_frgt_lo.te_esh2t_frgt_lo
     fedie.esdie_frgt_sm.te_esdie_frgt_sm
     feelt.eselt_frgt_sm.te_eselt_frgt_sm
     feh2t.esh2t_frgt_sm.te_esh2t_frgt_sm
@@ -91,6 +95,7 @@ es_lo35(all_esty) "energy services long distance (bunkers)"
 /
     esdie_pass_lo
     esdie_frgt_lo
+    esh2t_frgt_lo
 /
 
 fe2ces_dyn35(all_enty,all_in,all_teEs)    "map FE carriers to CES nodes via appliances"
@@ -102,6 +107,7 @@ fe2ces_dyn35(all_enty,all_in,all_teEs)    "map FE carriers to CES nodes via appl
     feelt.entrp_pass_sm.te_eselt_pass_sm
     fedie.entrp_pass_lo.te_esdie_pass_lo
     fedie.entrp_frgt_lo.te_esdie_frgt_lo
+    feh2t.entrp_frgt_lo.te_esh2t_frgt_lo
     fedie.entrp_frgt_sm.te_esdie_frgt_sm
     feelt.entrp_frgt_sm.te_eselt_frgt_sm
     feh2t.entrp_frgt_sm.te_esh2t_frgt_sm
