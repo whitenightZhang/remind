@@ -182,12 +182,21 @@ omf                     0.05         0.05           0.05          0.05        0.
 constrTme                  1            1              1             1            1             1             1
 lifetime                  25           25             25            25           25            25            25
 
-+                    mtoMta    mtoMtaH2    fertProd   fertProdH2    amToFinal    meToFinal
++                    mtoMta    mtoMtaH2    fertProd   fertProdH2   amToFinal    meToFinal
 !! documentation & sources: see below
-inco0                  1000        1000        3280         3280          500          500      
-omf                   0.025       0.025        0.06         0.06         0.06         0.06
-constrTme                 3           3           3            3            3            3
-lifetime                 30          30          30           30           30           30
+inco0                  1000        1000        3280         3280         500          500      
+omf                   0.025       0.025        0.06         0.06        0.06         0.06
+constrTme                 3           3           3            3           3            3
+lifetime                 30          30          30          30           30           30  
+
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
++                    mtoMtaTrade    fertProdTrade    amToTrade    meToTrade
+!! documentation & sources: see below
+inco0                       1000             3280            0            0
+omf                        0.025             0.06            0            0
+constrTme                      3                3            0            0
+lifetime                      30               30            5            5
+$endif.cm_hydroTrade
 
 +                    mechRe  stCrChemRe  meSyChemRe   
 !! documentation & sources: see below

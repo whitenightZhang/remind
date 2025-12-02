@@ -234,6 +234,13 @@ loop((mat,route)$(matOut(mat)),
       );
 );
 
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+o37_ProdIndRoute(ttot,regi,"methanolIm","hvc_meTrade") = vm_outflowPrc.l(ttot,regi,"mtoMtaTrade","standard");
+o37_ProdIndRoute(ttot,regi,"methanolIm","meFinal_trade") = vm_outflowPrc.l(ttot,regi,"meToFinal","trade");
+o37_ProdIndRoute(ttot,regi,"ammoniaIm","fertilizer_amTrade") = vm_outflowPrc.l(ttot,regi,"fertProdTrade","standard");
+o37_ProdIndRoute(ttot,regi,"ammoniaIm","amFinal_trade") = vm_outflowPrc.l(ttot,regi,"amToFinal","trade");
+$endif.cm_hydroTrade
+
 !!
 o37_demFeIndRoute(ttot,regi,entyFe,tePrc,route,secInd37) = 0.;
 loop((entyFe,route,tePrc,opmoPrc,secInd37)$(    tePrc2route(tePrc,opmoPrc,route)

@@ -787,6 +787,13 @@ pm_cf(ttot,regi,"fertProdH2") = 0.8;
 pm_cf(ttot,regi,"meToFinal") = 0.8;
 pm_cf(ttot,regi,"amToFinal") = 0.8;
 
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+pm_cf(ttot,regi,"mtoMtaTrade") = 0.8;
+pm_cf(ttot,regi,"fertProdTrade") = 0.8;
+pm_cf(ttot,regi,"amToTrade") = 0.8;
+pm_cf(ttot,regi,"meToTrade") = 0.8;
+$endif.cm_hydroTrade
+
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
 pm_cf(ttot,regi,"bf") = 0.8;
@@ -1305,8 +1312,15 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
   p_adj_seed_te(ttot,regi,"stCrLiq")         = 0.0001;
   p_adj_seed_te(ttot,regi,"stCrNg")          = 0.0001;
   p_adj_seed_te(ttot,regi,"mtoMta")          = 0.0001;
-  p_adj_seed_te(ttot,regi,"mtoMtaH2")        = 0.25;
+  p_adj_seed_te(ttot,regi,"mtoMtaH2")        = 0.0001;
   p_adj_seed_te(ttot,regi,"fertProdH2")      = 2.0;
+
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+  p_adj_seed_te(ttot,regi,"mtoMtaTrade")     = 0.25;
+  p_adj_seed_te(ttot,regi,"fertProdTrade")   = 2.0;
+$endif.cm_hydroTrade
+
+
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
 *** steel technologies
@@ -1387,8 +1401,14 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
   p_adj_coeff(ttot,regi,"stCrLiq")         = 3.0;
   p_adj_coeff(ttot,regi,"stCrNg")          = 3.0;
   p_adj_coeff(ttot,regi,"mtoMta")          = 1.0;
-  p_adj_coeff(ttot,regi,"mtoMtaH2")        = 0.8;
+  p_adj_coeff(ttot,regi,"mtoMtaH2")        = 3.0;
   p_adj_coeff(ttot,regi,"fertProdH2")      = 0.1;
+
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+    p_adj_coeff(ttot,regi,"mtoMtaTrade")     = 0.8;
+    p_adj_coeff(ttot,regi,"fertProdTrade")   = 0.1;
+$endif.cm_hydroTrade
+
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
 *** steel technologies
@@ -1676,10 +1696,27 @@ pm_emifacNonEnergy(ttot,regi,"segafos", "fegas","indst","co2") = f_nechem_emissi
 
 parameter f_incinerationShares(ttot,all_regi)         "incineration rate of plastic waste"
 
-$ifthen.PlasticMFA "%cm_PlasticMFA%" == "on"
+$ifthen.PlasticMFA "%cm_PlasticMFA%" == "low"
 /
 $ondelim
-$include "./core/input/f_incinerationSharesMFA.cs4r"
+$include "./core/input/f_incinerationSharesMFA_Low.cs4r"
+$offdelim
+/;
+$endif.PlasticMFA
+
+$ifthen.PlasticMFA "%cm_PlasticMFA%" == "mid"
+/
+$ondelim
+$include "./core/input/f_incinerationSharesMFA_Mid.cs4r"
+$offdelim
+/;
+$endif.PlasticMFA
+
+
+$ifthen.PlasticMFA "%cm_PlasticMFA%" == "high"
+/
+$ondelim
+$include "./core/input/f_incinerationSharesMFA_High.cs4r"
 $offdelim
 /;
 $endif.PlasticMFA

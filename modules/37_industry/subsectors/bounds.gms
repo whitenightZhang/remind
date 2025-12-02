@@ -180,7 +180,7 @@ v37_matShareChange.up(t,regi,tePrc,opmoPrc,mat)$(tePrcStiffShare(tePrc,opmoPrc,m
 vm_outflowPrc.up(t,regi,"mechRe","standard") = 0.; !! Due to downgraded recycling and pure feedstock limitations
 
 
-$ifthen.PlasticMFA "%cm_PlasticMFA%" == "on"
+$ifthen.PlasticMFA not "%cm_PlasticMFA%" == "off"
 !! not all plastic is suitable for mechanical recycling, so this bound exists apart from the bound imposed 
 !! by total availability of plastic scrap
 vm_outflowPrc.up(t,regi,"mechRe","standard") = p37_recycleMech(t,regi);
@@ -190,8 +190,8 @@ $endif.PlasticMFA
 !!vm_outflowPrc.up(t,regi,"meSyChemRe","standard") = 0.01;
 v37_matFlow.up(t,regi,"plasticWaste") = 0.; !! Due to the limitations of the collection
 
-$ifthen.PlasticMFA "%cm_PlasticMFA%" == "on"
-v37_matFlow.up(t,regi,"plasticWaste") = p37_plastcWaste(t,regi); 
+$ifthen.PlasticMFA not "%cm_PlasticMFA%" == "off"
+v37_matFlow.up(t,regi,"plasticWaste") = p37_plasticWaste(t,regi); 
 $endif.PlasticMFA
 
 !!!Hot fixes to avoid infeasibilities in the short-term due to new processes with stiff shares
@@ -217,4 +217,15 @@ loop((t,regi)$(t.val ge 2030 AND NOT sameas(regi,"JPN")),
 loop(t$(t.val ge 2030),
   vm_deltaCap.up(t,regi,"meSySol","1") = 1e-6;
 );
+
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+!! Limit hydrogen trade to projected levels
+vm_outflowPrc.lo("2030","MEA","meToTrade","trade") = 1/1000;
+vm_outflowPrc.lo("2035","MEA","meToTrade","trade") = 1/1000;
+vm_outflowPrc.lo("2040","MEA","meToTrade","trade") = 2/1000;
+vm_outflowPrc.lo("2045","MEA","meToTrade","trade") = 3/1000;
+vm_outflowPrc.lo("2050","MEA","meToTrade","trade") = 5/1000;
+vm_outflowPrc.lo(t,"MEA","meToTrade","trade")$(t.val gt 2050) = 5/1000;
+$endif.cm_hydroTrade
+
 *** EOF ./modules/37_industry/subsectors/bounds.gms

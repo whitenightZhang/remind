@@ -327,6 +327,13 @@ all_te          "all energy technologies, including from modules"
     meToFinal
     amToFinal
 
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+    mtoMtaTrade
+    fertProdTrade
+    amToTrade
+    meToTrade
+$endif.cm_hydroTrade
+
     otherChem_old
     otherChem_elec
     otherChem_h2
@@ -377,6 +384,15 @@ all_te          "all energy technologies, including from modules"
     amFinal_ng_cc
     amFinal_liq_cc
     amFinal_h2
+
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+    hvc_meTrade
+    fertilizer_amTrade
+    meFinal_trade
+    amFinal_trade
+    amTrade_trade
+    meTrade_trade
+$endif.cm_hydroTrade
 
 *** technologies related to steel industry
     ironMine     "Mining of iron ore"
@@ -479,6 +495,13 @@ all_enty             "all types of quantities"
     methFinal
     ammoFinal
     plasticWaste
+
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+    methanolIm
+    methanolEx
+    ammoniaIm
+    ammoniaEx
+$endif.cm_hydroTrade
 
 *** steel
     prsteel      "Primary steel"
@@ -1369,6 +1392,12 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
 
     mtoMta          "Methanol to olefins/methanol to aromatics (production of HVC from methanol from fossil feedstocks)"
     mtoMtaH2        "mtoMta from green methanol"
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+    mtoMtaTrade     "mtoMta via trade (fixed amount, no technology)"
+    fertProdTrade   "Fertilizer production via trade (fixed amount, no technology)"
+    amToTrade       "Ammonia traded as intermediate product"
+    meToTrade       "Methanol traded as intermediate product"
+$endif.cm_hydroTrade
     fertProd        "Fertilizer production from ammonia from fossil feedstocks"
     fertProdH2      "Fertilizer production from green ammonia"
     amToFinal       "dummy process to convert methanol or methanolH2 to methFinal"

@@ -698,6 +698,16 @@ p37_specMatDem("ammoniaH2","amToFinal","greenh2")        = 1;
 p37_specMatDem("methanol","meToFinal","standard")        = 1;
 p37_specMatDem("methanolH2","meToFinal","greenh2")        = 1;
 
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+p37_specMatDem("ammoniaIm","fertProdTrade","standard")        = 17/14;
+p37_specMatDem("methanolIm","mtoMtaTrade","standard")        = 2.62; !!Dutta2019 Table 4
+p37_specMatDem("ammoniaIm","amToFinal","trade")        = 1;
+p37_specMatDem("methanolIm","meToFinal","trade")        = 1;
+p37_specMatDem("co2f","fertProdTrade","standard")        = 0.43; !!12/28 for NH₂CONH₂ (urea)
+p37_specMatDem("methanolH2","meToTrade","standard")        = 1; 
+p37_specMatDem("ammoniaH2","amToTrade","standard")        = 1; 
+$endif.cm_hydroTrade
+
 !! p37_specMatDem("naphtha","stCrLiq","standard")        =  18.3 / (sm_TWa_2_MWh/sm_giga_2_non); !! should not be needed any more
 
 p37_specMatDem("plasticWaste","mechRe","standard")        = 1/0.79; !! Source: Taylor Uekert 2023 Table S1-S4.
@@ -821,6 +831,11 @@ p37_specFeDemTarget("feels","mtoMtaH2","standard")    = 1.4 / (sm_TWa_2_MWh/sm_g
 p37_specFeDemTarget("feels","fertProd","standard")    = 0.39 / (sm_TWa_2_MWh/sm_giga_2_non);  !! Source: Palys23 Section 2.3, Page 6
 p37_specFeDemTarget("feels","fertProdH2","standard")    = 0.39 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: Palys23 Section 2.3, Page 6
 
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+p37_specFeDemTarget("feels","mtoMtaTrade","standard")    = 1.4 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: Bazzanella17 Section 4.5.3
+p37_specFeDemTarget("feels","fertProdTrade","standard")    = 0.39 / (sm_TWa_2_MWh/sm_giga_2_non); !! Source: Palys23 Section 2.3, Page 6
+$endif.cm_hydroTrade
+
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
 
@@ -915,6 +930,24 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
 !! Source: Taylor Uekert 2023 Table Table S23 → 0.2-0.4 $/kg
 !! Source: Shaik Afzal 2023 Table Table S6 → 0.4-0.8 $/kg
 p37_priceMat(t,all_regi,"plasticWaste") = 0.1;
+
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+p37_priceMat(t,all_regi,"ammoniaIm") = 1.00;
+p37_priceMat("2030",all_regi,"ammoniaIm") = 0.55;
+p37_priceMat("2035",all_regi,"ammoniaIm") = 0.48;
+p37_priceMat("2040",all_regi,"ammoniaIm") = 0.44;
+p37_priceMat("2045",all_regi,"ammoniaIm") = 0.40;
+p37_priceMat("2050",all_regi,"ammoniaIm") = 0.36;
+p37_priceMat(t,all_regi,"ammoniaIm")$(t.val gt 2050) = 0.36;
+
+p37_priceMat(t,all_regi,"methanolIm") = 2.00;
+p37_priceMat("2030",all_regi,"methanolIm") = 0.84;
+p37_priceMat("2035",all_regi,"methanolIm") = 0.61;
+p37_priceMat("2040",all_regi,"methanolIm") = 0.57;
+p37_priceMat("2045",all_regi,"methanolIm") = 0.54;
+p37_priceMat("2050",all_regi,"methanolIm") = 0.5;
+p37_priceMat(t,all_regi,"methanolIm")$(t.val gt 2050) = 0.5;
+$endif.cm_hydroTrade
 
 $endif.cm_subsec_model_chemicals
 
@@ -1254,23 +1287,61 @@ if (cm_startyear gt 2005,
 );
 
 
-$ifthen.PlasticMFA "%cm_PlasticMFA%" == "on"
+$ifthen.PlasticMFA "%cm_PlasticMFA%" == "low"
 Parameter
   p37_recycleMech(tall,all_regi) "TODO"
   /
 $ondelim
-$include "./modules/37_industry/subsectors/input/p37_RecycleMech.cs4r";
+$include "./modules/37_industry/subsectors/input/p37_RecycleMech_Low.cs4r";
+$offdelim
+  /
+;
+
+Parameter
+  p37_plasticWaste(tall,all_regi) "TODO"
+  /
+$ondelim
+$include "./modules/37_industry/subsectors/input/p37_PlasticWaste_Low.cs4r";
 $offdelim
   /
 ;
 $endif.PlasticMFA
 
-$ifthen.PlasticMFA "%cm_PlasticMFA%" == "on"
+$ifthen.PlasticMFA "%cm_PlasticMFA%" == "mid"
 Parameter
-  p37_plastcWaste(tall,all_regi) "TODO"
+  p37_recycleMech(tall,all_regi) "TODO"
   /
 $ondelim
-$include "./modules/37_industry/subsectors/input/p37_PlasticWaste.cs4r";
+$include "./modules/37_industry/subsectors/input/p37_RecycleMech_Mid.cs4r";
+$offdelim
+  /
+;
+
+Parameter
+  p37_plasticWaste(tall,all_regi) "TODO"
+  /
+$ondelim
+$include "./modules/37_industry/subsectors/input/p37_PlasticWaste_Mid.cs4r";
+$offdelim
+  /
+;
+$endif.PlasticMFA
+
+$ifthen.PlasticMFA "%cm_PlasticMFA%" == "high"
+Parameter
+  p37_recycleMech(tall,all_regi) "TODO"
+  /
+$ondelim
+$include "./modules/37_industry/subsectors/input/p37_RecycleMech_High.cs4r";
+$offdelim
+  /
+;
+
+Parameter
+  p37_plasticWaste(tall,all_regi) "TODO"
+  /
+$ondelim
+$include "./modules/37_industry/subsectors/input/p37_PlasticWaste_High.cs4r";
 $offdelim
   /
 ;

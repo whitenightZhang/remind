@@ -423,6 +423,13 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     meToFinal     "dummy process to convert methanol or methanolH2 to methFinal"
     amToFinal     "dummy process to convert ammonia or ammoniaH2 to ammoFinal"
 
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+    mtoMtaTrade   "mtoMta via trade (fixed amount, no technology)"
+    fertProdTrade "Fertilizer production via trade (fixed amount, no technology)"
+    amToTrade     "Ammonia traded as intermediate product"
+    meToTrade     "Methanol traded as intermediate product"
+$endif.cm_hydroTrade
+
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     bf
@@ -460,6 +467,11 @@ teCUPrc(all_te)   "Technologies using CO2 as a feedstock"
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     meSyH2
     fertProdH2
+    
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+    fertProdTrade
+$endif.cm_hydroTrade
+
 $endif.cm_subsec_model_chemicals
   /
 
@@ -475,6 +487,12 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     ammoniaH2     "Ammonia produced from hydrogen (needs co2f input in fertilizer production in difference to ammonia)"
     methFinal     "Methanol; final product"
     ammoFinal     "Ammonia; final product"
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+    methanolIm "Methanol imported as intermediate product"
+    ammoniaIm  "Ammonia imported as intermediate product"
+    methanolEx "Methanol exported as intermediate product"
+    ammoniaEx  "Ammonia exported as intermediate product"
+$endif.cm_hydroTrade
     !! REMINDER: once we co2f from the CCU module, make sure that it isn't subtracted twice (once by taking it from CCU, once by subtracting feedstock carbon)
     co2f
     plasticWaste  "Plastic waste used for chemical recycling (pyrolysis or gasification) or mechanical recycling"
@@ -502,6 +520,12 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     co2f
 
     plasticWaste
+
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+    methanolIm
+    ammoniaIm
+$endif.cm_hydroTrade
+
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     eafscrap   "Steel scrap used in EAF"
@@ -525,6 +549,12 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     ammoniaH2
     methFinal
     ammoFinal
+
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+    methanolEx
+    ammoniaEx
+$endif.cm_hydroTrade
+
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     prsteel
@@ -554,6 +584,10 @@ opmoPrc   "Operation modes for technologies in process-based model"
     standard   "Only one operation mode implemented"
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     greenh2    "Input of green hydrogen to adjust the C-H ratio"
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+    trade      "Fixed amount via trade, no technology"
+$endif.cm_hydroTrade
+
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     ng         "Direct reduction using natural gas"
@@ -629,6 +663,16 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
      amFinal_ng_cc
      amFinal_liq_cc
      amFinal_h2
+
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+     hvc_meTrade
+     fertilizer_amTrade
+     meFinal_trade
+     amFinal_trade
+     amTrade_trade
+     meTrade_trade
+$endif.cm_hydroTrade
+
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     idreaf_ng
@@ -702,6 +746,16 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     fertProdH2 . standard
     meToFinal . (standard,greenh2) 
     amToFinal . (standard,greenh2)
+
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+    mtoMtaTrade . standard
+    fertProdTrade . standard
+    meToFinal . trade 
+    amToFinal . trade
+    amToTrade . trade
+    meToTrade . trade
+$endif.cm_hydroTrade
+
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     idr . (ng,h2)
@@ -727,6 +781,15 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
 
     meSyH2 . standard  . co2f
     fertProdH2 . standard  . co2f
+
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+    fertProdTrade . standard  . ammoniaIm
+    mtoMtaTrade . standard  . methanolIm
+    meToFinal . trade     . methanolIm
+    amToFinal . trade     . ammoniaIm
+    amToTrade . trade     . ammoniaH2
+    meToTrade . trade     . methanolH2
+$endif.cm_hydroTrade
 
     mechRe . standard  . plasticWaste
     stCrChemRe . standard  . plasticWaste
@@ -774,6 +837,16 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
    fertProdH2 . standard . fertilizer
    meToFinal . (standard,greenh2) . methFinal
    amToFinal . (standard,greenh2) . ammoFinal
+
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+   mtoMtaTrade . standard . hvc
+   fertProdTrade . standard . fertilizer
+   meToFinal . trade . methFinal
+   amToFinal . trade . ammoFinal
+   meToTrade . trade . methanolEx
+   amToTrade . trade . ammoniaEx
+$endif.cm_hydroTrade
+
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
    bf  . standard . pigiron
@@ -844,6 +917,13 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
    fertProdH2 . standard . ue_chemicals
    meToFinal . (standard,greenh2) . ue_chemicals
    amToFinal . (standard,greenh2) . ue_chemicals
+
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+   mtoMtaTrade . standard . ue_chemicals
+   fertProdTrade . standard . ue_chemicals
+   meToFinal . trade . ue_chemicals
+   amToFinal . trade . ue_chemicals
+$endif.cm_hydroTrade
 
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
@@ -922,6 +1002,16 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
    amToFinal  . standard . (amFinal_sol, amFinal_ng, amFinal_liq,
                             amFinal_sol_cc, amFinal_ng_cc, amFinal_liq_cc)
    amToFinal  . greenh2  . amFinal_h2
+
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+   mtoMtaTrade . standard . hvc_meTrade
+   fertProdTrade . standard . fertilizer_amTrade
+   amToFinal  . trade     . amFinal_trade
+   meToFinal  . trade     . meFinal_trade
+   amToTrade  . trade     . amTrade_trade
+   meToTrade  . trade     . meTrade_trade
+$endif.cm_hydroTrade
+
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     eaf . sec . seceaf
@@ -1045,6 +1135,13 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     entydummy.entydummy.meToFinal
     entydummy.entydummy.amToFinal
 
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+    entydummy.entydummy.mtoMtaTrade
+    entydummy.entydummy.fertProdTrade
+    entydummy.entydummy.meToTrade
+    entydummy.entydummy.amToTrade
+$endif.cm_hydroTrade
+
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
     entydummy.entydummy.bf
@@ -1094,6 +1191,13 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
     chemicals . fertProdH2
     chemicals . meToFinal
     chemicals . amToFinal
+
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+    chemicals . mtoMtaTrade
+    chemicals . fertProdTrade
+    chemicals . meToTrade
+    chemicals . amToTrade
+$endif.cm_hydroTrade
 
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_steel "%cm_subsec_model_steel%" == "processes"
