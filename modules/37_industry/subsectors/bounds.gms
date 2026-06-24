@@ -177,6 +177,18 @@ vm_demFeSector_afterTax.lo(t,regi,entySe,"fesos","indst",emiMkt)$(NOT sameAs(emi
 v37_matShareChange.lo(t,regi,tePrc,opmoPrc,mat)$(tePrcStiffShare(tePrc,opmoPrc,mat)) = -cm_maxIndPrcShareChange;
 v37_matShareChange.up(t,regi,tePrc,opmoPrc,mat)$(tePrcStiffShare(tePrc,opmoPrc,mat)) =  cm_maxIndPrcShareChange;
 
+v37_matShareChange.lo(t,regi,tePrc,opmoPrc,mat)$(
+    tePrcStiffShare(tePrc,opmoPrc,mat)
+    and sameas(regi,'CHA')
+    and (t.val >= 2050)
+) = -3*cm_maxIndPrcShareChange;
+
+v37_matShareChange.up(t,regi,tePrc,opmoPrc,mat)$(
+    tePrcStiffShare(tePrc,opmoPrc,mat)
+    and sameas(regi,'CHA')
+    and (t.val >= 2050)
+) =  3*cm_maxIndPrcShareChange;;
+
 vm_outflowPrc.up(t,regi,"mechRe","standard") = 0.; !! Due to downgraded recycling and pure feedstock limitations
 
 
@@ -219,13 +231,79 @@ loop(t$(t.val ge 2030),
 );
 
 $ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
-!! Limit hydrogen trade to projected levels
-vm_outflowPrc.lo("2030","MEA","meToTrade","trade") = 1/1000;
-vm_outflowPrc.lo("2035","MEA","meToTrade","trade") = 1/1000;
-vm_outflowPrc.lo("2040","MEA","meToTrade","trade") = 2/1000;
-vm_outflowPrc.lo("2045","MEA","meToTrade","trade") = 3/1000;
-vm_outflowPrc.lo("2050","MEA","meToTrade","trade") = 5/1000;
-vm_outflowPrc.lo(t,"MEA","meToTrade","trade")$(t.val gt 2050) = 5/1000;
+
+v37_matflow.up(t,regi,"ammoniaIm")= 0.;
+v37_matflow.up(t,regi,"methanolIm")= 0.;
+
+$ifthen.cm_tradeSuffix not "%cm_tradeSuffix%" == "others"
+
+loop((t,regi,tePrc,opmoPrc)$( sameas(tePrc,"amToTrade") AND sameas(opmoPrc,"trade") ),
+  vm_outflowPrc.lo(t,regi,tePrc,opmoPrc) = p37_ammoniaEx(t,regi)/1000;
+);
+loop((t,regi,tePrc,opmoPrc)$( sameas(tePrc,"meToTrade") AND sameas(opmoPrc,"trade") ),
+  vm_outflowPrc.lo(t,regi,tePrc,opmoPrc) = p37_methanolEx(t,regi)/1000;
+);
+
+loop((t,regi,mat)$( sameas(mat,"ammoniaIm")),
+  v37_matflow.up(t,regi,mat) = p37_ammoniaIm(t,regi)/1000;
+);
+loop((t,regi,mat)$( sameas(mat,"methanolIm")),
+  v37_matflow.up(t,regi,mat) = p37_methanolIm(t,regi)/1000;
+);
+
+!!! Bottom-up fix for ammonia and methanol transition in China
+vm_outflowPrc.up('2030','CHA','amSyCoal','standard') = 42 * 0.8/1000;
+vm_outflowPrc.up('2030','CHA','amSyNG','standard') = 42 * 0.2/1000;
+vm_outflowPrc.up('2030','CHA','meSySol','standard') = 72 * 0.75/1000;
+vm_outflowPrc.up('2030','CHA','meSyNG','standard') = 72 * 0.15/1000;
+
+vm_outflowPrc.up('2035','CHA','amSyCoal','standard') = 26 * 0.8/1000;
+vm_outflowPrc.up('2035','CHA','amSyNG','standard') = 26 * 0.2/1000;
+vm_outflowPrc.up('2035','CHA','meSySol','standard') = 36 * 0.75/1000;
+vm_outflowPrc.up('2035','CHA','meSyNG','standard') = 36 * 0.15/1000;
+
+loop(t$(t.val ge 2040),
+vm_outflowPrc.up(t,'CHA','amSyCoal','standard') = 10 * 0.8/1000;
+vm_outflowPrc.up(t,'CHA','amSyNG','standard') = 10 * 0.2/1000;
+vm_outflowPrc.up(t,'CHA','meSySol','standard') = 1e-6;
+vm_outflowPrc.up(t,'CHA','meSyNG','standard') = 1e-6;
+
+);
+
+$endif.cm_tradeSuffix
+
+$ifthen.cm_tradeSuffix "%cm_tradeSuffix%" == "2d"
+
+vm_outflowPrc.fx('2050','CHA','stCrLiq','standard') =  132 * 0.73/1000;
+vm_outflowPrc.fx('2055','CHA','stCrLiq','standard') =  132 * 0.55/1000;
+vm_outflowPrc.fx('2060','CHA','stCrLiq','standard') =  132 * 0.38/1000;
+vm_outflowPrc.up(t,'CHA','stCrLiq','standard')$(t.val >= 2070) = 1e-6;
+
+vm_outflowPrc.fx('2050','CHA','stCrNG','standard') =  15.5* 0.73/1000;
+vm_outflowPrc.fx('2055','CHA','stCrNG','standard') =  15.5 * 0.55/1000;
+vm_outflowPrc.fx('2060','CHA','stCrNG','standard') =  15.5 * 0.38/1000;
+vm_outflowPrc.up(t,'CHA','stCrNG','standard')$(t.val >= 2070) = 1e-6;
+
+$endif.cm_tradeSuffix
+
+$ifthen.cm_tradeSuffix "%cm_tradeSuffix%" == "15d"
+
+vm_outflowPrc.fx('2040','CHA','stCrLiq','standard') =  132 * 0.68/1000;
+vm_outflowPrc.fx('2045','CHA','stCrLiq','standard') =  132 * 0.475/1000;
+vm_outflowPrc.fx('2050','CHA','stCrLiq','standard') =  132 * 0.29/1000;
+vm_outflowPrc.fx('2055','CHA','stCrLiq','standard') =  132 * 0.2/1000;
+vm_outflowPrc.fx('2060','CHA','stCrLiq','standard') =  132 * 0.146/1000;
+vm_outflowPrc.up(t,'CHA','stCrLiq','standard')$(t.val >= 2070) = 1e-6;
+
+vm_outflowPrc.fx('2040','CHA','stCrNG','standard') =  15.5* 0.68/1000;
+vm_outflowPrc.fx('2045','CHA','stCrNG','standard') =  15.5 * 0.475/1000;
+vm_outflowPrc.fx('2050','CHA','stCrNG','standard') =  15.5* 0.29/1000;
+vm_outflowPrc.fx('2055','CHA','stCrNG','standard') =  15.5 * 0.2/1000;
+vm_outflowPrc.fx('2060','CHA','stCrNG','standard') =  15.5 * 0.146/1000;
+vm_outflowPrc.up(t,'CHA','stCrNG','standard')$(t.val >= 2070) = 1e-6;
+
+$endif.cm_tradeSuffix
+
 $endif.cm_hydroTrade
 
 *** EOF ./modules/37_industry/subsectors/bounds.gms

@@ -704,8 +704,6 @@ p37_specMatDem("methanolIm","mtoMtaTrade","standard")        = 2.62; !!Dutta2019
 p37_specMatDem("ammoniaIm","amToFinal","trade")        = 1;
 p37_specMatDem("methanolIm","meToFinal","trade")        = 1;
 p37_specMatDem("co2f","fertProdTrade","standard")        = 0.43; !!12/28 for NH₂CONH₂ (urea)
-p37_specMatDem("methanolH2","meToTrade","standard")        = 1; 
-p37_specMatDem("ammoniaH2","amToTrade","standard")        = 1; 
 $endif.cm_hydroTrade
 
 !! p37_specMatDem("naphtha","stCrLiq","standard")        =  18.3 / (sm_TWa_2_MWh/sm_giga_2_non); !! should not be needed any more
@@ -933,20 +931,39 @@ p37_priceMat(t,all_regi,"plasticWaste") = 0.1;
 
 $ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
 p37_priceMat(t,all_regi,"ammoniaIm") = 1.00;
-p37_priceMat("2030",all_regi,"ammoniaIm") = 0.55;
-p37_priceMat("2035",all_regi,"ammoniaIm") = 0.48;
-p37_priceMat("2040",all_regi,"ammoniaIm") = 0.44;
-p37_priceMat("2045",all_regi,"ammoniaIm") = 0.40;
-p37_priceMat("2050",all_regi,"ammoniaIm") = 0.36;
-p37_priceMat(t,all_regi,"ammoniaIm")$(t.val gt 2050) = 0.36;
-
 p37_priceMat(t,all_regi,"methanolIm") = 2.00;
-p37_priceMat("2030",all_regi,"methanolIm") = 0.84;
-p37_priceMat("2035",all_regi,"methanolIm") = 0.61;
-p37_priceMat("2040",all_regi,"methanolIm") = 0.57;
-p37_priceMat("2045",all_regi,"methanolIm") = 0.54;
-p37_priceMat("2050",all_regi,"methanolIm") = 0.5;
-p37_priceMat(t,all_regi,"methanolIm")$(t.val gt 2050) = 0.5;
+
+$ifthen.cm_tradeSuffix not "%cm_tradeSuffix%" == "others"
+
+Parameter
+  p37_amImPrice(tall,all_regi) ""
+  /
+$ondelim
+$include "./modules/37_industry/subsectors/input/trade/p37_ammonia_import_price_%cm_tradeSuffix%.cs4r"
+$offdelim
+  /
+;
+
+Parameter
+  p37_meImPrice(tall,all_regi) ""
+  /
+$ondelim
+$include "./modules/37_industry/subsectors/input/trade/p37_methanol_import_price_%cm_tradeSuffix%.cs4r"
+$offdelim
+  /
+;
+
+$endif.cm_tradeSuffix
+
+
+loop((t,regi,mat)$( sameas(mat,"ammoniaIm")),
+  p37_priceMat(t,regi,mat) = p37_amImPrice(t,regi)/1000;
+);
+
+loop((t,regi,mat)$( sameas(mat,"methanolIm")),
+  p37_priceMat(t,regi,mat) = p37_meImPrice(t,regi)/1000;
+);
+
 $endif.cm_hydroTrade
 
 $endif.cm_subsec_model_chemicals
@@ -1000,14 +1017,40 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "ces"
 p37_mat2ue(tall,all_regi,all_enty,all_in) = 0.;
 $endif.cm_subsec_model_chemicals
 $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
+
+$ifthen.cm_rcp_scen "%cm_rcp_scen%" == "rcp20"
 Parameter
   p37_mat2ue(tall,all_regi,all_enty,all_in) "conversion factors [2017$/kg or 2017$/kgN] for 2020-2050 to convert material [Gt or GtN] into UE [trn$2017]"
   /
 $ondelim
-$include "./modules/37_industry/subsectors/input/p37_AllChemical_Mat2Ue.cs4r";
+$include "./modules/37_industry/subsectors/input/p37_AllChemical_Mat2Ue_rcp20.cs4r";
 $offdelim
   /
 ;
+$endif.cm_rcp_scen
+
+$ifthen.cm_rcp_scen "%cm_rcp_scen%" == "rcp26"
+Parameter
+  p37_mat2ue(tall,all_regi,all_enty,all_in) "conversion factors [2017$/kg or 2017$/kgN] for 2020-2050 to convert material [Gt or GtN] into UE [trn$2017]"
+  /
+$ondelim
+$include "./modules/37_industry/subsectors/input/p37_AllChemical_Mat2Ue_rcp26.cs4r";
+$offdelim
+  /
+;
+$endif.cm_rcp_scen
+
+$ifthen.cm_rcp_scen "%cm_rcp_scen%" == "rcp45"
+Parameter
+  p37_mat2ue(tall,all_regi,all_enty,all_in) "conversion factors [2017$/kg or 2017$/kgN] for 2020-2050 to convert material [Gt or GtN] into UE [trn$2017]"
+  /
+$ondelim
+$include "./modules/37_industry/subsectors/input/p37_AllChemical_Mat2Ue_rcp45.cs4r";
+$offdelim
+  /
+;
+$endif.cm_rcp_scen
+
 !! constant before and after IEA report temporal scope
 p37_mat2ue(t,regi,mat,in)$(t.val lt 2020) = p37_mat2ue("2020",regi,mat,in);
 
@@ -1346,5 +1389,71 @@ $offdelim
   /
 ;
 $endif.PlasticMFA
+
+$ifthen.PlasticMFA "%cm_PlasticMFA%" == "highest"
+Parameter
+  p37_recycleMech(tall,all_regi) "TODO"
+  /
+$ondelim
+$include "./modules/37_industry/subsectors/input/p37_RecycleMech_Highest.cs4r";
+$offdelim
+  /
+;
+
+Parameter
+  p37_plasticWaste(tall,all_regi) "TODO"
+  /
+$ondelim
+$include "./modules/37_industry/subsectors/input/p37_PlasticWaste_Highest.cs4r";
+$offdelim
+  /
+;
+$endif.PlasticMFA
+
+
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+
+*** Set trade data file suffix based on budget scenario
+$ifthen.cm_tradeSuffix not "%cm_tradeSuffix%" == "others"
+
+Parameter
+  p37_ammoniaEx(tall,all_regi) ""
+  /
+$ondelim
+$include "./modules/37_industry/subsectors/input/trade/p37_ammonia_feedstock_net_export_Mt_%cm_tradeSuffix%.cs4r"
+$offdelim
+  /
+;
+
+Parameter
+  p37_ammoniaIm(tall,all_regi) ""
+  /
+$ondelim
+$include "./modules/37_industry/subsectors/input/trade/p37_ammonia_feedstock_net_import_Mt_%cm_tradeSuffix%.cs4r"
+$offdelim
+  /
+;
+
+Parameter
+  p37_methanolEx(tall,all_regi) ""
+  /
+$ondelim
+$include "./modules/37_industry/subsectors/input/trade/p37_methanol_feedstock_net_export_Mt_%cm_tradeSuffix%.cs4r"
+$offdelim
+  /
+;
+
+Parameter
+  p37_methanolIm(tall,all_regi) ""
+  /
+$ondelim
+$include "./modules/37_industry/subsectors/input/trade/p37_methanol_feedstock_net_import_Mt_%cm_tradeSuffix%.cs4r"
+$offdelim
+  /
+;
+
+$endif.cm_tradeSuffix
+
+$endif.cm_hydroTrade
 
 *** EOF ./modules/37_industry/subsectors/datainput.gms

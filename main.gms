@@ -1970,6 +1970,7 @@ $setglobal cm_subsec_model_chemicals  processes  !! def = processes  !! regexp =
 *** (trade): hydrogen trade between regions allowed
 $setglobal cm_hydroTrade off  !! def = trade  !! regexp = off|trade
 
+$setglobal cm_tradeSuffix others  !! def = ohters  !! regexp = 15d|2d|others
 *** set conopt version. Warning: conopt4 is in beta
 $setGlobal cm_conoptv  conopt3    !! def = conopt3
 *' c_empty_model  "Short-circuit the model, just use the input as solution"
@@ -2020,7 +2021,7 @@ $setglobal cm_repeatNonOpt off      !! def = off  !! regexp = off|on
 *** (low): plastic MFA module activated with low plastic waste generation assumptions (20% recycling rate by 2050)
 *** (mid): plastic MFA module activated with mid plastic waste generation assumptions (40% recycling rate by 2050)
 *** (high): plastic MFA module activated with high plastic waste generation assumptions (60% recycling rate by 2050)
-$setglobal cm_PlasticMFA off      !! def = off  !! regexp = off|low|mid|high
+$setglobal cm_PlasticMFA off      !! def = off  !! regexp = off|low|mid|high|highest
 
 $setglobal cm_DacCost mid      !! def = mid  !! regexp = low|mid|high
 *** switch to choose DAC cost assumptions

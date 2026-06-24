@@ -129,28 +129,27 @@ vm_Mport.fx(t,regi,entySe) = 0;
 vm_Xport.fx(t,regi,entySe) = 0;
 
 $ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+
+$ifthen.cm_tradeSuffix not "%cm_tradeSuffix%" == "others"
+
 *** Add Hydrogen trade bounds
-vm_Mport.fx("2035","EUR","seliqsyn") = 0.10*sm_EJ_2_TWa;
-vm_Mport.fx("2040","EUR","seliqsyn") = 0.15*sm_EJ_2_TWa;
-vm_Mport.fx("2045","EUR","seliqsyn") = 0.20*sm_EJ_2_TWa;
-vm_Mport.fx("2050","EUR","seliqsyn") = 0.25*sm_EJ_2_TWa;
+loop((t,regi,entySe)$( sameas(entySe,"seliqsyn") AND t.val > 2030 ),
+  vm_Mport.fx(t,regi,entySe) = p24_methanolIm(t,regi)*sm_EJ_2_TWa;
+);
 
-vm_Xport.fx("2035","MEA","seliqsyn") = 0.10*sm_EJ_2_TWa;
-vm_Xport.fx("2040","MEA","seliqsyn") = 0.15*sm_EJ_2_TWa;
-vm_Xport.fx("2045","MEA","seliqsyn") = 0.20*sm_EJ_2_TWa;
-vm_Xport.fx("2050","MEA","seliqsyn") = 0.25*sm_EJ_2_TWa;
+loop((t,regi,entySe)$( sameas(entySe,"seliqsyn") AND t.val > 2030 ),
+  vm_Xport.fx(t,regi,entySe) = p24_methanolEx(t,regi)*sm_EJ_2_TWa;
+);
 
-vm_Mport.fx("2030","EUR","seh2") = 0.05*sm_EJ_2_TWa;
-vm_Mport.fx("2035","EUR","seh2") = 0.10*sm_EJ_2_TWa;
-vm_Mport.fx("2040","EUR","seh2") = 0.15*sm_EJ_2_TWa;
-vm_Mport.fx("2045","EUR","seh2") = 0.20*sm_EJ_2_TWa;
-vm_Mport.fx("2050","EUR","seh2") = 0.25*sm_EJ_2_TWa;
+loop((t,regi,entySe)$( sameas(entySe,"seh2") ),
+  vm_Mport.fx(t,regi,entySe) = p24_ammoniaIm(t,regi)*sm_EJ_2_TWa;
+);
 
-vm_Xport.fx("2030","MEA","seh2") = 0.05*sm_EJ_2_TWa;
-vm_Xport.fx("2035","MEA","seh2") = 0.10*sm_EJ_2_TWa;
-vm_Xport.fx("2040","MEA","seh2") = 0.15*sm_EJ_2_TWa;
-vm_Xport.fx("2045","MEA","seh2") = 0.20*sm_EJ_2_TWa;
-vm_Xport.fx("2050","MEA","seh2") = 0.25*sm_EJ_2_TWa;
+loop((t,regi,entySe)$( sameas(entySe,"seh2") ),
+  vm_Xport.fx(t,regi,entySe) = p24_ammoniaEx(t,regi)*sm_EJ_2_TWa;
+);
+
+$endif.cm_tradeSuffix
+
 $endif.cm_hydroTrade
-
 *** EOF ./modules/24_trade/standard/bounds.gms

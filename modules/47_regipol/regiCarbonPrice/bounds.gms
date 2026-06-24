@@ -278,6 +278,23 @@ vm_capFac.up("2025",regi,"coalchp") = 0.52;
 vm_capFac.lo("2030",regi,"coalchp") = 0.35;
 vm_capFac.up("2030",regi,"coalchp") = 0.52;
 
+vm_cap.fx("2040",regi,"tnrs","1") = 125 / 1e3;
+vm_cap.fx("2045",regi,"tnrs","1") = 163 / 1e3;
+vm_cap.fx("2050",regi,"tnrs","1") = 216 / 1e3;
+vm_cap.fx("2055",regi,"tnrs","1") = 250 / 1e3;
+vm_cap.fx(t,regi,"tnrs","1")$(t.val ge 2060) = 255 / 1e3;
+
+vm_cap.fx("2025",regi,"hydro","1") = 438 / 1e3;
+vm_cap.fx("2030",regi,"hydro","1") = 499 / 1e3;
+vm_cap.fx("2035",regi,"hydro","1") = 525 / 1e3;
+vm_cap.fx("2040",regi,"hydro","1") = 549 / 1e3;
+vm_cap.fx("2045",regi,"hydro","1") = 574 / 1e3;
+vm_cap.fx("2050",regi,"hydro","1") = 598 / 1e3;
+vm_cap.fx("2055",regi,"hydro","1") = 607 / 1e3;
+vm_cap.fx("2060",regi,"hydro","1") = 615 / 1e3;
+vm_cap.fx("2070",regi,"hydro","1") = 632 / 1e3;
+vm_cap.fx(t,regi,"hydro","1")$(t.val ge 2080) = 658 / 1e3;
+
 );
 $endif.chaCoalBounds
 

@@ -787,8 +787,6 @@ $ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
     mtoMtaTrade . standard  . methanolIm
     meToFinal . trade     . methanolIm
     amToFinal . trade     . ammoniaIm
-    amToTrade . trade     . ammoniaH2
-    meToTrade . trade     . methanolH2
 $endif.cm_hydroTrade
 
     mechRe . standard  . plasticWaste

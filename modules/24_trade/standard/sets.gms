@@ -28,7 +28,9 @@ tradePe(all_enty)           "Traded primary energy commodities"
 
 tradeSe(all_enty)           "Traded secondary energy commodities"
 /
-    null
+    seh2
+    seliqsyn
+
 /
 
 tradeCap(all_enty)          "Commodities traded via capacity mode."

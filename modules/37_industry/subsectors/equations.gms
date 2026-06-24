@@ -254,7 +254,7 @@ q37_feedstocksShares(t,regi,entySe,entyFe,emiMkt)$(
   * sum(sefe(entySe2,entyFe),
       vm_demFeNonEnergySector(t,regi,entySe2,entyFe,"indst",emiMkt)
     )
-  =l=
+  =e=
     vm_demFeNonEnergySector(t,regi,entySe,entyFe,"indst",emiMkt)
   * sum(sefe(entySe2,entyFe),
       vm_demFeSector_afterTax(t,regi,entySe2,entyFe,"indst",emiMkt)

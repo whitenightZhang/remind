@@ -53,4 +53,80 @@ pm_costsTradePeFinancial(regi,"XportElasticity","pegas") = 2 * pm_costsTradePeFi
 pm_MPortsPrice(ttot,regi,tradeSe)=0;
 pm_XPortsPrice(ttot,regi,tradeSe)=0;
 
+*** Set trade data file suffix based on budget scenario
+
+$ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
+
+* Convert from trn$US/Gt to T$/TWa
+* 1 Gt Ammonia = 18.6 EJ
+
+$ifthen.cm_tradeSuffix not "%cm_tradeSuffix%" == "others"
+
+Parameter
+  p24_ammoniaEx(tall,all_regi) ""
+  /
+$ondelim
+$include "./modules/37_industry/subsectors/input/trade/p37_ammonia_fuel_net_export_EJ_%cm_tradeSuffix%.cs4r"
+$offdelim
+  /
+;
+
+Parameter
+  p24_ammoniaIm(tall,all_regi) ""
+  /
+$ondelim
+$include "./modules/37_industry/subsectors/input/trade/p37_ammonia_fuel_net_import_EJ_%cm_tradeSuffix%.cs4r"
+$offdelim
+  /
+;
+
+Parameter
+  p24_methanolEx(tall,all_regi) ""
+  /
+$ondelim
+$include "./modules/37_industry/subsectors/input/trade/p37_methanol_fuel_net_export_EJ_%cm_tradeSuffix%.cs4r"
+$offdelim
+  /
+;
+
+Parameter
+  p24_methanolIm(tall,all_regi) ""
+  /
+$ondelim
+$include "./modules/37_industry/subsectors/input/trade/p37_methanol_fuel_net_import_EJ_%cm_tradeSuffix%.cs4r"
+$offdelim
+  /
+;
+
+Parameter
+  p24_amImPrice(tall,all_regi) ""
+  /
+$ondelim
+$include "./modules/37_industry/subsectors/input/trade/p37_ammonia_import_price_%cm_tradeSuffix%.cs4r"
+$offdelim
+  /
+;
+
+Parameter
+  p24_meImPrice(tall,all_regi) ""
+  /
+$ondelim
+$include "./modules/37_industry/subsectors/input/trade/p37_methanol_import_price_%cm_tradeSuffix%.cs4r"
+$offdelim
+  /
+;
+
+
+loop((t,regi,tradeSe)$( sameas(tradeSe,"seh2")),
+  pm_MPortsPrice(t,regi,tradeSe) = p24_amImPrice(t,regi)/1000 / 18.6 / sm_EJ_2_TWa;
+);
+
+loop((t,regi,tradeSe)$( sameas(tradeSe,"seliqsyn")),
+  pm_MPortsPrice(t,regi,tradeSe) = p24_meImPrice(t,regi)/1000 / 19.9 / sm_EJ_2_TWa;
+);
+
+
+$endif.cm_tradeSuffix
+
+$endif.cm_hydroTrade
 *** EOF ./modules/24_trade/standard/datainput.gms

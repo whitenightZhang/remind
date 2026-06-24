@@ -1294,7 +1294,7 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
   !!p_adj_seed_te(ttot,regi,"chemElec")        = 0.50;
   !!p_adj_seed_te(ttot,regi,"chemH2")          = 0.50;
   p_adj_seed_te(ttot,regi,"meSySol")         = 0.0001;  
-  p_adj_seed_te(ttot,regi,"meSyBio")         = 0.0001;  
+  p_adj_seed_te(ttot,regi,"meSyBio")         = 0.25;  
   p_adj_seed_te(ttot,regi,"meSyNg")          = 0.0001;
   p_adj_seed_te(ttot,regi,"meSyLiq")         = 0.0001;
   p_adj_seed_te(ttot,regi,"meSySol_cc")       = 0.0001; 
@@ -1316,7 +1316,7 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
   p_adj_seed_te(ttot,regi,"fertProdH2")      = 2.0;
 
 $ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
-  p_adj_seed_te(ttot,regi,"mtoMtaTrade")     = 0.25;
+  p_adj_seed_te(ttot,regi,"mtoMtaTrade")     = 0.0001;
   p_adj_seed_te(ttot,regi,"fertProdTrade")   = 2.0;
 $endif.cm_hydroTrade
 
@@ -1383,7 +1383,7 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
   !!p_adj_coeff(ttot,regi,"chemElec")        = 0.25;
   !!p_adj_coeff(ttot,regi,"chemH2")          = 1.0;
   p_adj_coeff(ttot,regi,"meSySol")         = 3.0; 
-  p_adj_coeff(ttot,regi,"meSyBio")         = 3.0; 
+  p_adj_coeff(ttot,regi,"meSyBio")         = 0.8; 
   p_adj_coeff(ttot,regi,"meSyNg")          = 3.0;
   p_adj_coeff(ttot,regi,"meSyLiq")         = 3.0;
   p_adj_coeff(ttot,regi,"meSySol_cc")       = 3.0;  
@@ -1405,7 +1405,7 @@ $ifthen.cm_subsec_model_chemicals "%cm_subsec_model_chemicals%" == "processes"
   p_adj_coeff(ttot,regi,"fertProdH2")      = 0.1;
 
 $ifthen.cm_hydroTrade "%cm_hydroTrade%" == "trade"
-    p_adj_coeff(ttot,regi,"mtoMtaTrade")     = 0.8;
+    p_adj_coeff(ttot,regi,"mtoMtaTrade")     = 3.0;
     p_adj_coeff(ttot,regi,"fertProdTrade")   = 0.1;
 $endif.cm_hydroTrade
 
@@ -1699,7 +1699,7 @@ parameter f_incinerationShares(ttot,all_regi)         "incineration rate of plas
 $ifthen.PlasticMFA "%cm_PlasticMFA%" == "low"
 /
 $ondelim
-$include "./core/input/f_incinerationSharesMFA_Low.cs4r"
+$include "./core/input/f_incinerationSharesMFA_low.cs4r"
 $offdelim
 /;
 $endif.PlasticMFA
@@ -1707,7 +1707,7 @@ $endif.PlasticMFA
 $ifthen.PlasticMFA "%cm_PlasticMFA%" == "mid"
 /
 $ondelim
-$include "./core/input/f_incinerationSharesMFA_Mid.cs4r"
+$include "./core/input/f_incinerationSharesMFA_mid.cs4r"
 $offdelim
 /;
 $endif.PlasticMFA
@@ -1716,7 +1716,15 @@ $endif.PlasticMFA
 $ifthen.PlasticMFA "%cm_PlasticMFA%" == "high"
 /
 $ondelim
-$include "./core/input/f_incinerationSharesMFA_High.cs4r"
+$include "./core/input/f_incinerationSharesMFA_high.cs4r"
+$offdelim
+/;
+$endif.PlasticMFA
+
+$ifthen.PlasticMFA "%cm_PlasticMFA%" == "highest"
+/
+$ondelim
+$include "./core/input/f_incinerationSharesMFA_highest.cs4r"
 $offdelim
 /;
 $endif.PlasticMFA
